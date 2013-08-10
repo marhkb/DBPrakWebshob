@@ -3,6 +3,7 @@ package de.behrfriedapp.webshop.client.view;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
+import de.behrfriedapp.webshop.client.MainService;
 
 
 /**
@@ -16,8 +17,10 @@ public class ProductSearchBar extends HorizontalPanel {
     private ListBox categoryBox;
     private SuggestBox suggestBox;
     private Button searchButton;
+    private boolean searchStatus;
 
     public ProductSearchBar() {
+        this.searchStatus = false;
         this.categoryBox = new ListBox();
         this.categoryBox.setWidth("150px");
         this.suggestBox = new SuggestBox();
@@ -28,11 +31,19 @@ public class ProductSearchBar extends HorizontalPanel {
         this.add(this.searchButton);
     }
 
-    private void addClickHandlers() {
-        this.searchButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
+    public ListBox getCategoryBox() {
+        return categoryBox;
+    }
 
-            }
-        });
+    public SuggestBox getSuggestBox() {
+        return suggestBox;
+    }
+
+    public Button getSearchButton() {
+        return searchButton;
+    }
+
+    public boolean isSearchStatus() {
+        return searchStatus;
     }
 }

@@ -89,7 +89,12 @@
 			<artifactId>ojdbc</artifactId>
 			<version>11.2.0.1.0</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>3.0</version>
+        </dependency>
+    </dependencies>
 
 
 	<build>
