@@ -16,9 +16,9 @@ gwt-unitCache/
 war/WEB-INF/deploy/
 war/WEB-INF/classes/
 
-.idea
+*.idea
 webshop/target
 webshop/.settings
-.classpath
-.project
+*.classpath
+*.project
 *.iml
