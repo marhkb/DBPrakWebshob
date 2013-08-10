@@ -4,9 +4,10 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.behrfriedapp.webshop.client.MainService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import de.behrfriedapp.webshop.server.data.ServerDataAcces;
+import de.behrfriedapp.webshop.server.data.ServerDataAccess;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
+import de.behrfriedapp.webshop.shared.data.WCategoryInfo;
 
 import java.util.List;
 
@@ -17,30 +18,38 @@ import java.util.List;
 @Singleton
 public class MainServiceImpl extends RemoteServiceServlet implements MainService {
 
-	private final ServerDataAcces serverDataAcces;
+	private final ServerDataAccess serverDataAccess;
 
 	@Inject
-	public MainServiceImpl(final ServerDataAcces serverDataAcces) {
-		this.serverDataAcces = serverDataAcces;
+	public MainServiceImpl(final ServerDataAccess serverDataAccess) {
+		this.serverDataAccess = serverDataAccess;
+	}
+
+	public List<WCategoryInfo> getAllCategories() {
+		return this.serverDataAccess.getAllCategories();
+	}
+
+	public List<WCategoryInfo> getAllCategories(int limit) {
+		return this.serverDataAccess.getAllCategories(limit);
 	}
 
 	public List<ShortProductInfo> getAllProducts() {
-		return this.serverDataAcces.getAllProducts();
+		return this.serverDataAccess.getAllProducts();
 	}
 
 	public List<ShortProductInfo> getAllProducts(int limit) {
-		return this.serverDataAcces.getAllProducts(limit);
+		return this.serverDataAccess.getAllProducts(limit);
 	}
 
 	public List<ShortProductInfo> getAllProducts(String wCategory) {
-		return this.serverDataAcces.getAllProducts(wCategory);
+		return this.serverDataAccess.getAllProducts(wCategory);
 	}
 
 	public List<ShortProductInfo> getAllProducts(String wCategory, int limit) {
-		return this.serverDataAcces.getAllProducts(wCategory, limit);
+		return this.serverDataAccess.getAllProducts(wCategory, limit);
 	}
 
 	public DetailedProductInfo getDetailedProductInfo(ShortProductInfo shortProductInfo) {
-		return this.serverDataAcces.getDetailedProductInfo(shortProductInfo);
+		return this.serverDataAccess.getDetailedProductInfo(shortProductInfo);
 	}
 }

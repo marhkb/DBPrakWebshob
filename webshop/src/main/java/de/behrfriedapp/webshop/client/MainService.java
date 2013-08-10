@@ -4,6 +4,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
+import de.behrfriedapp.webshop.shared.data.WCategoryInfo;
 
 import java.util.List;
 
@@ -12,6 +13,10 @@ import java.util.List;
  */
 @RemoteServiceRelativePath("main")
 public interface MainService extends RemoteService {
+
+	List<WCategoryInfo> getAllCategories();
+
+	List<WCategoryInfo> getAllCategories(int limit);
 
 	List<ShortProductInfo> getAllProducts();
 
