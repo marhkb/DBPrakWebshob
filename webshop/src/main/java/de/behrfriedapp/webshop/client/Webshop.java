@@ -7,7 +7,7 @@ import de.behrfriedapp.webshop.client.view.WebshopContainer;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class webshop implements EntryPoint {
+public class Webshop implements EntryPoint {
 
   /**
    * This is the entry point method.

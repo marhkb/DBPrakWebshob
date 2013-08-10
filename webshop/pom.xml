@@ -86,7 +86,7 @@
 				<!-- Plugin configuration. There are many available options, see
 				  gwt-maven-plugin documentation at codehaus.org -->
 				<configuration>
-					<runTarget>webshop.html</runTarget>
+					<runTarget>Webshop.html</runTarget>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
 					<i18nMessagesBundle>de.behrfriedapp.webshop.client.Messages</i18nMessagesBundle>
 				</configuration>
