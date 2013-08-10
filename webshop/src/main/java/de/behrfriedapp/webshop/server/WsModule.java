@@ -1,6 +1,9 @@
 package de.behrfriedapp.webshop.server;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Singleton;
+import de.behrfriedapp.webshop.server.data.DefaultServerDataAccess;
+import de.behrfriedapp.webshop.server.data.ServerDataAcces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +25,10 @@ public class WsModule extends AbstractModule {
 	 */
 	@Override
 	protected void configure() {
-		this.logger.info("configuring dependencies");
-//		this.bind(WikiApi.class).to(HttpWikiApi.class).in(Singleton.class);
+		this.logger.info("Configuring dependencies");
+		this.bind(ServerDataAcces.class).to(DefaultServerDataAccess.class).in(Singleton.class);
 //		this.bind(WikiAccess.class).to(JsonWikiAccess.class).in(Singleton.class);
-		this.logger.info("dependencies configured");
+		this.logger.info("Cependencies configured");
 	}
 
 }

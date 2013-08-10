@@ -1,7 +1,7 @@
 package de.behrfriedapp.webshop.server;
 
 import com.google.inject.servlet.ServletModule;
-import de.behrfriedapp.webshop.server.data.MainServiceImpl;
+import de.behrfriedapp.webshop.server.servlet.MainServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,11 +23,11 @@ public class WsServletModule extends ServletModule {
 	 */
 	@Override
 	protected void configureServlets() {
-		this.logger.info("configuring servlets");
+		this.logger.info("Configuring servlets");
 
 		this.logger.debug("configuring MainService");
 		this.serve("/Webshop/main").with(MainServiceImpl.class);
 
-		this.logger.info("all servlets have been configured");
+		this.logger.info("All servlets have been configured");
 	}
 }
