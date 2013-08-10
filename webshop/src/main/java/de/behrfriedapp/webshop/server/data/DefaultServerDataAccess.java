@@ -15,9 +15,9 @@ public class DefaultServerDataAccess implements ServerDataAcces {
 
 	private final static String CONNECTION_URL = "jdbc:oracle:thin:@//134.106.56.57:1521/pw2.offis.uni-oldenburg.de";
 
-	private final static String USER = "sys as sysdba";
+	private final static String USER = "uebung01";
 
-	private final static String PASSW = "dbprakss13";
+	private final static String PASSW = "geheim";
 
 	private final Logger logger = LoggerFactory.getLogger(DefaultServerDataAccess.class);
 
