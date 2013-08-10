@@ -18,6 +18,7 @@ public class ProductSearchBar extends HorizontalPanel {
     private SuggestBox suggestBox;
     private Button searchButton;
     private boolean searchStatus;
+    private String searchString ;
 
     public ProductSearchBar() {
         this.searchStatus = false;
@@ -25,7 +26,10 @@ public class ProductSearchBar extends HorizontalPanel {
         this.categoryBox.setWidth("150px");
         this.suggestBox = new SuggestBox();
         this.suggestBox.setWidth("200px");
+        this.searchStatus = false;
+        this.searchString = "";
         this.searchButton = new Button("Suchen");
+        this.searchButton.setEnabled(false);
         this.add(this.categoryBox);
         this.add(this.suggestBox);
         this.add(this.searchButton);
@@ -45,5 +49,21 @@ public class ProductSearchBar extends HorizontalPanel {
 
     public boolean isSearchStatus() {
         return searchStatus;
+    }
+
+    public String getSearchString() {
+        return searchString;
+    }
+
+    public void setSearchStatus(boolean searchStatus) {
+        this.searchStatus = searchStatus;
+    }
+
+    public void setSearchString(String searchString) {
+        this.searchString = searchString;
+    }
+
+    public void setSuggestBox(SuggestBox suggestBox) {
+        this.suggestBox = suggestBox;
     }
 }

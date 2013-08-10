@@ -4,10 +4,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import de.behrfriedapp.webshop.client.MainService;
+import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
+import de.behrfriedapp.webshop.shared.data.WCategoryInfo;
 
 import java.util.List;
 
@@ -32,14 +33,16 @@ public class WebshopContainer extends VerticalPanel {
         this.add(this.webshopTitle);
         this.add(this.productSearchBar);
 
-        this.bindCategoryBox();
         this.mainService = mainService;
+        this.bind();
+        this.addClickHandler();
+        this.addChangeHandler();
     }
 
     private void addClickHandler() {
         this.productSearchBar.getSearchButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                WebshopContainer.this.mainService.getAllProducts("TODO");
+                WebshopContainer.this.mainService.getAllProducts();
             }
         });
     }
@@ -47,16 +50,26 @@ public class WebshopContainer extends VerticalPanel {
     private void addChangeHandler() {
         this.productSearchBar.getSuggestBox().addValueChangeHandler(new ValueChangeHandler<String>() {
             public void onValueChange(ValueChangeEvent<String> event) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                if (WebshopContainer.this.productSearchBar.getSuggestBox().getValue().equals("")) {
+                    WebshopContainer.this.productSearchBar.getSearchButton().setEnabled(false);
+                } else {
+                    WebshopContainer.this.productSearchBar.getSearchButton().setEnabled(true);
+                }
             }
         });
     }
 
-    private void bindCategoryBox() {
+    private void bind() {
         this.productSearchBar.getCategoryBox().addItem("Alles");
-       // List<String> productCategories = WebshopContainer.this.mainService.getProductGroups();
-       // for(String str : productCategories) {
-       //     this.productSearchBar.getCategoryBox().addItem(str);
-        //}
+        List<WCategoryInfo> productCategories = WebshopContainer.this.mainService.getAllCategories();
+        for(WCategoryInfo str : productCategories) {
+            this.productSearchBar.getCategoryBox().addItem(str.getName());
+       }
+        MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
+        List<ShortProductInfo> suggestion = WebshopContainer.this.mainService.getAllProducts();
+        for(ShortProductInfo info : suggestion) {
+            oracle.add(info.getName());
+        }
+        this.productSearchBar.setSuggestBox(new SuggestBox(oracle));
     }
 }
