@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,27 +15,15 @@ import java.util.List;
 public class DefaultServerDataAccess implements ServerDataAcces {
 
 	private final static String CONNECTION_URL = "jdbc:oracle:thin:@//134.106.56.57:1521/pw2.offis.uni-oldenburg.de";
-
 	private final static String USER = "uebung01";
-
 	private final static String PASSW = "geheim";
-
 	private final Logger logger = LoggerFactory.getLogger(DefaultServerDataAccess.class);
-
 	private Connection conn;
 
 	public DefaultServerDataAccess() {
 		try {
 			this.conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSW);
 			this.conn.setAutoCommit(false);
-
-//			Statement stmt = this.conn.createStatement();
-//			final ResultSet rset =
-//					stmt.executeQuery("select BANNER from SYS.V_$VERSION");
-//			while(rset.next()) {
-//				System.out.println(rset.getString(1));
-//			}
-//			stmt.close();
 		} catch(SQLException e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -45,7 +34,21 @@ public class DefaultServerDataAccess implements ServerDataAcces {
 	}
 
 	public List<ShortProductInfo> getAllProducts(int limit) {
-		return null;
+		final List<ShortProductInfo> result = new ArrayList<ShortProductInfo>();
+		try {
+			Statement stmt = this.conn.createStatement();
+			final ResultSet rset =
+					stmt.executeQuery("SELECT * FROM Produkt where rownum<=" + limit);
+			while(rset.next()) {
+				final ShortProductInfo spi = new ShortProductInfo();
+				spi.setName(rset.getString(3));
+				System.out.println(spi.getName());
+			}
+			stmt.close();
+		} catch(Exception e) {
+			this.logger.error(e.getMessage(), e);
+		}
+		return result;
 	}
 
 	public List<ShortProductInfo> getAllProducts(String wCategory) {
