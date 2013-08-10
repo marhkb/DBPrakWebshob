@@ -12,20 +12,19 @@ import com.google.gwt.user.client.ui.Label;
  * Time: 10:45
  * To change this template use File | Settings | File Templates.
  */
-public class ProductRow {
+public class ProductRow extends HorizontalPanel {
     private Image productImage;
     private Hyperlink productLink;
     private Label productPrice;
     private HorizontalPanel productRowContainer;
 
     public ProductRow() {
-        this.productRowContainer = new HorizontalPanel();
         this.productImage = new Image();
         this.productLink = new Hyperlink();
         this.productPrice = new Label();
-        this.productRowContainer.add(this.productImage);
-        this.productRowContainer.add(this.productLink);
-        this.productRowContainer.add(this.productPrice);
+        this.add(this.productImage);
+        this.add(this.productLink);
+        this.add(this.productPrice);
     }
 
     public Image getProductImage() {

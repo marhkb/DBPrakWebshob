@@ -35,6 +35,4 @@ public class ProductSearchBar extends HorizontalPanel {
             }
         });
     }
-
-
 }
