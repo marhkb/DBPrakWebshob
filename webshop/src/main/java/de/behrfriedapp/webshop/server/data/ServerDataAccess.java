@@ -19,9 +19,9 @@ public interface ServerDataAccess {
 
 	List<ShortProductInfo> getAllProducts(int limit);
 
-	List<ShortProductInfo> getAllProducts(String wCategory);
+	List<ShortProductInfo> getAllProducts(WCategoryInfo wCategory);
 
-	List<ShortProductInfo> getAllProducts(String wCategory, int limit);
+	List<ShortProductInfo> getAllProducts(WCategoryInfo wCategory, int limit);
 
 	DetailedProductInfo getDetailedProductInfo(ShortProductInfo shortProductInfo);
 }

@@ -41,11 +41,11 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		return this.serverDataAccess.getAllProducts(limit);
 	}
 
-	public List<ShortProductInfo> getAllProducts(String wCategory) {
+	public List<ShortProductInfo> getAllProducts(WCategoryInfo wCategory) {
 		return this.serverDataAccess.getAllProducts(wCategory);
 	}
 
-	public List<ShortProductInfo> getAllProducts(String wCategory, int limit) {
+	public List<ShortProductInfo> getAllProducts(WCategoryInfo wCategory, int limit) {
 		return this.serverDataAccess.getAllProducts(wCategory, limit);
 	}
 

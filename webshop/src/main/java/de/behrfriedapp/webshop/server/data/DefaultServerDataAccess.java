@@ -88,10 +88,11 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		return result;
 	}
 
-	public List<ShortProductInfo> getAllProducts(String wCategory) {
+	public List<ShortProductInfo> getAllProducts(WCategoryInfo wCategory) {
 		List<ShortProductInfo> result = null;
 		try {
-			PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM PRODUKT WHERE ROWNUM<=?");
+			PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM PRODUKT WHERE W_KATEGORIE=?");
+			stmt.setInt(1, wCategory.getId());
 			result = this.getProducts(stmt);
 		} catch(Exception e) {
 			this.logger.error(e.getMessage(), e);
@@ -99,10 +100,13 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		return result;
 	}
 
-	public List<ShortProductInfo> getAllProducts(String wCategory, int limit) {
+	public List<ShortProductInfo> getAllProducts(WCategoryInfo wCategory, int limit) {
 		List<ShortProductInfo> result = null;
 		try {
-			PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM PRODUKT WHERE ROWNUM<=?");
+			PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM PRODUKT WHERE W_KATEGORIE=? AND " +
+																"ROWNUM<=?");
+			stmt.setInt(1, wCategory.getId());
+			stmt.setInt(2, limit);
 			result = this.getProducts(stmt);
 		} catch(Exception e) {
 			this.logger.error(e.getMessage(), e);
