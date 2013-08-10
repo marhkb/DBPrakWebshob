@@ -1,4 +1,4 @@
-package de.behrfriedapp.webshop.client;
+package de.behrfriedapp.webshop.client.view;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

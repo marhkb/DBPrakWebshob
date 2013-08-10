@@ -1,4 +1,4 @@
-package de.behrfriedapp.webshop.client;
+package de.behrfriedapp.webshop.client.view;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;

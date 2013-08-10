@@ -1,7 +1,6 @@
-package de.behrfriedapp.webshop.client;
+package de.behrfriedapp.webshop.client.view;
 
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**

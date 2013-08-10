@@ -1,4 +1,4 @@
-package de.behrfriedapp.webshop.client;
+package de.behrfriedapp.webshop.client.view;
 
 /**
  * Created with IntelliJ IDEA.
