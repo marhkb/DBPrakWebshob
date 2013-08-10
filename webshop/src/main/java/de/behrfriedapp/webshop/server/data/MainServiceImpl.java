@@ -1,4 +1,4 @@
-package de.behrfriedapp.webshop.server;
+package de.behrfriedapp.webshop.server.data;
 
 import de.behrfriedapp.webshop.client.MainService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
