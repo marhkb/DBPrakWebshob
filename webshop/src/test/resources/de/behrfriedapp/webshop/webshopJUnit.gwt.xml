@@ -4,6 +4,6 @@
   <inherits name='de.behrfriedapp.webshop.webshop' />
 
   <!-- Specify the path to any remote services.                   -->
-  <servlet path="/webshop/greet" class="de.behrfriedapp.webshop.server.GreetingServiceImpl" />
+  <servlet path="/webshop/main" class="de.behrfriedapp.webshop.server.MainServiceImpl" />
 
 </module>

@@ -1,6 +1,6 @@
 package de.behrfriedapp.webshop.server;
 
-import de.behrfriedapp.webshop.client.GreetingService;
+import de.behrfriedapp.webshop.client.MainService;
 import de.behrfriedapp.webshop.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -8,8 +8,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * The server side implementation of the RPC service.
  */
 @SuppressWarnings("serial")
-public class GreetingServiceImpl extends RemoteServiceServlet implements
-    GreetingService {
+public class MainServiceImpl extends RemoteServiceServlet implements
+														  MainService {
 
   public String greetServer(String input) throws IllegalArgumentException {
     // Verify that the input is valid.
