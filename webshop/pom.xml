@@ -82,7 +82,15 @@
 			<artifactId>guice-servlet</artifactId>
 			<version>3.0</version>
 		</dependency>
+
+		<!-- Oracle jdbc driver -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc</artifactId>
+			<version>11.2.0.1.0</version>
+		</dependency>
 	</dependencies>
+
 
 	<build>
 		<!-- Generate compiled stuff in the folder used for developing mode -->

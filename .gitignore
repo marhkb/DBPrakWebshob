@@ -2,6 +2,7 @@
 
 # Package Files #
 *.jar
+!restricted-extras/ojdbc6.jar
 *.war
 
 # gwt caches and compiled units #
@@ -20,3 +21,4 @@ webshop/target
 webshop/.settings
 .classpath
 .project
+*.iml
