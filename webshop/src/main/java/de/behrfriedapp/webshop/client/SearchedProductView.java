@@ -1,6 +1,7 @@
 package de.behrfriedapp.webshop.client;
 
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,14 +11,11 @@ import com.google.gwt.user.cellview.client.DataGrid;
  * To change this template use File | Settings | File Templates.
  */
 public class SearchedProductView {
-    private DataGrid productGrid;
+    private VerticalPanel searchedProductsContainer;
 
-        public SearchedProductView() {
-
-            this.productGrid = new DataGrid();
-        }
-
-
+    public SearchedProductView() {
+        this.searchedProductsContainer = new VerticalPanel();
+    }
 
 
 }
