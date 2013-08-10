@@ -1,5 +1,7 @@
 package de.behrfriedapp.webshop.client;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
 
 
@@ -10,24 +12,29 @@ import com.google.gwt.user.client.ui.*;
  * Time: 10:20
  * To change this template use File | Settings | File Templates.
  */
-public class ProductSearchBar {
-    private HorizontalPanel searchContainer;
-    private Label webshopLabel;
+public class ProductSearchBar extends HorizontalPanel {
     private ListBox categoryBox;
     private SuggestBox suggestBox;
     private Button searchButton;
 
     public ProductSearchBar() {
-        this.searchContainer = new HorizontalPanel();
-        this.webshopLabel = new Label("Webshop");
-        this.searchContainer.add(this.webshopLabel);
-
-        this.searchContainer = new HorizontalPanel();
         this.categoryBox = new ListBox();
+        this.categoryBox.setWidth("150px");
         this.suggestBox = new SuggestBox();
-        this.searchButton = new Button();
-        this.searchContainer.add(this.categoryBox);
-        this.searchContainer.add(this.suggestBox);
-        this.searchContainer.add(this.searchButton);
+        this.suggestBox.setWidth("200px");
+        this.searchButton = new Button("Suchen");
+        this.add(this.categoryBox);
+        this.add(this.suggestBox);
+        this.add(this.searchButton);
     }
+
+    private void addClickHandlers() {
+        this.searchButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+
+            }
+        });
+    }
+
+
 }
