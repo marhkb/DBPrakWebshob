@@ -1,6 +1,6 @@
 package de.behrfriedapp.webshop.client;
 
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -10,13 +10,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * Time: 10:19
  * To change this template use File | Settings | File Templates.
  */
-public class WebshopContainer {
+public class WebshopContainer extends SimplePanel {
 
     private VerticalPanel webshobContainer;
 
     public WebshopContainer() {
         this.webshobContainer = new VerticalPanel();
     }
-
-
 }
