@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * The server side implementation of the RPC service.
  */
-@SuppressWarnings("serial")
 @Singleton
 public class MainServiceImpl extends RemoteServiceServlet implements MainService {
 

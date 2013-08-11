@@ -16,7 +16,7 @@
 	</filter-mapping>
 
 	<listener>
-		<listener-class>de.behrfried.wikianalyzer.wawebapp.server.WsServletContextListener</listener-class>
+		<listener-class>de.behrfriedapp.webshop.server.WsServletContextListener</listener-class>
 	</listener>
 
 	<!-- Default page to serve -->

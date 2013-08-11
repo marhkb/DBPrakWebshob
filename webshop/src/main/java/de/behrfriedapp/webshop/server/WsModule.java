@@ -27,7 +27,6 @@ public class WsModule extends AbstractModule {
 	protected void configure() {
 		this.logger.info("Configuring dependencies");
 		this.bind(ServerDataAccess.class).to(DefaultServerDataAccess.class).in(Singleton.class);
-//		this.bind(WikiAccess.class).to(JsonWikiAccess.class).in(Singleton.class);
 		this.logger.info("Cependencies configured");
 	}
 
