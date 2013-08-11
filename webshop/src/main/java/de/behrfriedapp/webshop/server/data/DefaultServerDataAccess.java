@@ -23,9 +23,12 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 
 	public DefaultServerDataAccess() {
 		try {
+			Class.forName ("oracle.jdbc.OracleDriver");
 			this.conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSW);
 			this.conn.setAutoCommit(false);
 		} catch(SQLException e) {
+			logger.error(e.getMessage(), e);
+		} catch(ClassNotFoundException e) {
 			logger.error(e.getMessage(), e);
 		}
 	}
