@@ -15,11 +15,13 @@ public interface ServerDataAccess {
 
 	List<WProductGroupInfo> getAllProductGroups(int limit);
 
-    List<ShortProductInfo> getAllProducts(String searchedProduct);
-
     List<ShortProductInfo> getAllGroupProducts(String searchedCategory, String searchedProduct);
 
+    List<ShortProductInfo> getAllGroupProducts(String searchedCategory);
+
 	List<ShortProductInfo> getAllProducts();
+
+    List<ShortProductInfo> getAllProducts(String searchedProduct);
 
 	List<ShortProductInfo> getAllProducts(int limit);
 
