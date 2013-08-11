@@ -14,14 +14,16 @@ import de.behrfriedapp.webshop.client.MainService;
  * To change this template use File | Settings | File Templates.
  */
 public class ProductSearchBar extends HorizontalPanel {
-    private ListBox categoryBox;
-    private SuggestBox suggestBox;
-    private Button searchButton;
     private boolean searchStatus;
+    private SuggestBox suggestBox;
+    private ListBox categoryBox;
+    private Button searchButton;
     private String searchString ;
+    private Label searchCategoryLabel;
 
     public ProductSearchBar() {
         this.searchStatus = false;
+        this.searchCategoryLabel = new Label("Suchkategorie");
         this.categoryBox = new ListBox();
         this.categoryBox.setWidth("150px");
         this.suggestBox = new SuggestBox();
@@ -30,6 +32,7 @@ public class ProductSearchBar extends HorizontalPanel {
         this.searchString = "";
         this.searchButton = new Button("Suchen");
         this.searchButton.setEnabled(false);
+        this.add(this.searchCategoryLabel);
         this.add(this.categoryBox);
         this.add(this.suggestBox);
         this.add(this.searchButton);
