@@ -28,7 +28,7 @@ public class DefaultServerDataAccessTest {
 
 	@Test
 	public void testGetAllCategories() throws Exception {
-		final List<WProductGroupInfo> result = this.serverDataAccess.getAllCategories();
+		final List<WProductGroupInfo> result = this.serverDataAccess.getAllProductGroups();
 
 		Assert.assertNotNull(result);
 		Assert.assertFalse(result.size() == 0);
@@ -36,7 +36,7 @@ public class DefaultServerDataAccessTest {
 
 	@Test
 	public void testGetAllCategories_limit() throws Exception {
-		final List<WProductGroupInfo> result = this.serverDataAccess.getAllCategories(10);
+		final List<WProductGroupInfo> result = this.serverDataAccess.getAllProductGroups(10);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(10, result.size());;
@@ -60,7 +60,7 @@ public class DefaultServerDataAccessTest {
 
 	@Test
 	public void testGetAllProducts_wCategory() throws Exception {
-		final List<ShortProductInfo> result = this.serverDataAccess.getAllProducts(new WProductGroupInfo(11, "Wurst"));
+		final List<ShortProductInfo> result = this.serverDataAccess.getAllProducts(new WProductGroupInfo(11, 12, "Wurst", "Schinken"));
 
 		Assert.assertNotNull(result);
 		Assert.assertFalse(result.size() == 0);
@@ -68,7 +68,7 @@ public class DefaultServerDataAccessTest {
 
 	@Test
 	public void testGetAllProducts_wCategory_limit() throws Exception {
-		final List<ShortProductInfo> result = this.serverDataAccess.getAllProducts(new WProductGroupInfo(11, "Wurst"), 4);
+		final List<ShortProductInfo> result = this.serverDataAccess.getAllProducts(new WProductGroupInfo(11, 12, "Wurst", "Schinken"), 4);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(4, result.size());
