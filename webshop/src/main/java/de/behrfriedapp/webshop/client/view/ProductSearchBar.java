@@ -1,9 +1,6 @@
 package de.behrfriedapp.webshop.client.view;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
-import de.behrfriedapp.webshop.client.MainService;
 
 
 /**
@@ -14,11 +11,13 @@ import de.behrfriedapp.webshop.client.MainService;
  * To change this template use File | Settings | File Templates.
  */
 public class ProductSearchBar extends HorizontalPanel {
+
     private boolean searchStatus;
+	private MultiWordSuggestOracle oracle;
     private SuggestBox suggestBox;
     private ListBox categoryBox;
     private Button searchButton;
-    private String searchString ;
+    private String searchString;
     private Label searchCategoryLabel;
 
     public ProductSearchBar() {
@@ -26,7 +25,7 @@ public class ProductSearchBar extends HorizontalPanel {
         this.searchCategoryLabel = new Label("Suchkategorie");
         this.categoryBox = new ListBox();
         this.categoryBox.setWidth("150px");
-        this.suggestBox = new SuggestBox();
+        this.suggestBox = new SuggestBox(this.oracle = new MultiWordSuggestOracle());
         this.suggestBox.setWidth("200px");
         this.searchStatus = false;
         this.searchString = "";
@@ -66,7 +65,7 @@ public class ProductSearchBar extends HorizontalPanel {
         this.searchString = searchString;
     }
 
-    public void setSuggestBox(SuggestBox suggestBox) {
-        this.suggestBox = suggestBox;
-    }
+	public MultiWordSuggestOracle getOracle() {
+		return oracle;
+	}
 }

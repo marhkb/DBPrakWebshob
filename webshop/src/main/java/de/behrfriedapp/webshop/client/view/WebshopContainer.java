@@ -8,7 +8,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 import de.behrfriedapp.webshop.client.MainServiceAsync;
@@ -117,11 +116,10 @@ public class WebshopContainer extends VerticalPanel {
             }
 
             public void onSuccess(List<ShortProductInfo> result) {
-                MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
+                final MultiWordSuggestOracle oracle = productSearchBar.getOracle();
                 for (ShortProductInfo info : result) {
                     oracle.add(info.getName());
                 }
-                productSearchBar.setSuggestBox(new SuggestBox(oracle));
             }
         });
     }
