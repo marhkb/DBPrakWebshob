@@ -110,7 +110,7 @@ public class WebshopContainer extends VerticalPanel {
             }
         });
 
-        WebshopContainer.this.mainService.getAllProducts(new AsyncCallback<List<ShortProductInfo>>() {
+        WebshopContainer.this.mainService.getAllGroupProducts(WebshopContainer.this.productSearchBar.getCategoryBox().getValue(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()), new AsyncCallback<List<ShortProductInfo>>() {
             public void onFailure(Throwable caught) {
                 Window.alert(caught.toString());
             }

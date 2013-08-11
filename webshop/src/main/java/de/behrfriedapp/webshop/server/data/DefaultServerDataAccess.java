@@ -135,6 +135,22 @@ public class DefaultServerDataAccess implements ServerDataAccess {
         return result;
     }
 
+    public List<ShortProductInfo> getAllGroupProducts(String searchedCategory) {
+        List<ShortProductInfo> result = null;
+        try {
+            PreparedStatement stmt = this.conn.prepareStatement(
+                    "SELECT * FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
+                            "WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
+                            "AND W_KATEGORIE.FK_GRUPPE_ID=W_GRUPPE.ID " +
+                            "AND W_GRUPPE.BEZEICHNUNG=? ");
+            stmt.setString(1, searchedCategory);
+            result = this.getProducts(stmt);
+        } catch(Exception e) {
+            this.logger.error(e.getMessage(), e);
+        }
+        return result;
+    }
+
 	public List<ShortProductInfo> getAllProducts(WProductGroupInfo wGroup, int limit) {
 		List<ShortProductInfo> result = null;
 		try {

@@ -19,6 +19,8 @@ public interface ServerDataAccess {
 
     List<ShortProductInfo> getAllGroupProducts(String searchedCategory, String searchedProduct);
 
+    List<ShortProductInfo> getAllGroupProducts(String searchedCategory);
+
 	List<ShortProductInfo> getAllProducts();
 
 	List<ShortProductInfo> getAllProducts(int limit);
