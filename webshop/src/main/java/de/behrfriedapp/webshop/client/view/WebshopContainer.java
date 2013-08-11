@@ -1,5 +1,7 @@
 package de.behrfriedapp.webshop.client.view;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -41,16 +43,18 @@ public class WebshopContainer extends VerticalPanel {
         this.add(this.searchedProductView);
 
         this.mainService = mainService;
-        this.bind();
         this.addClickHandler();
-        this.addChangeHandler();
+        this.addSearchStringChangedHandler();
+        this.addCategoryBoxChangedHandler();
+        this.bindCategoryBox();
+        this.bindSuggestBox();
     }
 
     private void addClickHandler() {
         this.productSearchBar.getSearchButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 if (WebshopContainer.this.productSearchBar.getCategoryBox().getItemText(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()).equals("Alles")) {
-                    WebshopContainer.this.mainService.getAllProducts(new AsyncCallback<List<ShortProductInfo>>() {
+                    WebshopContainer.this.mainService.getAllGroupProducts(WebshopContainer.this.productSearchBar.getCategoryBox().getValue(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()), WebshopContainer.this.productSearchBar.getSuggestBox().getValue(), new AsyncCallback<List<ShortProductInfo>>() {
                         public void onFailure(Throwable caught) {
                             //To change body of implemented methods use File | Settings | File Templates.
                         }
@@ -77,7 +81,7 @@ public class WebshopContainer extends VerticalPanel {
         });
     }
 
-    private void addChangeHandler() {
+    private void addSearchStringChangedHandler() {
         this.productSearchBar.getSuggestBox().addValueChangeHandler(new ValueChangeHandler<String>() {
             public void onValueChange(ValueChangeEvent<String> event) {
                 if (WebshopContainer.this.productSearchBar.getSuggestBox().getValue().equals("")) {
@@ -89,7 +93,16 @@ public class WebshopContainer extends VerticalPanel {
         });
     }
 
-    private void bind() {
+    private void addCategoryBoxChangedHandler() {
+        this.productSearchBar.getCategoryBox().addChangeHandler(new ChangeHandler() {
+            public void onChange(ChangeEvent event) {
+                bindSuggestBox();
+            }
+        });
+    }
+
+
+    private void bindCategoryBox() {
         this.productSearchBar.getCategoryBox().addItem("Alles");
         WebshopContainer.this.mainService.getAllProductGroups(new AsyncCallback<List<WProductGroupInfo>>() {
             public void onFailure(Throwable caught) {
@@ -109,18 +122,36 @@ public class WebshopContainer extends VerticalPanel {
                 }
             }
         });
+    }
 
-        WebshopContainer.this.mainService.getAllGroupProducts(WebshopContainer.this.productSearchBar.getCategoryBox().getValue(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()), new AsyncCallback<List<ShortProductInfo>>() {
-            public void onFailure(Throwable caught) {
-                Window.alert(caught.toString());
-            }
-
-            public void onSuccess(List<ShortProductInfo> result) {
-                final MultiWordSuggestOracle oracle = productSearchBar.getOracle();
-                for (ShortProductInfo info : result) {
-                    oracle.add(info.getName());
+    private void bindSuggestBox() {
+        String category = WebshopContainer.this.productSearchBar.getCategoryBox().getValue(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex());
+        if (!category.equals("Alles")) {
+            WebshopContainer.this.mainService.getAllGroupProducts(category, new AsyncCallback<List<ShortProductInfo>>() {
+                public void onFailure(Throwable caught) {
+                    Window.alert(caught.toString());
                 }
-            }
-        });
+
+                public void onSuccess(List<ShortProductInfo> result) {
+                    final MultiWordSuggestOracle oracle = productSearchBar.getOracle();
+                    for (ShortProductInfo info : result) {
+                        oracle.add(info.getName());
+                    }
+                }
+            });
+        } else {
+            WebshopContainer.this.mainService.getAllProducts(new AsyncCallback<List<ShortProductInfo>>() {
+                public void onFailure(Throwable caught) {
+                    Window.alert(caught.toString());
+                }
+
+                public void onSuccess(List<ShortProductInfo> result) {
+                    final MultiWordSuggestOracle oracle = productSearchBar.getOracle();
+                    for (ShortProductInfo info : result) {
+                        oracle.add(info.getName());
+                    }
+                }
+            });
+        }
     }
 }
