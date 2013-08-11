@@ -4,13 +4,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
-import de.behrfriedapp.webshop.client.MainService;
-import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
-import de.behrfriedapp.webshop.shared.data.WCategoryInfo;
-
-import java.util.List;
+import de.behrfriedapp.webshop.client.MainServiceAsync;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,10 +23,10 @@ public class WebshopContainer extends VerticalPanel {
     private VerticalPanel webshobContainer;
     private Label webshopTitle;
     private ProductSearchBar productSearchBar;
-    private final MainService mainService;
+    private final MainServiceAsync mainService;
 
     @Inject
-    public WebshopContainer(final MainService mainService) {
+    public WebshopContainer(final MainServiceAsync mainService) {
         this.webshopTitle = new Label("Wäpschob");
         this.productSearchBar = new ProductSearchBar();
         this.add(this.webshopTitle);
@@ -42,7 +41,7 @@ public class WebshopContainer extends VerticalPanel {
     private void addClickHandler() {
         this.productSearchBar.getSearchButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                WebshopContainer.this.mainService.getAllProducts();
+                //WebshopContainer.this.mainService.getAllProducts();
             }
         });
     }
@@ -61,15 +60,15 @@ public class WebshopContainer extends VerticalPanel {
 
     private void bind() {
         this.productSearchBar.getCategoryBox().addItem("Alles");
-        List<WCategoryInfo> productCategories = WebshopContainer.this.mainService.getAllCategories();
-        for(WCategoryInfo str : productCategories) {
-            this.productSearchBar.getCategoryBox().addItem(str.getName());
-       }
+        //List<WCategoryInfo> productCategories = WebshopContainer.this.mainService.getAllCategories();
+//        for(WCategoryInfo str : productCategories) {
+//            this.productSearchBar.getCategoryBox().addItem(str.getName());
+//       }
         MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
-        List<ShortProductInfo> suggestion = WebshopContainer.this.mainService.getAllProducts();
-        for(ShortProductInfo info : suggestion) {
-            oracle.add(info.getName());
-        }
+        //List<ShortProductInfo> suggestion = WebshopContainer.this.mainService.getAllProducts();
+//        for(ShortProductInfo info : suggestion) {
+//            oracle.add(info.getName());
+//        }
         this.productSearchBar.setSuggestBox(new SuggestBox(oracle));
     }
 }
