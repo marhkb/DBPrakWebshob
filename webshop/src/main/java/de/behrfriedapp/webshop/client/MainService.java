@@ -20,6 +20,8 @@ public interface MainService extends RemoteService {
 
 	List<ShortProductInfo> getAllProducts();
 
+    List<ShortProductInfo> getAllProducts(String searchedProduct);
+
 	List<ShortProductInfo> getAllProducts(int limit);
 
 	List<ShortProductInfo> getAllProducts(WProductGroupInfo wCategory);

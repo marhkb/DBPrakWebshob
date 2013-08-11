@@ -54,7 +54,7 @@ public class WebshopContainer extends VerticalPanel {
         this.productSearchBar.getSearchButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 if (WebshopContainer.this.productSearchBar.getCategoryBox().getItemText(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()).equals("Alles")) {
-                    WebshopContainer.this.mainService.getAllGroupProducts(WebshopContainer.this.productSearchBar.getCategoryBox().getValue(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()), WebshopContainer.this.productSearchBar.getSuggestBox().getValue(), new AsyncCallback<List<ShortProductInfo>>() {
+                    WebshopContainer.this.mainService.getAllProducts(WebshopContainer.this.productSearchBar.getSuggestBox().getValue(), new AsyncCallback<List<ShortProductInfo>>() {
                         public void onFailure(Throwable caught) {
                             //To change body of implemented methods use File | Settings | File Templates.
                         }
@@ -75,7 +75,26 @@ public class WebshopContainer extends VerticalPanel {
                         }
                     });
                 } else {
+                    WebshopContainer.this.mainService.getAllGroupProducts(WebshopContainer.this.productSearchBar.getCategoryBox().getValue(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()), WebshopContainer.this.productSearchBar.getSuggestBox().getValue(), new AsyncCallback<List<ShortProductInfo>>() {
+                        public void onFailure(Throwable caught) {
+                            //To change body of implemented methods use File | Settings | File Templates.
+                        }
 
+                        public void onSuccess(List<ShortProductInfo> result) {
+                            while (WebshopContainer.this.searchedProductView.iterator().hasNext()) {
+                                WebshopContainer.this.searchedProductView.remove(0);
+                            }
+                            if (result.isEmpty()) {
+                                Label noEntry = new Label("kein Eintrag gefunden!");
+                                noEntry.setHorizontalAlignment(ALIGN_CENTER);
+                                WebshopContainer.this.searchedProductView.add(noEntry);
+                            } else {
+                                for (ShortProductInfo productInfo : result) {
+                                    WebshopContainer.this.searchedProductView.add(new ProductRow(productInfo.getName(), productInfo.getName(), productInfo.getName()));
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });

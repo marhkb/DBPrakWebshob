@@ -108,7 +108,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
         List<ShortProductInfo> result = null;
         try {
             PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM PRODUKT " +
-                    "WHERE REGEXP_LIKE (BEZEICHNUNG, '[A-Za-z0-9]*?[A-Za-z0-9]*'");
+                    "WHERE REGEXP_LIKE (BEZEICHNUNG, '[A-Za-z0-9]*?[A-Za-z0-9]*')");
             stmt.setString(1, searchedProduct);
             result = this.getProducts(stmt);
         } catch(Exception e) {
@@ -125,7 +125,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
                     "WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
                         "AND W_KATEGORIE.FK_GRUPPE_ID=W_GRUPPE.ID " +
                             "AND W_GRUPPE.BEZEICHNUNG=? " +
-                                "AND REGEXP_LIKE (PRODUKT.BEZEICHNUNG, '[A-Za-z0-9]*?[A-Za-z0-9]*'");
+                                "AND REGEXP_LIKE (PRODUKT.BEZEICHNUNG, '[A-Za-z0-9]*?[A-Za-z0-9]*')");
             stmt.setString(1, searchedCategory);
             stmt.setString(2, searchedProduct);
             result = this.getProducts(stmt);
@@ -151,7 +151,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
         return result;
     }
 
-	public List<ShortProductInfo> getAllProducts(WProductGroupInfo wGroup, int limit) {
+    public List<ShortProductInfo> getAllProducts(WProductGroupInfo wGroup, int limit) {
 		List<ShortProductInfo> result = null;
 		try {
 			PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM PRODUKT WHERE W_GRUPPE=? AND ROWNUM<=?");
