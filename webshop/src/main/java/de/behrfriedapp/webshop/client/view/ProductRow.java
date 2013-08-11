@@ -18,10 +18,12 @@ public class ProductRow extends HorizontalPanel {
     private Label productPrice;
     private HorizontalPanel productRowContainer;
 
-    public ProductRow() {
-        this.productImage = new Image();
-        this.productLink = new Hyperlink();
-        this.productPrice = new Label();
+    public ProductRow() {}
+
+    public ProductRow(String imageURL, String hyperlink, String price) {
+        this.productImage = new Image(imageURL);
+        this.productLink = new Hyperlink(hyperlink, hyperlink);
+        this.productPrice = new Label(price);
         this.add(this.productImage);
         this.add(this.productLink);
         this.add(this.productPrice);

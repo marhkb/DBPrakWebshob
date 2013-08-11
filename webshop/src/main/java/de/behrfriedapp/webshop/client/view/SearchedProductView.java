@@ -1,6 +1,7 @@
 package de.behrfriedapp.webshop.client.view;
 
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -10,11 +11,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * Time: 10:21
  * To change this template use File | Settings | File Templates.
  */
-public class SearchedProductView {
-    private VerticalPanel searchedProductsContainer;
+public class SearchedProductView extends VerticalPanel {
 
     public SearchedProductView() {
-        this.searchedProductsContainer = new VerticalPanel();
     }
 
 
