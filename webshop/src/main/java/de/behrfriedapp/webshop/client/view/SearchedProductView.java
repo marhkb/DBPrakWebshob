@@ -15,6 +15,4 @@ public class SearchedProductView extends VerticalPanel {
 
     public SearchedProductView() {
     }
-
-
 }

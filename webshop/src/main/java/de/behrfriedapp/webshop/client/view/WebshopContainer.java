@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 import de.behrfriedapp.webshop.client.MainServiceAsync;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
-import de.behrfriedapp.webshop.shared.data.WCategoryInfo;
+import de.behrfriedapp.webshop.shared.data.WProductGroupInfo;
 
 import java.util.List;
 
@@ -50,28 +50,28 @@ public class WebshopContainer extends VerticalPanel {
     private void addClickHandler() {
         this.productSearchBar.getSearchButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-               if(WebshopContainer.this.productSearchBar.getCategoryBox().getItemText(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()).equals("Alles")){
-                   WebshopContainer.this.mainService.getAllProducts(new AsyncCallback<List<ShortProductInfo>>() {
-                       public void onFailure(Throwable caught) {
-                           //To change body of implemented methods use File | Settings | File Templates.
-                       }
+                if (WebshopContainer.this.productSearchBar.getCategoryBox().getItemText(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()).equals("Alles")) {
+                    WebshopContainer.this.mainService.getAllProducts(new AsyncCallback<List<ShortProductInfo>>() {
+                        public void onFailure(Throwable caught) {
+                            //To change body of implemented methods use File | Settings | File Templates.
+                        }
 
-                       public void onSuccess(List<ShortProductInfo> result) {
-                           while (WebshopContainer.this.searchedProductView.iterator().hasNext()) {
-                               WebshopContainer.this.searchedProductView.remove(0);
-                           }
-                           if(result.isEmpty()) {
-                               Label noEntry = new Label("kein Eintrag gefunden!");
-                               noEntry.setHorizontalAlignment(ALIGN_CENTER);
-                               WebshopContainer.this.searchedProductView.add(noEntry);
-                           } else {
-                               for(ShortProductInfo productInfo : result) {
-                                   WebshopContainer.this.searchedProductView.add(new ProductRow());
-                               }
-                           }
-                       }
-                   });
-               }
+                        public void onSuccess(List<ShortProductInfo> result) {
+                            while (WebshopContainer.this.searchedProductView.iterator().hasNext()) {
+                                WebshopContainer.this.searchedProductView.remove(0);
+                            }
+                            if (result.isEmpty()) {
+                                Label noEntry = new Label("kein Eintrag gefunden!");
+                                noEntry.setHorizontalAlignment(ALIGN_CENTER);
+                                WebshopContainer.this.searchedProductView.add(noEntry);
+                            } else {
+                                for (ShortProductInfo productInfo : result) {
+                                    WebshopContainer.this.searchedProductView.add(new ProductRow(productInfo.getName(), productInfo.getName(), productInfo.getName()));
+                                }
+                            }
+                        }
+                    });
+                }
             }
         });
     }
@@ -90,14 +90,21 @@ public class WebshopContainer extends VerticalPanel {
 
     private void bind() {
         this.productSearchBar.getCategoryBox().addItem("Alles");
-        WebshopContainer.this.mainService.getAllCategories(new AsyncCallback<List<WCategoryInfo>>() {
+        WebshopContainer.this.mainService.getAllProductGroups(new AsyncCallback<List<WProductGroupInfo>>() {
             public void onFailure(Throwable caught) {
                 Window.alert(caught.toString());
             }
 
-            public void onSuccess(List<WCategoryInfo> result) {
-                for(WCategoryInfo str : result) {
-                    productSearchBar.getCategoryBox().addItem(str.getName());
+            public void onSuccess(List<WProductGroupInfo> result) {
+                for (WProductGroupInfo str : result) {
+                    for (int i = 0; i < productSearchBar.getCategoryBox().getItemCount(); i++) {
+                        if (productSearchBar.getCategoryBox().getItemText(i).equals(str.getGroupName())) {
+                            break;
+                        } else if (productSearchBar.getCategoryBox().getItemCount() - 1 == i) {
+                            productSearchBar.getCategoryBox().addItem(str.getGroupName());
+                        }
+
+                    }
                 }
             }
         });

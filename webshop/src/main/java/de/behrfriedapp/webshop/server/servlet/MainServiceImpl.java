@@ -7,7 +7,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import de.behrfriedapp.webshop.server.data.ServerDataAccess;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
-import de.behrfriedapp.webshop.shared.data.WCategoryInfo;
+import de.behrfriedapp.webshop.shared.data.WProductGroupInfo;
 
 import java.util.List;
 
@@ -24,12 +24,12 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		this.serverDataAccess = serverDataAccess;
 	}
 
-	public List<WCategoryInfo> getAllCategories() {
-		return this.serverDataAccess.getAllCategories();
+	public List<WProductGroupInfo> getAllProductGroups() {
+		return this.serverDataAccess.getAllProductGroups();
 	}
 
-	public List<WCategoryInfo> getAllCategories(int limit) {
-		return this.serverDataAccess.getAllCategories(limit);
+	public List<WProductGroupInfo> getAllProductGroups(int limit) {
+		return this.serverDataAccess.getAllProductGroups(limit);
 	}
 
 	public List<ShortProductInfo> getAllProducts() {
@@ -40,11 +40,11 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		return this.serverDataAccess.getAllProducts(limit);
 	}
 
-	public List<ShortProductInfo> getAllProducts(WCategoryInfo wCategory) {
+	public List<ShortProductInfo> getAllProducts(WProductGroupInfo wCategory) {
 		return this.serverDataAccess.getAllProducts(wCategory);
 	}
 
-	public List<ShortProductInfo> getAllProducts(WCategoryInfo wCategory, int limit) {
+	public List<ShortProductInfo> getAllProducts(WProductGroupInfo wCategory, int limit) {
 		return this.serverDataAccess.getAllProducts(wCategory, limit);
 	}
 

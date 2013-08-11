@@ -2,7 +2,7 @@ package de.behrfriedapp.webshop.server.data;
 
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
-import de.behrfriedapp.webshop.shared.data.WCategoryInfo;
+import de.behrfriedapp.webshop.shared.data.WProductGroupInfo;
 
 import java.util.List;
 
@@ -11,17 +11,21 @@ import java.util.List;
  */
 public interface ServerDataAccess {
 
-	List<WCategoryInfo> getAllCategories();
+    List<WProductGroupInfo> getAllProductGroups();
 
-	List<WCategoryInfo> getAllCategories(int limit);
+	List<WProductGroupInfo> getAllProductGroups(int limit);
+
+    List<ShortProductInfo> getAllProducts(String searchedProduct);
+
+    List<ShortProductInfo> getAllGroupProducts(String searchedCategory, String searchedProduct);
 
 	List<ShortProductInfo> getAllProducts();
 
 	List<ShortProductInfo> getAllProducts(int limit);
 
-	List<ShortProductInfo> getAllProducts(WCategoryInfo wCategory);
+	List<ShortProductInfo> getAllProducts(WProductGroupInfo wGroup);
 
-	List<ShortProductInfo> getAllProducts(WCategoryInfo wCategory, int limit);
+	List<ShortProductInfo> getAllProducts(WProductGroupInfo wGroup, int limit);
 
 	DetailedProductInfo getDetailedProductInfo(ShortProductInfo shortProductInfo);
 }
