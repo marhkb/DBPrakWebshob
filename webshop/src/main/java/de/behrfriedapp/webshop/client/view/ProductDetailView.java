@@ -1,6 +1,7 @@
 package de.behrfriedapp.webshop.client.view;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 
@@ -13,12 +14,15 @@ import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
  */
 public class ProductDetailView extends HorizontalPanel {
 VerticalPanel productDetailContainer, productSuggestions;
+    Label searchedProductLabel, suggestedProductsLabel;
 
     public ProductDetailView(DetailedProductInfo detailedProductInfo) {
-        productDetailContainer = new VerticalPanel();
-        productSuggestions = new VerticalPanel();
-        productDetailContainer.setWidth("70%");
-        productSuggestions.setWidth("30%");
+        this.productDetailContainer = new VerticalPanel();
+        this.productSuggestions = new VerticalPanel();
+        this.searchedProductLabel = new Label("Ihr gesuchtes Produkt "+detailedProductInfo);
+        this.suggestedProductsLabel = new Label("Weitere Produkte die sie interessieren könnten:");
+        this.productDetailContainer.setWidth("70%");
+        this.productSuggestions.setWidth("30%");
         this.add(this.productDetailContainer);
         this.add(this.productSuggestions);
     }
