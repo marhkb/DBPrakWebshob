@@ -68,4 +68,8 @@ public class ProductSearchBar extends HorizontalPanel {
 	public MultiWordSuggestOracle getOracle() {
 		return oracle;
 	}
+
+    public void setOracle(MultiWordSuggestOracle oracle) {
+        this.oracle = oracle;
+    }
 }

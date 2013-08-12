@@ -153,6 +153,7 @@ public class WebshopContainer extends VerticalPanel {
 
                 public void onSuccess(List<ShortProductInfo> result) {
                     final MultiWordSuggestOracle oracle = productSearchBar.getOracle();
+                    oracle.clear();
                     for (ShortProductInfo info : result) {
                         oracle.add(info.getName());
                     }
@@ -165,7 +166,8 @@ public class WebshopContainer extends VerticalPanel {
                 }
 
                 public void onSuccess(List<ShortProductInfo> result) {
-                    final MultiWordSuggestOracle oracle = productSearchBar.getOracle();
+                    MultiWordSuggestOracle oracle = productSearchBar.getOracle();
+                    oracle.clear();
                     for (ShortProductInfo info : result) {
                         oracle.add(info.getName());
                     }
