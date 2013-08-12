@@ -1,9 +1,6 @@
 package de.behrfriedapp.webshop.client.view;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
@@ -35,9 +32,11 @@ public class WebshopContainer extends VerticalPanel {
 
     @Inject
     public WebshopContainer(final MainServiceAsync mainService) {
+        this.setWidth("70%");
         this.webshopTitle = new Label("Wäpschob");
         this.productSearchBar = new ProductSearchBar();
         this.searchedProductView = new SearchedProductView();
+        this.setHorizontalAlignment(ALIGN_CENTER);
         this.add(this.webshopTitle);
         this.add(this.productSearchBar);
         this.add(this.searchedProductView);
@@ -101,8 +100,17 @@ public class WebshopContainer extends VerticalPanel {
     }
 
     private void addSearchStringChangedHandler() {
-        this.productSearchBar.getSuggestBox().addValueChangeHandler(new ValueChangeHandler<String>() {
-            public void onValueChange(ValueChangeEvent<String> event) {
+        this.productSearchBar.getSuggestBox().addKeyUpHandler(new HandlesAllKeyEvents() {
+            @Override
+            public void onKeyDown(KeyDownEvent event) {
+            }
+
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+            }
+
+            @Override
+            public void onKeyUp(KeyUpEvent event) {
                 if (WebshopContainer.this.productSearchBar.getSuggestBox().getValue().equals("")) {
                     WebshopContainer.this.productSearchBar.getSearchButton().setEnabled(false);
                 } else {

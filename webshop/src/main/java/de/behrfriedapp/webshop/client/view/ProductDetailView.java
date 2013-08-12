@@ -15,6 +15,7 @@ import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 public class ProductDetailView extends HorizontalPanel {
 VerticalPanel productDetailContainer, productSuggestions;
     Label searchedProductLabel, suggestedProductsLabel;
+    String siteName;
 
     public ProductDetailView(DetailedProductInfo detailedProductInfo) {
         this.productDetailContainer = new VerticalPanel();
@@ -23,7 +24,10 @@ VerticalPanel productDetailContainer, productSuggestions;
         this.suggestedProductsLabel = new Label("Weitere Produkte die sie interessieren könnten:");
         this.productDetailContainer.setWidth("70%");
         this.productSuggestions.setWidth("30%");
+        this.siteName = detailedProductInfo+"";
         this.add(this.productDetailContainer);
         this.add(this.productSuggestions);
     }
+
+
 }

@@ -173,7 +173,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		final List<ShortProductInfo> result = new ArrayList<ShortProductInfo>();
 		final ResultSet rset = preparedStatement.executeQuery();
 		while(rset.next()) {
-			result.add(new ShortProductInfo(rset.getString(3)));
+			result.add(new ShortProductInfo(rset.getString(3), rset.getString(6)));
 		}
 		preparedStatement.close();
 		return result;

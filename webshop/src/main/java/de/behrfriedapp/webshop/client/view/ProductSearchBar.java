@@ -22,7 +22,7 @@ public class ProductSearchBar extends HorizontalPanel {
 
     public ProductSearchBar() {
         this.searchStatus = false;
-        this.searchCategoryLabel = new Label("Suchkategorie");
+        this.searchCategoryLabel = new Label("Suchkategorie: ");
         this.categoryBox = new ListBox();
         this.categoryBox.setWidth("150px");
         this.suggestBox = new SuggestBox(this.oracle = new MultiWordSuggestOracle());
