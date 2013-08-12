@@ -83,6 +83,7 @@ public class WebshopContainer extends VerticalPanel {
                                 WebshopContainer.this.searchedProductView.add(noEntry);
                             } else {
                                 for (ShortProductInfo productInfo : result) {
+                                    Window.alert("trololol");
                                     final ShortProductInfo pInfo = productInfo;
                                     ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
                                     tmpRow.getProductLink().addClickHandler(new ClickHandler() {
