@@ -36,30 +36,31 @@ public class ProductDetailView extends HorizontalPanel {
     HorizontalPanel productDetailContainer, imagePanel;
     Label searchedProductLabel, suggestedProductsLabel, producerLabel, priceLabel, inStockLabel;
     Button dummyBuyButton;
-    String siteName;
 
     public ProductDetailView(DetailedProductInfo detailedProductInfo, Messages messages) {
-        this.productSuggestions = new VerticalPanel();
+        Window.alert("JAAA");
         this.searchedProductLabel = new Label(messages.yourSearchProduct() + " " + detailedProductInfo.getName());
-        this.suggestedProductsLabel = new Label(messages.moreInterestingProducts());
         this.producerLabel = new Label("Hergestellt von: " + detailedProductInfo.getManufactor());
         this.priceLabel = new Label("Preis: " + detailedProductInfo.getPrice() + " kostenlose Lieferung mit Wäpschob Prime");
         this.dummyBuyButton = new Button("In den Warenkorb legen!");
         this.inStockLabel = new Label("Es sind noch " + detailedProductInfo.getStock() + " im Lager vorhanden");
-        this.productDetailContainer.setWidth("70%");
-        this.productSuggestions.setWidth("30%");
-        this.siteName = detailedProductInfo + "";
+
+        this.productInfoPanel = new VerticalPanel();
         this.productInfoPanel.add(this.searchedProductLabel);
         this.productInfoPanel.add(this.producerLabel);
         this.productInfoPanel.add(this.priceLabel);
         this.productInfoPanel.add(this.dummyBuyButton);
         this.productInfoPanel.add(this.inStockLabel);
+        this.productInfoPanel.setWidth("600px");
         this.productDetailContainer.add(this.imagePanel);
         this.productDetailContainer.add(this.productInfoPanel);
+
+        this.suggestedProductsLabel = new Label(messages.moreInterestingProducts());
+        this.productSuggestions = new VerticalPanel();
         this.productSuggestions.add(this.suggestedProductsLabel);
+        this.productSuggestions.setWidth("200px");
+
         this.add(this.productDetailContainer);
         this.add(this.productSuggestions);
     }
-
-
 }
