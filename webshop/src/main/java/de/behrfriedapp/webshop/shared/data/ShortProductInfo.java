@@ -23,19 +23,28 @@ import java.io.Serializable;
  */
 public class ShortProductInfo implements Serializable {
 
-	private String name, price;
-    private int id;
+	private int id;
+	private String name;
+	private double price;
 
 	public ShortProductInfo() {
 	}
 
-    public ShortProductInfo(String name, String price, int id) {
+    public ShortProductInfo(String name, double price, int id) {
         this.name = name;
         this.price = price;
         this.id = id;
     }
 
-    public String getName() {
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
 		return name;
 	}
 
@@ -43,19 +52,11 @@ public class ShortProductInfo implements Serializable {
 		this.name = name;
 	}
 
-	public String getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }

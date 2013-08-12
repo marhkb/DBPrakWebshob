@@ -19,6 +19,7 @@ package de.behrfriedapp.webshop.client.view;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import de.behrfriedapp.webshop.client.Messages;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 
 /**
@@ -33,11 +34,11 @@ VerticalPanel productDetailContainer, productSuggestions;
     Label searchedProductLabel, suggestedProductsLabel;
     String siteName;
 
-    public ProductDetailView(DetailedProductInfo detailedProductInfo) {
+    public ProductDetailView(DetailedProductInfo detailedProductInfo, Messages messages) {
         this.productDetailContainer = new VerticalPanel();
         this.productSuggestions = new VerticalPanel();
-        this.searchedProductLabel = new Label("Ihr gesuchtes Produkt "+detailedProductInfo.getName());
-        this.suggestedProductsLabel = new Label("Weitere Produkte die sie interessieren könnten:");
+        this.searchedProductLabel = new Label(messages.yourSearchProduct() + " " + detailedProductInfo.getName());
+        this.suggestedProductsLabel = new Label(messages.moreInterestingProducts());
         this.productDetailContainer.setWidth("70%");
         this.productSuggestions.setWidth("30%");
         this.siteName = detailedProductInfo+"";

@@ -16,6 +16,7 @@
 
 package de.behrfriedapp.webshop.client.view;
 
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
@@ -36,11 +37,11 @@ public class ProductRow extends HorizontalPanel {
 
     public ProductRow() {}
 
-    public ProductRow(String imageURL, String hyperlink, String price) {
+    public ProductRow(String imageURL, String hyperlink, double price) {
         this.productImage = new Image(imageURL);
         this.productLink = new Hyperlink(hyperlink, "");
 
-        this.productPrice = new Label("  -  "+price+" €");
+        this.productPrice = new Label("  -  " + NumberFormat.getCurrencyFormat().format(price));
         this.productPrice.setWidth("60px");
         this.add(this.productImage);
         this.add(this.productLink);
