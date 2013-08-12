@@ -10,6 +10,99 @@ h1 {
   text-align: center;
 }
 
+.webshopTitle {
+    font-size: 25pt;
+    font-weight: bolder;
+    margin: 25px 0px 0px 15px;
+    font-family: 'Bad Script', cursive;
+}
+
+.productSearchBar {
+    width: 100%;
+    height: 35px;
+    background-image: linear-gradient(to top, #FFF3BA 60%, white);
+    float: left;
+    position: absolute;
+clear: both;
+}
+
+.searchCategoryLabel {
+font-weight: bold;
+font-size: 10pt;
+    margin: 7px 0px 0px 15px;
+    position: absolute;
+}
+
+.searchedProductView {
+    margin: 40px 15px;;
+    position: absolute;
+    overflow: scroll;
+}
+
+.coloredRow {
+background:  #FFF3BA;
+width: 700px;
+height:100px;
+clear: both;
+}
+
+.uncoloredRow {
+width: 700px;
+height: 100px;
+float: left;
+clear: both;
+}
+
+.overviewImgPanel {
+float:left;
+width: 80px;
+height: 80px;
+margin: 10px;
+background: grey;
+position: relative;
+display: inline;
+}
+
+.overviewProductNamePanel{
+    margin: 7px 0px 0px 20px;
+width: auto;
+position: static;
+clear: both;
+display: inline;
+}
+
+.hylink{
+font-size: 10pt;
+font-weight: bold;
+}
+
+.overviewProductPricePanel {
+    margin: 7px 7px 7px 0px;
+float: right;
+width: auto;
+position: relative;
+display: inline;
+}
+
+.categoryBox {
+float: left;
+    margin: 7px 0px 0px 130px;
+    position: absolute;
+}
+
+.suggestBox {
+float: left;
+    margin: 7px 0px 0px 280px;
+    position: absolute;
+    width: 240px;
+}
+
+.searchButton {
+float: left;
+    margin: 6px 0px 0px 530px;
+    width: 100px;
+}
+
 .sendButton {
   display: block;
   font-size: 16pt;

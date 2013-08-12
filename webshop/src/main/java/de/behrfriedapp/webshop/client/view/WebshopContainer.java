@@ -21,6 +21,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 import de.behrfriedapp.webshop.client.MainServiceAsync;
@@ -39,8 +40,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class WebshopContainer extends VerticalPanel {
-
-    private VerticalPanel webshobContainer;
     private Label webshopTitle;
     private ProductSearchBar productSearchBar;
     private SearchedProductView searchedProductView;
@@ -51,12 +50,13 @@ public class WebshopContainer extends VerticalPanel {
     public WebshopContainer(final MainServiceAsync mainService, final Messages messages) {
 		this.mainService = mainService;
 		this.messages = messages;
-
-        this.setWidth("70%");
+        this.setStyleName("webshopContainer");
         this.webshopTitle = new Label(this.messages.projectName());
+        this.webshopTitle.setStyleName("webshopTitle");
+
         this.productSearchBar = new ProductSearchBar(messages);
         this.searchedProductView = new SearchedProductView();
-        this.setHorizontalAlignment(ALIGN_CENTER);
+        this.searchedProductView.setStyleName("searchedProductView");
         this.add(this.webshopTitle);
         this.add(this.productSearchBar);
         this.add(this.searchedProductView);
@@ -81,12 +81,18 @@ public class WebshopContainer extends VerticalPanel {
                             WebshopContainer.this.searchedProductView.clear();
                             if (result.isEmpty()) {
                                 Label noEntry = new Label(messages.noEntryFound());
-                                noEntry.setHorizontalAlignment(ALIGN_CENTER);
                                 WebshopContainer.this.searchedProductView.add(noEntry);
                             } else {
+                                int i = 0;
                                 for (ShortProductInfo productInfo : result) {
                                     final ShortProductInfo pInfo = productInfo;
                                     ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
+                                    if(i%2==0) {
+                                        tmpRow.setStyleName("coloredRow");
+                                    } else {
+                                        tmpRow.setStyleName("uncoloredRow");
+                                    }
+                                    i++;
                                     tmpRow.getProductLink().addClickHandler(new ClickHandler() {
                                         @Override
                                         public void onClick(ClickEvent event) {
@@ -120,12 +126,18 @@ public class WebshopContainer extends VerticalPanel {
                             WebshopContainer.this.searchedProductView.clear();
                             if (result.isEmpty()) {
                                 Label noEntry = new Label(messages.noEntryFound());
-                                noEntry.setHorizontalAlignment(ALIGN_CENTER);
                                 WebshopContainer.this.searchedProductView.add(noEntry);
                             } else {
+                                int i = 0;
                                 for (ShortProductInfo productInfo : result) {
                                     final ShortProductInfo pInfo = productInfo;
                                     ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
+                                    if (i % 2 == 0) {
+                                        tmpRow.setStyleName("coloredRow");
+                                    } else {
+                                        tmpRow.setStyleName("uncoloredRow");
+                                    }
+                                    i++;
                                     tmpRow.getProductLink().addClickHandler(new ClickHandler() {
                                         @Override
                                         public void onClick(ClickEvent event) {

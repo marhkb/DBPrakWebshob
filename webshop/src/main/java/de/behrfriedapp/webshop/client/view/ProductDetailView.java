@@ -38,7 +38,6 @@ public class ProductDetailView extends HorizontalPanel {
     Button dummyBuyButton;
 
     public ProductDetailView(DetailedProductInfo detailedProductInfo, Messages messages) {
-        Window.alert("JAAA");
         this.searchedProductLabel = new Label(messages.yourSearchProduct() + " " + detailedProductInfo.getName());
         this.producerLabel = new Label("Hergestellt von: " + detailedProductInfo.getManufactor());
         this.priceLabel = new Label("Preis: " + detailedProductInfo.getPrice() + " kostenlose Lieferung mit Wäpschob Prime");
