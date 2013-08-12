@@ -100,5 +100,6 @@ public class DefaultServerDataAccessTest {
 		Assert.assertEquals("BBB Best Apple Jelly", result.getName());
 		Assert.assertEquals("1,48", result.getPrice());
 		Assert.assertEquals("Unilever", result.getManufactor());
+		Assert.assertEquals(285, result.getStock());
 	}
 }
