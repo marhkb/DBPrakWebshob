@@ -99,7 +99,7 @@ public class WebshopContainer extends VerticalPanel {
                                                 @Override
                                                 public void onSuccess(DetailedProductInfo result) {
                                                     WebshopContainer.this.searchedProductView.clear();
-                                                    ProductDetailView detailView = new ProductDetailView(result, messages);
+                                                    ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages);
                                                     WebshopContainer.this.searchedProductView.add(detailView);
                                                 }
                                             });
@@ -138,7 +138,7 @@ public class WebshopContainer extends VerticalPanel {
                                                 @Override
                                                 public void onSuccess(DetailedProductInfo result) {
                                                     WebshopContainer.this.searchedProductView.clear();
-                                                    ProductDetailView detailView = new ProductDetailView(result, messages);
+                                                    ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages);
                                                     WebshopContainer.this.searchedProductView.add(detailView);
                                                 }
                                             });

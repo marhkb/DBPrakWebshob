@@ -45,6 +45,8 @@ public class ProductDetailView extends HorizontalPanel {
         this.dummyBuyButton = new Button("In den Warenkorb legen!");
         this.inStockLabel = new Label("Es sind noch " + detailedProductInfo.getStock() + " im Lager vorhanden");
 
+        this.imagePanel = new HorizontalPanel();
+        this.productDetailContainer = new HorizontalPanel();
         this.productInfoPanel = new VerticalPanel();
         this.productInfoPanel.add(this.searchedProductLabel);
         this.productInfoPanel.add(this.producerLabel);
