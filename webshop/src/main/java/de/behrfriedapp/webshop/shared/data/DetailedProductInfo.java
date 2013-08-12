@@ -1,5 +1,4 @@
 
-
 /*
  * Copyright 2013 Marcus Behrendt, Gerrit Appeler & Robert Friedrichs
  *
@@ -27,13 +26,43 @@ import java.util.List;
 public class DetailedProductInfo extends ShortProductInfo implements Serializable {
 
 	private String manufactor;
-
 	private int stock;
-
 	private List<ShortProductInfo> similiarProducts;
 
 	public DetailedProductInfo() {
 	}
 
+	public DetailedProductInfo(String name,
+							   String price,
+							   String manufactor,
+							   List<ShortProductInfo> similiarProducts, int stock) {
+		super(name, price);
+		this.manufactor = manufactor;
+		this.similiarProducts = similiarProducts;
+		this.stock = stock;
+	}
 
+	public String getManufactor() {
+		return manufactor;
+	}
+
+	public void setManufactor(String manufactor) {
+		this.manufactor = manufactor;
+	}
+
+	public List<ShortProductInfo> getSimiliarProducts() {
+		return similiarProducts;
+	}
+
+	public void setSimiliarProducts(List<ShortProductInfo> similiarProducts) {
+		this.similiarProducts = similiarProducts;
+	}
+
+	public int getStock() {
+		return stock;
+	}
+
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
 }
