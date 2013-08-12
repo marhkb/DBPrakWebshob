@@ -198,7 +198,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	public DetailedProductInfo getDetailedProductInfo(ShortProductInfo shortProductInfo) {
         DetailedProductInfo result = null;
         try {
-            PreparedStatement stmt = this.conn.prepareStatement("SELECT HERSTELLER.NAME, PRODUKTIMBESTAND.ANZAHL FROM PRODUKT, HERSTELLER, PRODUKTIMBESTAND WHERE PRODUKT.ID=? AND PRODUKT.HERSTELLER=HERSTELLER.ID AND PRODUKTIMBESTAND.PRODUKT=?");
+            PreparedStatement stmt = this.conn.prepareStatement("SELECT HERSTELLER.NAME, PRODUKTIMBESTAND.ANZAHL FROM PRODUKT, HERSTELLER, PRODUKTIMBESTAND WHERE PRODUKT.P_ID=? AND PRODUKT.HERSTELLER=HERSTELLER.ID AND PRODUKTIMBESTAND.PRODUKT=?");
             stmt.setInt(1, shortProductInfo.getId());
             stmt.setInt(2, shortProductInfo.getId());
             final ResultSet rset = stmt.executeQuery();
