@@ -189,13 +189,25 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		final List<ShortProductInfo> result = new ArrayList<ShortProductInfo>();
 		final ResultSet rset = preparedStatement.executeQuery();
 		while(rset.next()) {
-			result.add(new ShortProductInfo(rset.getString(3), rset.getString(6)));
+			result.add(new ShortProductInfo(rset.getString(3), rset.getString(6), rset.getInt(1)));
 		}
 		preparedStatement.close();
 		return result;
 	}
 
 	public DetailedProductInfo getDetailedProductInfo(ShortProductInfo shortProductInfo) {
-		return null;
+        DetailedProductInfo result = null;
+        try {
+            PreparedStatement stmt = this.conn.prepareStatement("SELECT HERSTELLER.NAME, PRODUKTIMBESTAND.ANZAHL,  FROM PRODUKT, HERSTELLER, PRODUKTIMBESTAND WHERE PRODUKT.ID=? AND PRODUKT.HERSTELLER=HERSTELLER.ID AND PRODUKTIMBESTAND.PRODUKT=?");
+            stmt.setInt(1, shortProductInfo.getId());
+            stmt.setInt(2, shortProductInfo.getId());
+            final ResultSet rset = stmt.executeQuery();
+            rset.next();
+            result = new DetailedProductInfo(shortProductInfo.getName(), shortProductInfo.getPrice(), shortProductInfo.getId(), rset.getString(1), rset.getInt(2), null);
+            stmt.close();
+        } catch(Exception e) {
+            this.logger.error(e.getMessage(), e);
+        }
+        return result;
 	}
 }
