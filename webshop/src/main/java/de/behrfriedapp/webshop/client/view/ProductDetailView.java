@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import de.behrfriedapp.webshop.client.Messages;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 
 /**
@@ -31,24 +32,23 @@ import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
  * To change this template use File | Settings | File Templates.
  */
 public class ProductDetailView extends HorizontalPanel {
-VerticalPanel productSuggestions, productInfoPanel;
+    VerticalPanel productSuggestions, productInfoPanel;
     HorizontalPanel productDetailContainer, imagePanel;
     Label searchedProductLabel, suggestedProductsLabel, producerLabel, priceLabel, inStockLabel;
     Button dummyBuyButton;
     String siteName;
 
-    public ProductDetailView(DetailedProductInfo detailedProductInfo) {
-        this.productDetailContainer = new HorizontalPanel();
+    public ProductDetailView(DetailedProductInfo detailedProductInfo, Messages messages) {
         this.productSuggestions = new VerticalPanel();
-        this.suggestedProductsLabel = new Label("Weitere Produkte die sie interessieren könnten:");
-        this.searchedProductLabel = new Label("Ihr gesuchtes Produkt: "+detailedProductInfo.getName());
-        this.producerLabel = new Label("Hergestellt von: "+detailedProductInfo.getManufactor());
-        this.priceLabel = new Label("Preis: "+detailedProductInfo.getPrice()+" kostenlose Lieferung mit Wäpschob Prime");
+        this.searchedProductLabel = new Label(messages.yourSearchProduct() + " " + detailedProductInfo.getName());
+        this.suggestedProductsLabel = new Label(messages.moreInterestingProducts());
+        this.producerLabel = new Label("Hergestellt von: " + detailedProductInfo.getManufactor());
+        this.priceLabel = new Label("Preis: " + detailedProductInfo.getPrice() + " kostenlose Lieferung mit Wäpschob Prime");
         this.dummyBuyButton = new Button("In den Warenkorb legen!");
-        this.inStockLabel =  new Label("Es sind noch "+detailedProductInfo.getStock()+" im Lager vorhanden");
+        this.inStockLabel = new Label("Es sind noch " + detailedProductInfo.getStock() + " im Lager vorhanden");
         this.productDetailContainer.setWidth("70%");
         this.productSuggestions.setWidth("30%");
-        this.siteName = detailedProductInfo+"";
+        this.siteName = detailedProductInfo + "";
         this.productInfoPanel.add(this.searchedProductLabel);
         this.productInfoPanel.add(this.producerLabel);
         this.productInfoPanel.add(this.priceLabel);

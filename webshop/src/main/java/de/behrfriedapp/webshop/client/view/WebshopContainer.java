@@ -17,8 +17,6 @@
 package de.behrfriedapp.webshop.client.view;
 
 import com.google.gwt.event.dom.client.*;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
@@ -26,6 +24,7 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 import de.behrfriedapp.webshop.client.MainServiceAsync;
+import de.behrfriedapp.webshop.client.Messages;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
 import de.behrfriedapp.webshop.shared.data.WProductGroupInfo;
@@ -46,19 +45,22 @@ public class WebshopContainer extends VerticalPanel {
     private ProductSearchBar productSearchBar;
     private SearchedProductView searchedProductView;
     private final MainServiceAsync mainService;
+	private final Messages messages;
 
     @Inject
-    public WebshopContainer(final MainServiceAsync mainService) {
+    public WebshopContainer(final MainServiceAsync mainService, final Messages messages) {
+		this.mainService = mainService;
+		this.messages = messages;
+
         this.setWidth("70%");
-        this.webshopTitle = new Label("Wäpschob");
-        this.productSearchBar = new ProductSearchBar();
+        this.webshopTitle = new Label(this.messages.projectName());
+        this.productSearchBar = new ProductSearchBar(messages);
         this.searchedProductView = new SearchedProductView();
         this.setHorizontalAlignment(ALIGN_CENTER);
         this.add(this.webshopTitle);
         this.add(this.productSearchBar);
         this.add(this.searchedProductView);
 
-        this.mainService = mainService;
         this.addClickHandler();
         this.addSearchStringChangedHandler();
         this.addCategoryBoxChangedHandler();
@@ -78,7 +80,7 @@ public class WebshopContainer extends VerticalPanel {
                         public void onSuccess(List<ShortProductInfo> result) {
                             WebshopContainer.this.searchedProductView.clear();
                             if (result.isEmpty()) {
-                                Label noEntry = new Label("kein Eintrag gefunden!");
+                                Label noEntry = new Label(messages.noEntryFound());
                                 noEntry.setHorizontalAlignment(ALIGN_CENTER);
                                 WebshopContainer.this.searchedProductView.add(noEntry);
                             } else {
@@ -98,7 +100,7 @@ public class WebshopContainer extends VerticalPanel {
                                                 @Override
                                                 public void onSuccess(DetailedProductInfo result) {
                                                     WebshopContainer.this.searchedProductView.clear();
-                                                    ProductDetailView detailView = new ProductDetailView(result);
+                                                    ProductDetailView detailView = new ProductDetailView(result, messages);
                                                     WebshopContainer.this.searchedProductView.add(detailView);
                                                 }
                                             });
@@ -118,7 +120,7 @@ public class WebshopContainer extends VerticalPanel {
                         public void onSuccess(List<ShortProductInfo> result) {
                             WebshopContainer.this.searchedProductView.clear();
                             if (result.isEmpty()) {
-                                Label noEntry = new Label("kein Eintrag gefunden!");
+                                Label noEntry = new Label(messages.noEntryFound());
                                 noEntry.setHorizontalAlignment(ALIGN_CENTER);
                                 WebshopContainer.this.searchedProductView.add(noEntry);
                             } else {
@@ -137,7 +139,7 @@ public class WebshopContainer extends VerticalPanel {
                                                 @Override
                                                 public void onSuccess(DetailedProductInfo result) {
                                                     WebshopContainer.this.searchedProductView.clear();
-                                                    ProductDetailView detailView = new ProductDetailView(result);
+                                                    ProductDetailView detailView = new ProductDetailView(result, messages);
                                                     WebshopContainer.this.searchedProductView.add(detailView);
                                                 }
                                             });
@@ -186,7 +188,7 @@ public class WebshopContainer extends VerticalPanel {
 
 
     private void bindCategoryBox() {
-        this.productSearchBar.getCategoryBox().addItem("Alles");
+        this.productSearchBar.getCategoryBox().addItem(this.messages.allCategoriesEntry());
         WebshopContainer.this.mainService.getAllProductGroups(new AsyncCallback<List<WProductGroupInfo>>() {
             public void onFailure(Throwable caught) {
                 Window.alert(caught.toString());
@@ -209,7 +211,7 @@ public class WebshopContainer extends VerticalPanel {
 
     private void bindSuggestBox() {
         String category = WebshopContainer.this.productSearchBar.getCategoryBox().getValue(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex());
-        if (!category.equals("Alles")) {
+        if (!category.equals(this.messages.allCategoriesEntry())) {
             WebshopContainer.this.mainService.getAllGroupProducts(category, new AsyncCallback<List<ShortProductInfo>>() {
                 public void onFailure(Throwable caught) {
                     Window.alert(caught.toString());

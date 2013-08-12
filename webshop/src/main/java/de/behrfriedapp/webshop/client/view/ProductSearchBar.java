@@ -17,6 +17,7 @@
 package de.behrfriedapp.webshop.client.view;
 
 import com.google.gwt.user.client.ui.*;
+import de.behrfriedapp.webshop.client.Messages;
 
 
 /**
@@ -36,16 +37,16 @@ public class ProductSearchBar extends HorizontalPanel {
     private String searchString;
     private Label searchCategoryLabel;
 
-    public ProductSearchBar() {
+    public ProductSearchBar(Messages messages) {
         this.searchStatus = false;
-        this.searchCategoryLabel = new Label("Suchkategorie: ");
+        this.searchCategoryLabel = new Label(messages.productCategory());
         this.categoryBox = new ListBox();
         this.categoryBox.setWidth("150px");
         this.suggestBox = new SuggestBox(this.oracle = new MultiWordSuggestOracle());
         this.suggestBox.setWidth("200px");
         this.searchStatus = false;
         this.searchString = "";
-        this.searchButton = new Button("Suchen");
+        this.searchButton = new Button(messages.productSearchButton());
         this.searchButton.setEnabled(false);
         this.add(this.searchCategoryLabel);
         this.add(this.categoryBox);

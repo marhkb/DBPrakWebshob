@@ -32,7 +32,8 @@ public class DetailedProductInfo extends ShortProductInfo implements Serializabl
     public DetailedProductInfo() {
     }
 
-    public DetailedProductInfo(String name, String price, int id, String manufactor, int stock, List<ShortProductInfo> similiarProducts) {
+    public DetailedProductInfo(String name, double price, int id, String manufactor, int stock,
+							   List<ShortProductInfo> similiarProducts) {
         super(name, price, id);
         this.manufactor = manufactor;
         this.stock = stock;
