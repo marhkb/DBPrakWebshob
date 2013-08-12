@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 import de.behrfriedapp.webshop.client.MainServiceAsync;
+import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
 import de.behrfriedapp.webshop.shared.data.WProductGroupInfo;
 
@@ -75,22 +76,33 @@ public class WebshopContainer extends VerticalPanel {
                         }
 
                         public void onSuccess(List<ShortProductInfo> result) {
-                            while (WebshopContainer.this.searchedProductView.iterator().hasNext()) {
-                                WebshopContainer.this.searchedProductView.remove(0);
-                            }
+                            WebshopContainer.this.searchedProductView.clear();
                             if (result.isEmpty()) {
                                 Label noEntry = new Label("kein Eintrag gefunden!");
                                 noEntry.setHorizontalAlignment(ALIGN_CENTER);
                                 WebshopContainer.this.searchedProductView.add(noEntry);
                             } else {
                                 for (ShortProductInfo productInfo : result) {
-                                    ProductRow tmpRow = new ProductRow(productInfo.getName(), productInfo.getName(), productInfo.getName());
-                                    ClickHandler handler = new ClickHandler() {
+                                    final ShortProductInfo pInfo = productInfo;
+                                    ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
+                                    tmpRow.getProductLink().addClickHandler(new ClickHandler() {
+                                        @Override
                                         public void onClick(ClickEvent event) {
-                                            Window.alert("test");
+                                            WebshopContainer.this.mainService.getDetailedProductInfo(pInfo, new AsyncCallback<DetailedProductInfo>() {
+                                                @Override
+                                                public void onFailure(Throwable caught) {
+                                                    //To change body of implemented methods use File | Settings | File Templates.
+                                                }
+
+                                                @Override
+                                                public void onSuccess(DetailedProductInfo result) {
+                                                    WebshopContainer.this.searchedProductView.clear();
+                                                    ProductDetailView detailView = new ProductDetailView(result);
+                                                    WebshopContainer.this.searchedProductView.add(detailView);
+                                                }
+                                            });
                                         }
-                                    };
-                                    tmpRow.getProductLink().addDomHandler(handler, ClickEvent.getType());
+                                    });
                                     WebshopContainer.this.searchedProductView.add(tmpRow);
                                 }
                             }
@@ -103,16 +115,34 @@ public class WebshopContainer extends VerticalPanel {
                         }
 
                         public void onSuccess(List<ShortProductInfo> result) {
-                            while (WebshopContainer.this.searchedProductView.iterator().hasNext()) {
-                                WebshopContainer.this.searchedProductView.remove(0);
-                            }
+                            WebshopContainer.this.searchedProductView.clear();
                             if (result.isEmpty()) {
                                 Label noEntry = new Label("kein Eintrag gefunden!");
                                 noEntry.setHorizontalAlignment(ALIGN_CENTER);
                                 WebshopContainer.this.searchedProductView.add(noEntry);
                             } else {
                                 for (ShortProductInfo productInfo : result) {
-                                    WebshopContainer.this.searchedProductView.add(new ProductRow(productInfo.getName(), productInfo.getName(), productInfo.getName()));
+                                    final ShortProductInfo pInfo = productInfo;
+                                    ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
+                                    tmpRow.getProductLink().addClickHandler(new ClickHandler() {
+                                        @Override
+                                        public void onClick(ClickEvent event) {
+                                            WebshopContainer.this.mainService.getDetailedProductInfo(pInfo, new AsyncCallback<DetailedProductInfo>() {
+                                                @Override
+                                                public void onFailure(Throwable caught) {
+                                                    //To change body of implemented methods use File | Settings | File Templates.
+                                                }
+
+                                                @Override
+                                                public void onSuccess(DetailedProductInfo result) {
+                                                    WebshopContainer.this.searchedProductView.clear();
+                                                    ProductDetailView detailView = new ProductDetailView(result);
+                                                    WebshopContainer.this.searchedProductView.add(detailView);
+                                                }
+                                            });
+                                        }
+                                    });
+                                    WebshopContainer.this.searchedProductView.add(tmpRow);
                                 }
                             }
                         }
@@ -124,25 +154,25 @@ public class WebshopContainer extends VerticalPanel {
 
     private void addSearchStringChangedHandler() {
         this.productSearchBar.getSuggestBox().addKeyUpHandler(
-				new HandlesAllKeyEvents() {
-					@Override
-					public void onKeyDown(KeyDownEvent event) {
-					}
+                new HandlesAllKeyEvents() {
+                    @Override
+                    public void onKeyDown(KeyDownEvent event) {
+                    }
 
-					@Override
-					public void onKeyPress(KeyPressEvent event) {
-					}
+                    @Override
+                    public void onKeyPress(KeyPressEvent event) {
+                    }
 
-					@Override
-					public void onKeyUp(KeyUpEvent event) {
-						if(WebshopContainer.this.productSearchBar.getSuggestBox().getValue().equals("")) {
-							WebshopContainer.this.productSearchBar.getSearchButton().setEnabled(false);
-						} else {
-							WebshopContainer.this.productSearchBar.getSearchButton().setEnabled(true);
-						}
-					}
-				}
-		);
+                    @Override
+                    public void onKeyUp(KeyUpEvent event) {
+                        if (WebshopContainer.this.productSearchBar.getSuggestBox().getValue().equals("")) {
+                            WebshopContainer.this.productSearchBar.getSearchButton().setEnabled(false);
+                        } else {
+                            WebshopContainer.this.productSearchBar.getSearchButton().setEnabled(true);
+                        }
+                    }
+                }
+        );
     }
 
     private void addCategoryBoxChangedHandler() {

@@ -36,7 +36,7 @@ VerticalPanel productDetailContainer, productSuggestions;
     public ProductDetailView(DetailedProductInfo detailedProductInfo) {
         this.productDetailContainer = new VerticalPanel();
         this.productSuggestions = new VerticalPanel();
-        this.searchedProductLabel = new Label("Ihr gesuchtes Produkt "+detailedProductInfo);
+        this.searchedProductLabel = new Label("Ihr gesuchtes Produkt "+detailedProductInfo.getName());
         this.suggestedProductsLabel = new Label("Weitere Produkte die sie interessieren könnten:");
         this.productDetailContainer.setWidth("70%");
         this.productSuggestions.setWidth("30%");
