@@ -22,7 +22,7 @@ public class ProductRow extends HorizontalPanel {
 
     public ProductRow(String imageURL, String hyperlink, String price) {
         this.productImage = new Image(imageURL);
-        this.productLink = new Hyperlink(hyperlink, hyperlink);
+        this.productLink = new Hyperlink(hyperlink, "");
 
         this.productPrice = new Label("  -  "+price+" €");
         this.productPrice.setWidth("60px");
@@ -46,4 +46,6 @@ public class ProductRow extends HorizontalPanel {
     public HorizontalPanel getProductRowContainer() {
         return productRowContainer;
     }
+
+
 }

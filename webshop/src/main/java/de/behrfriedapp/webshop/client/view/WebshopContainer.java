@@ -68,7 +68,14 @@ public class WebshopContainer extends VerticalPanel {
                                 WebshopContainer.this.searchedProductView.add(noEntry);
                             } else {
                                 for (ShortProductInfo productInfo : result) {
-                                    WebshopContainer.this.searchedProductView.add(new ProductRow(productInfo.getName(), productInfo.getName(), productInfo.getName()));
+                                    ProductRow tmpRow = new ProductRow(productInfo.getName(), productInfo.getName(), productInfo.getName());
+                                    ClickHandler handler = new ClickHandler() {
+                                        public void onClick(ClickEvent event) {
+                                            Window.alert("test");
+                                        }
+                                    };
+                                    tmpRow.getProductLink().addDomHandler(handler, ClickEvent.getType());
+                                    WebshopContainer.this.searchedProductView.add(tmpRow);
                                 }
                             }
                         }
