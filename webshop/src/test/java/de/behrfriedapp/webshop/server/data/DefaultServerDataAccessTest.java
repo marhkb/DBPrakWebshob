@@ -16,6 +16,7 @@
 
 package de.behrfriedapp.webshop.server.data;
 
+import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
 import de.behrfriedapp.webshop.shared.data.WProductGroupInfo;
 import junit.framework.Assert;
@@ -92,6 +93,12 @@ public class DefaultServerDataAccessTest {
 
 	@Test
 	public void testGetDetailedProductInfo() throws Exception {
+		final DetailedProductInfo result =
+				this.serverDataAccess.getDetailedProductInfo(new ShortProductInfo("", "", 1));
 
+		Assert.assertNotNull(result);
+		Assert.assertEquals("BBB Best Apple Jelly", result.getName());
+		Assert.assertEquals("1,48", result.getPrice());
+		Assert.assertEquals("Unilever", result.getManufactor());
 	}
 }
