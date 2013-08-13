@@ -1,1 +1,2 @@
 mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc -Dversion=11.2.0.1.0 -Dpackaging=jar -Dfile=ojdbc6.jar -DgeneratePom=true
+mvn install:install-file -Dfile=googlecode-ajaxsearch-0.3.jar -DgroupId=com.google -DartifactId=ajaxsearch -Dversion=0.3 -Dpackaging=jar
