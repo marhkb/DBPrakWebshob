@@ -17,6 +17,8 @@
 
 package de.behrfriedapp.webshop.shared.data;
 
+import com.google.gwt.user.client.ui.Image;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,6 +30,8 @@ public class DetailedProductInfo extends ShortProductInfo implements Serializabl
     private String manufactor;
     private int stock;
     private List<ShortProductInfo> similiarProducts;
+    private Image productImage;
+
 
     public DetailedProductInfo() {
     }
@@ -38,6 +42,11 @@ public class DetailedProductInfo extends ShortProductInfo implements Serializabl
         this.manufactor = manufactor;
         this.stock = stock;
         this.similiarProducts = similiarProducts;
+        this.productImage = new Image(this.getProductImage());
+    }
+
+    private String getProductImage() {
+        return "";
     }
 
     public String getManufactor() {
