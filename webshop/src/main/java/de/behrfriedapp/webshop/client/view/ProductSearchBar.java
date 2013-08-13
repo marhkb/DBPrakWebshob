@@ -38,16 +38,17 @@ public class ProductSearchBar extends HorizontalPanel {
     private Label searchCategoryLabel;
 
     public ProductSearchBar(Messages messages) {
+        this.setStyleName("productSearchBar");
         this.searchStatus = false;
         this.searchCategoryLabel = new Label(messages.productCategory());
+        this.searchCategoryLabel.setStyleName("searchCategoryLabel");
         this.categoryBox = new ListBox();
-        this.categoryBox.setWidth("150px");
+        this.categoryBox.setStyleName("categoryBox");
         this.suggestBox = new SuggestBox(this.oracle = new MultiWordSuggestOracle());
-        this.suggestBox.setWidth("200px");
-        this.searchStatus = false;
-        this.searchString = "";
+        this.suggestBox.setStyleName("suggestBox");
         this.searchButton = new Button(messages.productSearchButton());
         this.searchButton.setEnabled(false);
+        this.searchButton.setStyleName("searchButton");
         this.add(this.searchCategoryLabel);
         this.add(this.categoryBox);
         this.add(this.suggestBox);

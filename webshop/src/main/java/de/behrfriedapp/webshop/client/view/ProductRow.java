@@ -33,19 +33,32 @@ public class ProductRow extends HorizontalPanel {
     private Image productImage;
     private Hyperlink productLink;
     private Label productPrice;
-    private HorizontalPanel productRowContainer;
+    private HorizontalPanel imgPanel, productNamePanel, productPricePanel;
 
     public ProductRow() {}
 
     public ProductRow(String imageURL, String hyperlink, double price) {
-        this.productImage = new Image(imageURL);
-        this.productLink = new Hyperlink(hyperlink, "");
+        this.imgPanel = new HorizontalPanel();
+        this.productImage = new Image("/img/muffin.jpg");
+        this.productImage.setWidth("80px");
+        this.productImage.setHeight("80px");
+        this.imgPanel.add(this.productImage);
+        this.imgPanel.setStyleName("overviewImgPanel");
 
-        this.productPrice = new Label("  -  " + NumberFormat.getCurrencyFormat().format(price));
-        this.productPrice.setWidth("60px");
-        this.add(this.productImage);
-        this.add(this.productLink);
-        this.add(this.productPrice);
+        this.productNamePanel = new HorizontalPanel();
+        this.productLink = new Hyperlink(hyperlink, "");
+        this.productLink.setStyleName("hylink");
+        this.productNamePanel.add(this.productLink);
+        this.productNamePanel.setStyleName("overviewProductNamePanel");
+        this.productNamePanel.setHorizontalAlignment(ALIGN_LEFT);
+
+        this.productPricePanel = new HorizontalPanel();
+        this.productPrice = new Label(NumberFormat.getCurrencyFormat().format(price));
+        this.productPricePanel.add(this.productPrice);
+        this.productPricePanel.setStyleName("overviewProductPricePanel");
+        this.add(this.imgPanel);
+        this.add(this.productNamePanel);
+        this.add(this.productPricePanel);
     }
 
     public Image getProductImage() {
@@ -59,10 +72,4 @@ public class ProductRow extends HorizontalPanel {
     public Label getProductPrice() {
         return productPrice;
     }
-
-    public HorizontalPanel getProductRowContainer() {
-        return productRowContainer;
-    }
-
-
 }

@@ -24,6 +24,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 import de.behrfriedapp.webshop.client.MainServiceAsync;
@@ -54,12 +55,13 @@ public class WebshopContainer extends VerticalPanel {
     public WebshopContainer(final MainServiceAsync mainService, final Messages messages) {
 		this.mainService = mainService;
 		this.messages = messages;
-
-        this.setWidth("70%");
+        this.setStyleName("webshopContainer");
         this.webshopTitle = new Label(this.messages.projectName());
+        this.webshopTitle.setStyleName("webshopTitle");
+
         this.productSearchBar = new ProductSearchBar(messages);
         this.searchedProductView = new SearchedProductView();
-        this.setHorizontalAlignment(ALIGN_CENTER);
+        this.searchedProductView.setStyleName("searchedProductView");
         this.add(this.webshopTitle);
         this.add(this.productSearchBar);
         this.add(this.searchedProductView);
@@ -175,6 +177,97 @@ public class WebshopContainer extends VerticalPanel {
         this.productSearchBar.getSearchButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
 				History.newItem("search=" + productSearchBar.getSuggestBox().getValue());
+//                if (WebshopContainer.this.productSearchBar.getCategoryBox().getItemText(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()).equals("Alles")) {
+//                    WebshopContainer.this.mainService.getAllProducts(WebshopContainer.this.productSearchBar.getSuggestBox().getValue(), new AsyncCallback<List<ShortProductInfo>>() {
+//                        public void onFailure(Throwable caught) {
+//                            //To change body of implemented methods use File | Settings | File Templates.
+//                        }
+//
+//                        public void onSuccess(List<ShortProductInfo> result) {
+//                            WebshopContainer.this.searchedProductView.clear();
+//                            if (result.isEmpty()) {
+//                                Label noEntry = new Label(messages.noEntryFound());
+//                                WebshopContainer.this.searchedProductView.add(noEntry);
+//                            } else {
+//                                int i = 0;
+//                                for (ShortProductInfo productInfo : result) {
+//                                    final ShortProductInfo pInfo = productInfo;
+//                                    ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
+//                                    if(i%2==0) {
+//                                        tmpRow.setStyleName("coloredRow");
+//                                    } else {
+//                                        tmpRow.setStyleName("uncoloredRow");
+//                                    }
+//                                    i++;
+//                                    tmpRow.getProductLink().addClickHandler(new ClickHandler() {
+//                                        @Override
+//                                        public void onClick(ClickEvent event) {
+//                                            WebshopContainer.this.mainService.getDetailedProductInfo(pInfo, new AsyncCallback<DetailedProductInfo>() {
+//                                                @Override
+//                                                public void onFailure(Throwable caught) {
+//                                                    //To change body of implemented methods use File | Settings | File Templates.
+//                                                }
+//
+//                                                @Override
+//                                                public void onSuccess(DetailedProductInfo result) {
+//                                                    WebshopContainer.this.searchedProductView.clear();
+//                                                    ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages);
+//                                                    WebshopContainer.this.searchedProductView.add(detailView);
+//                                                }
+//                                            });
+//                                        }
+//                                    });
+//                                    WebshopContainer.this.searchedProductView.add(tmpRow);
+//                                }
+//                            }
+//                        }
+//                    });
+//                } else {
+//                    WebshopContainer.this.mainService.getAllGroupProducts(WebshopContainer.this.productSearchBar.getCategoryBox().getValue(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()), WebshopContainer.this.productSearchBar.getSuggestBox().getValue(), new AsyncCallback<List<ShortProductInfo>>() {
+//                        public void onFailure(Throwable caught) {
+//                            //To change body of implemented methods use File | Settings | File Templates.
+//                        }
+//
+//                        public void onSuccess(List<ShortProductInfo> result) {
+//                            WebshopContainer.this.searchedProductView.clear();
+//                            if (result.isEmpty()) {
+//                                Label noEntry = new Label(messages.noEntryFound());
+//                                WebshopContainer.this.searchedProductView.add(noEntry);
+//                            } else {
+//                                int i = 0;
+//                                for (ShortProductInfo productInfo : result) {
+//                                    final ShortProductInfo pInfo = productInfo;
+//                                    ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
+//                                    if (i % 2 == 0) {
+//                                        tmpRow.setStyleName("coloredRow");
+//                                    } else {
+//                                        tmpRow.setStyleName("uncoloredRow");
+//                                    }
+//                                    i++;
+//                                    tmpRow.getProductLink().addClickHandler(new ClickHandler() {
+//                                        @Override
+//                                        public void onClick(ClickEvent event) {
+//                                            WebshopContainer.this.mainService.getDetailedProductInfo(pInfo, new AsyncCallback<DetailedProductInfo>() {
+//                                                @Override
+//                                                public void onFailure(Throwable caught) {
+//                                                    //To change body of implemented methods use File | Settings | File Templates.
+//                                                }
+//
+//                                                @Override
+//                                                public void onSuccess(DetailedProductInfo result) {
+//                                                    WebshopContainer.this.searchedProductView.clear();
+//                                                    ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages);
+//                                                    WebshopContainer.this.searchedProductView.add(detailView);
+//                                                }
+//                                            });
+//                                        }
+//                                    });
+//                                    WebshopContainer.this.searchedProductView.add(tmpRow);
+//                                }
+//                            }
+//                        }
+//                    });
+//                }
             }
         });
     }
