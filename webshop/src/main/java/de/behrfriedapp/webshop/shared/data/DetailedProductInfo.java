@@ -30,7 +30,6 @@ public class DetailedProductInfo extends ShortProductInfo implements Serializabl
     private String manufactor;
     private int stock;
     private List<ShortProductInfo> similiarProducts;
-    private Image productImage;
 
 
     public DetailedProductInfo() {
@@ -42,7 +41,6 @@ public class DetailedProductInfo extends ShortProductInfo implements Serializabl
         this.manufactor = manufactor;
         this.stock = stock;
         this.similiarProducts = similiarProducts;
-        this.productImage = new Image(this.getProductImage());
     }
 
     private String getProductImage() {

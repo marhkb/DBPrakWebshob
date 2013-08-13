@@ -2,7 +2,7 @@
 
 # Package Files #
 *.jar
-!restricted-extras/ojdbc6.jar
+!restricted-extras/*
 *.war
 
 # gwt caches and compiled units #
