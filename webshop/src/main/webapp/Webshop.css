@@ -16,6 +16,13 @@ h1 {
     margin: 25px 0px 0px 15px;
     font-family: 'Bad Script', cursive;
 }
+
+.webshopContainer {
+width: 70%;
+background: grey;
+
+}
+
 /************************************************** Suchleiste ****************************/
 
 .productSearchBar {
@@ -27,27 +34,27 @@ h1 {
 }
 
 .searchCategoryLabel {
-font-weight: bold;
-font-size: 10pt;
+    font-weight: bold;
+    font-size: 10pt;
     margin: 7px 0px 0px 15px;
     position: absolute;
 }
 
 .categoryBox {
-float: left;
+    float: left;
     margin: 7px 0px 0px 130px;
     position: absolute;
 }
 
 .suggestBox {
-float: left;
+    float: left;
     margin: 7px 0px 0px 280px;
     position: absolute;
     width: 240px;
 }
 
 .searchButton {
-float: left;
+    float: left;
     margin: 6px 0px 0px 530px;
     width: 100px;
 }
@@ -61,17 +68,16 @@ float: left;
 }
 
 .coloredRow {
-background:  #FFF3BA;
-width: 700px;
-height:100px;
-clear: both;
+    background:  #FFF3BA;
+    width: 700px;
+    height: 100px;
+    clear: both;
 }
 
 .uncoloredRow {
-width: 700px;
-height: 100px;
-float: left;
-clear: both;
+    width: 700px;
+    height: 100px;
+    clear: both;
 }
 
 .overviewImgPanel {
@@ -104,6 +110,14 @@ display: inline;
 
 /************************************************** Detailview ****************************/
 
+.dImagePanel{
+width: 30%;
+background: red;
+}
+
+.dProductInfoPanel {
+
+}
 
 .sendButton {
   display: block;

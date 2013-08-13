@@ -49,9 +49,9 @@ public class WebshopContainer extends VerticalPanel {
 
     @Inject
     public WebshopContainer(final MainServiceAsync mainService, final Messages messages) {
+        this.setStyleName("webshopContainer");
 		this.mainService = mainService;
 		this.messages = messages;
-        this.setStyleName("webshopContainer");
         this.webshopTitle = new Label(this.messages.projectName());
         this.webshopTitle.setStyleName("webshopTitle");
 
@@ -93,6 +93,7 @@ public class WebshopContainer extends VerticalPanel {
                                         tmpRow.setStyleName("uncoloredRow");
                                     }
                                     i++;
+                                    tmpRow.setHorizontalAlignment(ALIGN_CENTER);
                                     tmpRow.getProductLink().addClickHandler(new ClickHandler() {
                                         @Override
                                         public void onClick(ClickEvent event) {
@@ -138,6 +139,7 @@ public class WebshopContainer extends VerticalPanel {
                                         tmpRow.setStyleName("uncoloredRow");
                                     }
                                     i++;
+                                    tmpRow.setHorizontalAlignment(ALIGN_CENTER);
                                     tmpRow.getProductLink().addClickHandler(new ClickHandler() {
                                         @Override
                                         public void onClick(ClickEvent event) {

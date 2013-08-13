@@ -45,21 +45,23 @@ public class ProductDetailView extends HorizontalPanel {
         this.inStockLabel = new Label("Es sind noch " + detailedProductInfo.getStock() + " im Lager vorhanden");
 
         this.imagePanel = new HorizontalPanel();
-        this.productDetailContainer = new HorizontalPanel();
+        this.imagePanel.setStyleName("dImagePanel");
+
         this.productInfoPanel = new VerticalPanel();
+        this.productInfoPanel.setStyleName("dProductInfoPanel");
         this.productInfoPanel.add(this.searchedProductLabel);
         this.productInfoPanel.add(this.producerLabel);
         this.productInfoPanel.add(this.priceLabel);
         this.productInfoPanel.add(this.dummyBuyButton);
         this.productInfoPanel.add(this.inStockLabel);
-        this.productInfoPanel.setWidth("600px");
+
+        this.productDetailContainer = new HorizontalPanel();
         this.productDetailContainer.add(this.imagePanel);
         this.productDetailContainer.add(this.productInfoPanel);
 
         this.suggestedProductsLabel = new Label(messages.moreInterestingProducts());
         this.productSuggestions = new VerticalPanel();
         this.productSuggestions.add(this.suggestedProductsLabel);
-        this.productSuggestions.setWidth("200px");
 
         this.add(this.productDetailContainer);
         this.add(this.productSuggestions);
