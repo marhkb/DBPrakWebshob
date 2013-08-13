@@ -17,6 +17,9 @@
 package de.behrfriedapp.webshop.client.view;
 
 import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
@@ -40,12 +43,12 @@ import java.util.List;
  */
 public class WebshopContainer extends VerticalPanel {
 
+    private final MainServiceAsync mainService;
+	private final Messages messages;
     private VerticalPanel webshobContainer;
     private Label webshopTitle;
     private ProductSearchBar productSearchBar;
     private SearchedProductView searchedProductView;
-    private final MainServiceAsync mainService;
-	private final Messages messages;
 
     @Inject
     public WebshopContainer(final MainServiceAsync mainService, final Messages messages) {
@@ -66,90 +69,112 @@ public class WebshopContainer extends VerticalPanel {
         this.addCategoryBoxChangedHandler();
         this.bindCategoryBox();
         this.bindSuggestBox();
+
+		History.addValueChangeHandler(
+				new ValueChangeHandler<String>() {
+
+					public void onValueChange(final ValueChangeEvent<String> event) {
+						final String historyToken = event.getValue();
+
+						if(historyToken.isEmpty()) {
+
+						} else if(historyToken.startsWith("search=")) {
+
+							productSearchBar.getSuggestBox()
+											.setValue(historyToken.substring(7).replaceAll("%20", " "));
+							if (WebshopContainer.this.productSearchBar.getCategoryBox().getItemText(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()).equals("Alles")) {
+								WebshopContainer.this.mainService.getAllProducts(WebshopContainer.this.productSearchBar.getSuggestBox().getValue(), new AsyncCallback<List<ShortProductInfo>>() {
+									public void onFailure(Throwable caught) {
+										//To change body of implemented methods use File | Settings | File Templates.
+									}
+
+									public void onSuccess(List<ShortProductInfo> result) {
+										WebshopContainer.this.searchedProductView.clear();
+										if (result.isEmpty()) {
+											Label noEntry = new Label(messages.noEntryFound());
+											noEntry.setHorizontalAlignment(ALIGN_CENTER);
+											WebshopContainer.this.searchedProductView.add(noEntry);
+										} else {
+											for (ShortProductInfo productInfo : result) {
+												final ShortProductInfo pInfo = productInfo;
+												ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
+												tmpRow.getProductLink().addClickHandler(new ClickHandler() {
+													@Override
+													public void onClick(ClickEvent event) {
+														WebshopContainer.this.mainService.getDetailedProductInfo(pInfo, new AsyncCallback<DetailedProductInfo>() {
+															@Override
+															public void onFailure(Throwable caught) {
+																//To change body of implemented methods use File | Settings | File Templates.
+															}
+
+															@Override
+															public void onSuccess(DetailedProductInfo result) {
+																WebshopContainer.this.searchedProductView.clear();
+																ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages);
+																WebshopContainer.this.searchedProductView.add(detailView);
+															}
+														});
+													}
+												});
+												WebshopContainer.this.searchedProductView.add(tmpRow);
+											}
+										}
+									}
+								});
+							} else {
+								WebshopContainer.this.mainService.getAllGroupProducts(WebshopContainer.this.productSearchBar.getCategoryBox().getValue(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()), WebshopContainer.this.productSearchBar.getSuggestBox().getValue(), new AsyncCallback<List<ShortProductInfo>>() {
+									public void onFailure(Throwable caught) {
+										//To change body of implemented methods use File | Settings | File Templates.
+									}
+
+									public void onSuccess(List<ShortProductInfo> result) {
+										WebshopContainer.this.searchedProductView.clear();
+										if (result.isEmpty()) {
+											Label noEntry = new Label(messages.noEntryFound());
+											noEntry.setHorizontalAlignment(ALIGN_CENTER);
+											WebshopContainer.this.searchedProductView.add(noEntry);
+										} else {
+											for (ShortProductInfo productInfo : result) {
+												final ShortProductInfo pInfo = productInfo;
+												ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
+												tmpRow.getProductLink().addClickHandler(new ClickHandler() {
+													@Override
+													public void onClick(ClickEvent event) {
+														WebshopContainer.this.mainService.getDetailedProductInfo(pInfo, new AsyncCallback<DetailedProductInfo>() {
+															@Override
+															public void onFailure(Throwable caught) {
+																//To change body of implemented methods use File | Settings | File Templates.
+															}
+
+															@Override
+															public void onSuccess(DetailedProductInfo result) {
+																WebshopContainer.this.searchedProductView.clear();
+																ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages);
+																WebshopContainer.this.searchedProductView.add(detailView);
+															}
+														});
+													}
+												});
+												WebshopContainer.this.searchedProductView.add(tmpRow);
+											}
+										}
+									}
+								});
+							}
+						}
+						if(historyToken.isEmpty()) {
+							History.back();
+						}
+					}
+				}
+		);
+		//History.fireCurrentHistoryState();
     }
 
     private void addClickHandler() {
         this.productSearchBar.getSearchButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                if (WebshopContainer.this.productSearchBar.getCategoryBox().getItemText(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()).equals("Alles")) {
-                    WebshopContainer.this.mainService.getAllProducts(WebshopContainer.this.productSearchBar.getSuggestBox().getValue(), new AsyncCallback<List<ShortProductInfo>>() {
-                        public void onFailure(Throwable caught) {
-                            //To change body of implemented methods use File | Settings | File Templates.
-                        }
-
-                        public void onSuccess(List<ShortProductInfo> result) {
-                            WebshopContainer.this.searchedProductView.clear();
-                            if (result.isEmpty()) {
-                                Label noEntry = new Label(messages.noEntryFound());
-                                noEntry.setHorizontalAlignment(ALIGN_CENTER);
-                                WebshopContainer.this.searchedProductView.add(noEntry);
-                            } else {
-                                for (ShortProductInfo productInfo : result) {
-                                    final ShortProductInfo pInfo = productInfo;
-                                    ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
-                                    tmpRow.getProductLink().addClickHandler(new ClickHandler() {
-                                        @Override
-                                        public void onClick(ClickEvent event) {
-                                            WebshopContainer.this.mainService.getDetailedProductInfo(pInfo, new AsyncCallback<DetailedProductInfo>() {
-                                                @Override
-                                                public void onFailure(Throwable caught) {
-                                                    //To change body of implemented methods use File | Settings | File Templates.
-                                                }
-
-                                                @Override
-                                                public void onSuccess(DetailedProductInfo result) {
-                                                    WebshopContainer.this.searchedProductView.clear();
-                                                    ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages);
-                                                    WebshopContainer.this.searchedProductView.add(detailView);
-                                                }
-                                            });
-                                        }
-                                    });
-                                    WebshopContainer.this.searchedProductView.add(tmpRow);
-                                }
-                            }
-                        }
-                    });
-                } else {
-                    WebshopContainer.this.mainService.getAllGroupProducts(WebshopContainer.this.productSearchBar.getCategoryBox().getValue(WebshopContainer.this.productSearchBar.getCategoryBox().getSelectedIndex()), WebshopContainer.this.productSearchBar.getSuggestBox().getValue(), new AsyncCallback<List<ShortProductInfo>>() {
-                        public void onFailure(Throwable caught) {
-                            //To change body of implemented methods use File | Settings | File Templates.
-                        }
-
-                        public void onSuccess(List<ShortProductInfo> result) {
-                            WebshopContainer.this.searchedProductView.clear();
-                            if (result.isEmpty()) {
-                                Label noEntry = new Label(messages.noEntryFound());
-                                noEntry.setHorizontalAlignment(ALIGN_CENTER);
-                                WebshopContainer.this.searchedProductView.add(noEntry);
-                            } else {
-                                for (ShortProductInfo productInfo : result) {
-                                    final ShortProductInfo pInfo = productInfo;
-                                    ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
-                                    tmpRow.getProductLink().addClickHandler(new ClickHandler() {
-                                        @Override
-                                        public void onClick(ClickEvent event) {
-                                            WebshopContainer.this.mainService.getDetailedProductInfo(pInfo, new AsyncCallback<DetailedProductInfo>() {
-                                                @Override
-                                                public void onFailure(Throwable caught) {
-                                                    //To change body of implemented methods use File | Settings | File Templates.
-                                                }
-
-                                                @Override
-                                                public void onSuccess(DetailedProductInfo result) {
-                                                    WebshopContainer.this.searchedProductView.clear();
-                                                    ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages);
-                                                    WebshopContainer.this.searchedProductView.add(detailView);
-                                                }
-                                            });
-                                        }
-                                    });
-                                    WebshopContainer.this.searchedProductView.add(tmpRow);
-                                }
-                            }
-                        }
-                    });
-                }
+				History.newItem("search=" + productSearchBar.getSuggestBox().getValue());
             }
         });
     }
@@ -184,7 +209,6 @@ public class WebshopContainer extends VerticalPanel {
             }
         });
     }
-
 
     private void bindCategoryBox() {
         this.productSearchBar.getCategoryBox().addItem(this.messages.allCategoriesEntry());

@@ -35,6 +35,8 @@
 	<!-- GWT Injection lib -->
 	<inherits name="com.google.gwt.inject.Inject"/>
 
+	<inherits name="com.google.gwt.http.HTTP"/>
+
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='de.behrfriedapp.webshop.client.Webshop'/>
 
