@@ -32,19 +32,20 @@ import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
  * To change this template use File | Settings | File Templates.
  */
 public class ProductDetailView extends HorizontalPanel {
-    VerticalPanel productSuggestions, productInfoPanel;
-    HorizontalPanel productDetailContainer, imagePanel;
+    VerticalPanel productSuggestions, productInfoPanel, imagePanel;
+    HorizontalPanel productDetailContainer;
     Label searchedProductLabel, suggestedProductsLabel, producerLabel, priceLabel, inStockLabel;
     Button dummyBuyButton;
 
     public ProductDetailView(DetailedProductInfo detailedProductInfo, Messages messages) {
+        this.setStyleName("productDetailView");
         this.searchedProductLabel = new Label(messages.yourSearchProduct() + " " + detailedProductInfo.getName());
         this.producerLabel = new Label("Hergestellt von: " + detailedProductInfo.getManufactor());
         this.priceLabel = new Label("Preis: " + detailedProductInfo.getPrice() + " kostenlose Lieferung mit Wäpschob Prime");
         this.dummyBuyButton = new Button("In den Warenkorb legen!");
         this.inStockLabel = new Label("Es sind noch " + detailedProductInfo.getStock() + " im Lager vorhanden");
 
-        this.imagePanel = new HorizontalPanel();
+        this.imagePanel = new VerticalPanel();
         this.imagePanel.setStyleName("dImagePanel");
 
         this.productInfoPanel = new VerticalPanel();
@@ -56,11 +57,13 @@ public class ProductDetailView extends HorizontalPanel {
         this.productInfoPanel.add(this.inStockLabel);
 
         this.productDetailContainer = new HorizontalPanel();
+        this.productDetailContainer.setStyleName("productDetailContainer");
         this.productDetailContainer.add(this.imagePanel);
         this.productDetailContainer.add(this.productInfoPanel);
 
         this.suggestedProductsLabel = new Label(messages.moreInterestingProducts());
         this.productSuggestions = new VerticalPanel();
+        this.productSuggestions.setStyleName("productSuggestionsPanel");
         this.productSuggestions.add(this.suggestedProductsLabel);
 
         this.add(this.productDetailContainer);

@@ -18,9 +18,9 @@ h1 {
 }
 
 .webshopContainer {
-width: 70%;
-background: grey;
-
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /************************************************** Suchleiste ****************************/
@@ -28,9 +28,8 @@ background: grey;
 .productSearchBar {
     width: 100%;
     height: 35px;
-    background-image: linear-gradient(to top, #FFF3BA 60%, white);
+    background-image: linear-gradient(to top, #FFF9D9 10%, #FFF3BA 60%, white);
     float: left;
-    position: absolute;
 }
 
 .searchCategoryLabel {
@@ -62,62 +61,79 @@ background: grey;
 /************************************************** Gesuchte Artikel-Ansicht ****************************/
 
 .searchedProductView {
-    margin: 40px 15px;;
-    position: absolute;
     overflow: scroll;
+    width: 100%;
 }
 
 .coloredRow {
-    background:  #FFF3BA;
-    width: 700px;
+    background:  #FFF9D9;
+    width: 100%;
     height: 100px;
     clear: both;
 }
 
 .uncoloredRow {
-    width: 700px;
+    width: 100%;
     height: 100px;
     clear: both;
 }
 
 .overviewImgPanel {
-float:left;
-width: 80px;
-height: 80px;
-margin: 10px;
-background: grey;
-position: relative;
-display: inline;
+    float:left;
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+    background: grey;
+    position: relative;
+    display: inline;
 }
 
 .overviewProductNamePanel{
     margin: 7px 0px 0px 20px;
-clear: both;
+    clear: both;
 }
 
 .hylink{
-font-size: 10pt;
-font-weight: bold;
+    font-size: 12pt;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .overviewProductPricePanel {
     margin: 7px 7px 7px 0px;
-float: right;
-width: auto;
-position: relative;
-display: inline;
+    float: right;
+    width: auto;
+    position: relative;
+    display: inline;
 }
 
 /************************************************** Detailview ****************************/
+.productDetailView{
+width: 100%;
+}
+
+.productDetailContainer {
+width: 80%;
+}
+
+
+.productSuggestionsPanel {
+width: 20%;
+background: red;
+}
+
 
 .dImagePanel{
-width: 30%;
+width: 30px;
 background: red;
 }
 
 .dProductInfoPanel {
-
+width: 70%;
+background: grey;
 }
+
+
 
 .sendButton {
   display: block;
