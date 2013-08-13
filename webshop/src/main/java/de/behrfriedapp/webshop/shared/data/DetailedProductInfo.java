@@ -43,10 +43,6 @@ public class DetailedProductInfo extends ShortProductInfo implements Serializabl
         this.similiarProducts = similiarProducts;
     }
 
-    private String getProductImage() {
-        return "";
-    }
-
     public String getManufactor() {
         return manufactor;
     }

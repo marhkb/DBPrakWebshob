@@ -50,7 +50,7 @@ public class ProductRow extends HorizontalPanel {
         this.productLink.setStyleName("hylink");
         this.productNamePanel.add(this.productLink);
         this.productNamePanel.setStyleName("overviewProductNamePanel");
-        this.productNamePanel.setHorizontalAlignment(ALIGN_LEFT);
+        this.productNamePanel.setHorizontalAlignment(ALIGN_CENTER);
 
         this.productPricePanel = new HorizontalPanel();
         this.productPrice = new Label(NumberFormat.getCurrencyFormat().format(price));

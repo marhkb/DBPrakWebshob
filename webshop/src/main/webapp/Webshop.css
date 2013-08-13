@@ -16,7 +16,7 @@ h1 {
     margin: 25px 0px 0px 15px;
     font-family: 'Bad Script', cursive;
 }
-<!------ Suchleiste ---------------------------------------------------->
+/************************************************** Suchleiste ****************************/
 
 .productSearchBar {
     width: 100%;
@@ -24,7 +24,6 @@ h1 {
     background-image: linear-gradient(to top, #FFF3BA 60%, white);
     float: left;
     position: absolute;
-clear: both;
 }
 
 .searchCategoryLabel {
@@ -53,7 +52,7 @@ float: left;
     width: 100px;
 }
 
-<!------ Gesuchte Artikel-Ansicht--------------------------------------->
+/************************************************** Gesuchte Artikel-Ansicht ****************************/
 
 .searchedProductView {
     margin: 40px 15px;;
@@ -87,10 +86,7 @@ display: inline;
 
 .overviewProductNamePanel{
     margin: 7px 0px 0px 20px;
-width: auto;
-position: static;
 clear: both;
-display: inline;
 }
 
 .hylink{
@@ -106,9 +102,7 @@ position: relative;
 display: inline;
 }
 
-<!------ Detailview ---------------------------------------------------->
-
-
+/************************************************** Detailview ****************************/
 
 
 .sendButton {

@@ -30,5 +30,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class SearchedProductView extends VerticalPanel {
 
     public SearchedProductView() {
+        this.setStyleName("searchedProductView");
     }
 }

@@ -57,7 +57,6 @@ public class WebshopContainer extends VerticalPanel {
 
         this.productSearchBar = new ProductSearchBar(messages);
         this.searchedProductView = new SearchedProductView();
-        this.searchedProductView.setStyleName("searchedProductView");
         this.add(this.webshopTitle);
         this.add(this.productSearchBar);
         this.add(this.searchedProductView);
