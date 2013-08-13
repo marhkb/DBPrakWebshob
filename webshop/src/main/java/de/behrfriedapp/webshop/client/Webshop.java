@@ -32,9 +32,5 @@ public class Webshop implements EntryPoint {
 	public void onModuleLoad() {
 		final WebshopContainer webshopContainer = ((WsGinjector)GWT.create(WsGinjector.class)).getWebshopContainer();
 		RootPanel.get().add(webshopContainer);
-//		final String initToken = History.getToken();
-//		if(initToken.length() == 0) {
-//			History.newItem(this.tabSet.getTab(0).getID());
-//		}
 	}
 }
