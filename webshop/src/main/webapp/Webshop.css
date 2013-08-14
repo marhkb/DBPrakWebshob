@@ -168,7 +168,7 @@ border-color: #F4EAD1;
 
 .ratingLabel {
 font-size: 7pt;
-margin-top: 3px;
+margin-top: 4px;
 margin-left: 4px;
 }
 
@@ -215,23 +215,24 @@ padding: 4px;
 margin-left: -20px;
 }
 
+.rateLabel {
+position: absolute;
+left: 20px;
+top: 55px;
+}
+
 .customerNumberTextBox{
 position: absolute;
 left: 120px;
-top: 27px;
+top: 30px;
 }
 
-.ratingLabel{
-position: absolute;
-left: 120px;
-top: 53px;
-}
 
 .ratingTextArea{
 resize: none;
 position: absolute;
 left: 120px;
-top: 77px;
+top: 80px;
 width: 285px;
 height: 85px;
 }
@@ -239,7 +240,7 @@ height: 85px;
 .rateProductButton{
 position: absolute;
 left: 260px;
-top: 175px;
+top: 178px;
 width: 150px;
 }
 

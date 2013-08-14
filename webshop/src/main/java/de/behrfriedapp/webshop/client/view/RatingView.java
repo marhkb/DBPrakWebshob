@@ -46,7 +46,7 @@ public class RatingView extends HorizontalPanel{
         this.rateProductButton = new Button("Bewertung abgeben");
         this.rateProductButton.setStyleName("rateProductButton");
         Label ratingLabel = new Label("(*)(*)(*)(*)(*)");
-        ratingLabel.setStyleName("ratingLabel");
+        ratingLabel.setStyleName("rateLabel");
         this.ratingPanel.add(this.customerNumberTextBox);
         this.ratingPanel.add(ratingLabel);
         this.ratingPanel.add(this.ratingTextArea);
