@@ -16,13 +16,17 @@
 
 package de.behrfriedapp.webshop.client.view;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.*;
+import de.behrfriedapp.webshop.client.MainService;
+import de.behrfriedapp.webshop.client.MainServiceAsync;
 import de.behrfriedapp.webshop.client.Messages;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
+import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,41 +36,73 @@ import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
  * To change this template use File | Settings | File Templates.
  */
 public class ProductDetailView extends HorizontalPanel {
-    VerticalPanel productSuggestions, productInfoPanel, imagePanel;
-    HorizontalPanel productDetailContainer;
-    Label searchedProductLabel, suggestedProductsLabel, producerLabel, priceLabel, inStockLabel;
+    VerticalPanel productInfoPanel, imagePanel;
+    ProductSuggestionContainer productSuggestionContainer;
+    Label searchedProductLabel, producerLabel, priceLabel, inStockLabel;
     Button dummyBuyButton;
+    final MainServiceAsync mainService;
+    VerticalPanel panel;
+    Messages messages;
 
-    public ProductDetailView(DetailedProductInfo detailedProductInfo, Messages messages) {
-        this.setStyleName("productDetailView");
-        this.searchedProductLabel = new Label(messages.yourSearchProduct() + " " + detailedProductInfo.getName());
-        this.producerLabel = new Label("Hergestellt von: " + detailedProductInfo.getManufactor());
-        this.priceLabel = new Label("Preis: " + detailedProductInfo.getPrice() + " kostenlose Lieferung mit Wäpschob Prime");
-        this.dummyBuyButton = new Button("In den Warenkorb legen!");
-        this.inStockLabel = new Label("Es sind noch " + detailedProductInfo.getStock() + " im Lager vorhanden");
 
+    public ProductDetailView(DetailedProductInfo detailedProductInfo, Messages messages, MainServiceAsync mainService, VerticalPanel panel) {
         this.imagePanel = new VerticalPanel();
-        this.imagePanel.setStyleName("dImagePanel");
+        this.mainService = mainService;
+        this.panel = panel;
+        this.messages = messages;
+
 
         this.productInfoPanel = new VerticalPanel();
-        this.productInfoPanel.setStyleName("dProductInfoPanel");
+        this.searchedProductLabel = new Label(messages.yourSearchProduct() + " " + detailedProductInfo.getName());
+        this.producerLabel = new Label("Hergestellt von: " + detailedProductInfo.getManufactor());
+        this.priceLabel = new Label("Preis: " + NumberFormat.getCurrencyFormat().format(detailedProductInfo.getPrice()) + " kostenlose Lieferung mit Wäpschob Prime");
+        this.dummyBuyButton = new Button("In den Warenkorb legen!");
+        this.inStockLabel = new Label("Es sind noch " + detailedProductInfo.getStock() + " im Lager vorhanden");
         this.productInfoPanel.add(this.searchedProductLabel);
         this.productInfoPanel.add(this.producerLabel);
         this.productInfoPanel.add(this.priceLabel);
         this.productInfoPanel.add(this.dummyBuyButton);
         this.productInfoPanel.add(this.inStockLabel);
 
-        this.productDetailContainer = new HorizontalPanel();
-        this.productDetailContainer.setStyleName("productDetailContainer");
-        this.productDetailContainer.add(this.imagePanel);
-        this.productDetailContainer.add(this.productInfoPanel);
+        this.productSuggestionContainer = new ProductSuggestionContainer();
+        if(detailedProductInfo.getSimiliarProducts() != null) {
+            int i = 0;
+            for(final ShortProductInfo productInfo : detailedProductInfo.getSimiliarProducts()){
+                VerticalPanel tmpPanel = new VerticalPanel();
+                if(i%2==0) {
 
-        this.suggestedProductsLabel = new Label(messages.moreInterestingProducts());
-        this.productSuggestions = new VerticalPanel();
-        this.productSuggestions.setStyleName("productSuggestionsPanel");
-        this.productSuggestions.add(this.suggestedProductsLabel);
+                }
+                Hyperlink tmpLink = new Hyperlink(productInfo.getName(),"");
+                tmpLink.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        ProductDetailView.this.mainService.getDetailedProductInfo(productInfo, new AsyncCallback<DetailedProductInfo>() {
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                //To change body of implemented methods use File | Settings | File Templates.
+                            }
+                            @Override
+                            public void onSuccess(DetailedProductInfo result) {
+                                ProductDetailView.this.panel.clear();
+                                ProductDetailView detailView = new ProductDetailView(result, ProductDetailView.this.messages, ProductDetailView.this.mainService, ProductDetailView.this.panel);
+                                ProductDetailView.this.panel.add(detailView);
+                            }
+                        });
 
-        this.add(this.productDetailContainer);
-        this.add(this.productSuggestions);
+                    }
+                });
+                Label tmpLabel = new Label(" - "+ NumberFormat.getCurrencyFormat().format(productInfo.getPrice()));
+                tmpPanel.add(tmpLink);
+                tmpPanel.add(tmpLabel);
+                ProductDetailView.this.productSuggestionContainer.add(tmpPanel);
+            }
+        }
+
+        this.setStyleName("productDetailView");
+        this.imagePanel.setStyleName("dImagePanel");
+        this.productInfoPanel.setStyleName("dProductInfoPanel");
+        this.add(this.imagePanel);
+        this.add(this.productInfoPanel);
+        this.add(this.productSuggestionContainer);
     }
 }

@@ -19,6 +19,7 @@ package de.behrfriedapp.webshop.client.view;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -46,6 +47,7 @@ public class WebshopContainer extends VerticalPanel {
     private Label webshopTitle;
     private ProductSearchBar productSearchBar;
     private SearchedProductView searchedProductView;
+    private ProductSuggestionContainer productSuggestionContainer;
 
     @Inject
     public WebshopContainer(final MainServiceAsync mainService, final Messages messages) {
@@ -106,7 +108,7 @@ public class WebshopContainer extends VerticalPanel {
                                                 @Override
                                                 public void onSuccess(DetailedProductInfo result) {
                                                     WebshopContainer.this.searchedProductView.clear();
-                                                    ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages);
+                                                    ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages, WebshopContainer.this.mainService, WebshopContainer.this.searchedProductView);
                                                     WebshopContainer.this.searchedProductView.add(detailView);
                                                 }
                                             });
@@ -152,7 +154,7 @@ public class WebshopContainer extends VerticalPanel {
                                                 @Override
                                                 public void onSuccess(DetailedProductInfo result) {
                                                     WebshopContainer.this.searchedProductView.clear();
-                                                    ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages);
+                                                    ProductDetailView detailView = new ProductDetailView(result, WebshopContainer.this.messages, WebshopContainer.this.mainService, WebshopContainer.this.searchedProductView);
                                                     WebshopContainer.this.searchedProductView.add(detailView);
                                                 }
                                             });
