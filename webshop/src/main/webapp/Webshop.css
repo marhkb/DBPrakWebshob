@@ -130,7 +130,6 @@ border-color: #F4EAD1;
 padding: 10px;
 width: 430px;
 margin: 2px;
-background: green;
 float: left;
 }
 
@@ -139,16 +138,49 @@ float: right;
 width: 170px;
 height: 400px;
 padding: 3px;
-border-radius: 5px;
 border-style: solid;
-border-width: 1px;
-border-color: blue;
+border-right-width: 0px;
+border-bottom-width: 0px;
+border-left-width: 1px;
+border-top-width: 0px;
+border-color: #F4EAD1;
 }
 
 /************************************************** Detailview - Details ****************************/
 
+.searchedProductLabel {
+font-size: 13pt;
+}
 
+.pricePanel {
+width: 410px;
+padding: 3px;
+margin: 3px 10px;
+border-right-width: 0px;
+border-bottom-width: 0px;
+border-left-width: 0px;
+border-top-width: 1px;
+border-style: solid;
+border-color: #F4EAD1;
+}
 
+.priceStringLabel{
+margin-top: 3px;
+margin-left: -13px
+}
+.priceLabel {
+font-size: 13pt;
+color: #880000;
+}
+
+.shippingLabel {
+margin-top: 3px;
+}
+
+.basketButton {
+width: 225px;
+margin: 5px;
+}
 
 .sendButton {
   display: block;

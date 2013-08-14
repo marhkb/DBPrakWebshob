@@ -38,11 +38,13 @@ import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
 public class ProductDetailView extends HorizontalPanel {
     VerticalPanel productInfoPanel, imagePanel;
     ProductSuggestionContainer productSuggestionContainer;
-    Label searchedProductLabel, producerLabel, priceLabel, inStockLabel;
+    Label searchedProductLabel, producerLabel, priceStringLabel, priceLabel, shippingLabel, inStockLabel;
     Button dummyBuyButton;
     final MainServiceAsync mainService;
     VerticalPanel panel;
     Messages messages;
+    HorizontalPanel pricePanel;
+
 
 
     public ProductDetailView(DetailedProductInfo detailedProductInfo, Messages messages, MainServiceAsync mainService, VerticalPanel panel) {
@@ -53,14 +55,28 @@ public class ProductDetailView extends HorizontalPanel {
 
 
         this.productInfoPanel = new VerticalPanel();
-        this.searchedProductLabel = new Label(messages.yourSearchProduct() + " " + detailedProductInfo.getName());
-        this.producerLabel = new Label("Hergestellt von: " + detailedProductInfo.getManufactor());
-        this.priceLabel = new Label("Preis: " + NumberFormat.getCurrencyFormat().format(detailedProductInfo.getPrice()) + " kostenlose Lieferung mit Wäpschob Prime");
-        this.dummyBuyButton = new Button("In den Warenkorb legen!");
-        this.inStockLabel = new Label("Es sind noch " + detailedProductInfo.getStock() + " im Lager vorhanden");
+        this.searchedProductLabel = new Label(detailedProductInfo.getName());
+        this.searchedProductLabel.setStyleName("searchedProductLabel");
+        this.producerLabel = new Label("von " + detailedProductInfo.getManufactor());
+
+        this.pricePanel = new HorizontalPanel();
+        this.pricePanel.setStyleName("pricePanel");
+        this.priceStringLabel = new Label("Preis: ");
+        this.priceStringLabel.setStyleName("priceStringLabel");
+        this.priceLabel = new Label(NumberFormat.getCurrencyFormat().format(detailedProductInfo.getPrice()));
+        this.priceLabel.setStyleName("priceLabel");
+        this.shippingLabel = new Label(" kostenlose Lieferung mit Wäpschob Prime");
+        this.shippingLabel.setStyleName("shippingLabel");
+        this.pricePanel.add(this.priceStringLabel);
+        this.pricePanel.add(this.priceLabel);
+        this.pricePanel.add(this.shippingLabel);
+
+        this.dummyBuyButton = new Button("In den Warenkorb legen");
+        this.dummyBuyButton.setStyleName("basketButton");
+        this.inStockLabel = new Label("Noch " + detailedProductInfo.getStock() + " vorhanden");
         this.productInfoPanel.add(this.searchedProductLabel);
         this.productInfoPanel.add(this.producerLabel);
-        this.productInfoPanel.add(this.priceLabel);
+        this.productInfoPanel.add(this.pricePanel);
         this.productInfoPanel.add(this.dummyBuyButton);
         this.productInfoPanel.add(this.inStockLabel);
 
