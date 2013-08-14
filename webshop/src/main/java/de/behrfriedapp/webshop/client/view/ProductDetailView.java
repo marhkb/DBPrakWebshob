@@ -35,17 +35,16 @@ import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
  * Time: 10:20
  * To change this template use File | Settings | File Templates.
  */
-public class ProductDetailView extends HorizontalPanel {
+public class ProductDetailView extends FlowPanel {
     VerticalPanel productInfoPanel, imagePanel;
     ProductSuggestionContainer productSuggestionContainer;
-    Label searchedProductLabel, producerLabel, priceStringLabel, priceLabel, shippingLabel, inStockLabel;
+    Label searchedProductLabel, producerLabel, priceStringLabel, priceLabel, shippingLabel, inStockLabel, ratingLabel;
     Button dummyBuyButton;
     final MainServiceAsync mainService;
     VerticalPanel panel;
     Messages messages;
-    HorizontalPanel pricePanel;
-
-
+    HorizontalPanel pricePanel, ratePanel;
+    RatingView ratingView;
 
     public ProductDetailView(DetailedProductInfo detailedProductInfo, Messages messages, MainServiceAsync mainService, VerticalPanel panel) {
         this.imagePanel = new VerticalPanel();
@@ -71,12 +70,21 @@ public class ProductDetailView extends HorizontalPanel {
         this.pricePanel.add(this.priceLabel);
         this.pricePanel.add(this.shippingLabel);
 
+        //TODO RATING!
+        this.ratePanel = new HorizontalPanel();
+        this.ratePanel.setStyleName("detRatePanel");
+        this.ratingLabel = new Label(" (XX Bewertungen)");
+        this.ratingLabel.setStyleName("ratingLabel");
+        this.ratePanel.add(new Label("(*)(*)(*)(*)(*)"));
+        this.ratePanel.add(this.ratingLabel);
+
         this.dummyBuyButton = new Button("In den Warenkorb legen");
         this.dummyBuyButton.setStyleName("basketButton");
         this.inStockLabel = new Label("Noch " + detailedProductInfo.getStock() + " vorhanden");
         this.productInfoPanel.add(this.searchedProductLabel);
         this.productInfoPanel.add(this.producerLabel);
         this.productInfoPanel.add(this.pricePanel);
+        this.productInfoPanel.add(this.ratePanel);
         this.productInfoPanel.add(this.dummyBuyButton);
         this.productInfoPanel.add(this.inStockLabel);
 
@@ -117,8 +125,20 @@ public class ProductDetailView extends HorizontalPanel {
         this.setStyleName("productDetailView");
         this.imagePanel.setStyleName("dImagePanel");
         this.productInfoPanel.setStyleName("dProductInfoPanel");
+        this.ratingView = new RatingView(detailedProductInfo);
         this.add(this.imagePanel);
         this.add(this.productInfoPanel);
         this.add(this.productSuggestionContainer);
+        this.add(this.ratingView);
+        this.addClickHandler();
+    }
+
+    private void addClickHandler() {
+        this.dummyBuyButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                Window.alert("Produkt wurde in ihren Warenkorb gelegt");
+            }
+        });
     }
 }

@@ -34,7 +34,7 @@ import java.util.List;
  * Time: 14:31
  * To change this template use File | Settings | File Templates.
  */
-public class ProductSuggestionContainer extends ScrollPanel {
+public class ProductSuggestionContainer extends VerticalPanel {
     private Label containerTitle;
 
     public ProductSuggestionContainer() {

@@ -84,7 +84,6 @@ h1 {
     width: 80px;
     height: 80px;
     margin: 10px;
-    background: grey;
     position: relative;
 }
 
@@ -128,7 +127,7 @@ border-color: #F4EAD1;
 
 .dProductInfoPanel {
 padding: 10px;
-width: 430px;
+width: 400px;
 margin: 2px;
 float: left;
 }
@@ -136,7 +135,7 @@ float: left;
 .productSuggestionContainer {
 float: right;
 width: 170px;
-height: 400px;
+height: 411px;
 padding: 3px;
 border-style: solid;
 border-right-width: 0px;
@@ -144,6 +143,9 @@ border-bottom-width: 0px;
 border-left-width: 1px;
 border-top-width: 0px;
 border-color: #F4EAD1;
+clear: both;
+position: absolute;
+left: 895px;
 }
 
 /************************************************** Detailview - Details ****************************/
@@ -153,7 +155,7 @@ font-size: 13pt;
 }
 
 .pricePanel {
-width: 410px;
+width: 400px;
 padding: 3px;
 margin: 3px 10px;
 border-right-width: 0px;
@@ -162,6 +164,16 @@ border-left-width: 0px;
 border-top-width: 1px;
 border-style: solid;
 border-color: #F4EAD1;
+}
+
+.ratingLabel {
+font-size: 7pt;
+margin-top: 3px;
+margin-left: 4px;
+}
+
+.detRatePanel {
+margin-top: -2px;
 }
 
 .priceStringLabel{
@@ -182,9 +194,75 @@ width: 225px;
 margin: 5px;
 }
 
+/************************************************** Ratingview ****************************/
+
+.ratingView {
+width: 400px;
+position: absolute;
+border-right-width: 0px;
+border-bottom-width: 0px;
+border-left-width: 0px;
+border-top-width: 1px;
+border-style: solid;
+border-color: #F4EAD1;
+top: 350px;
+left: 460px;
+height: 188px;
+padding: 4px;
+}
+
+.ratedescriptionPanel{
+margin-left: -20px;
+}
+
+.customerNumberTextBox{
+position: absolute;
+left: 120px;
+top: 27px;
+}
+
+.ratingLabel{
+position: absolute;
+left: 120px;
+top: 53px;
+}
+
+.ratingTextArea{
+resize: none;
+position: absolute;
+left: 120px;
+top: 77px;
+width: 285px;
+height: 85px;
+}
+
+.rateProductButton{
+position: absolute;
+left: 260px;
+top: 175px;
+width: 150px;
+}
+
+.rateThisProductLabel{
+margin: 3px;
+}
+
+.customerNumberLabel{
+margin: 3px;
+}
+
+.starRatingLabel{
+margin: 3px;
+}
+
+.ratingDescriptionLabel{
+margin: 3px;
+}
+
 .sendButton {
   display: block;
   font-size: 16pt;
+
 }
 
 /** Most GWT widgets already have a style name defined */
