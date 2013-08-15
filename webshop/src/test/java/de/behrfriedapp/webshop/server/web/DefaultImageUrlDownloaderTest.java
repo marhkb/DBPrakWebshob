@@ -19,7 +19,7 @@ public class DefaultImageUrlDownloaderTest {
 	@Test
 	public void testDownloadImage() throws Exception {
 		byte[] image = this.imageUrlDownloader.downloadImageAsByteArr(
-				"http://www.dienstleistungen-24.net/export/0d83ce58348272a7c1c8d7daebbe3.jpg"
+				"http://www.gonola.com/images/Grits.jpg"
 		);
 		Assert.assertNotNull(image);
 		Assert.assertTrue(image.length > 0);

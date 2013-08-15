@@ -21,16 +21,11 @@ package de.behrfriedapp.webshop.server.web;
  */
 public class DeGImageSearchUrlCreator implements GImageSearchUrlCreator {
 
-	private final static String URL_1 =
-			"https://www.google.com/search?safe=off&qscrl=1&site=imghp" +
-			"&tbm=isch&source=hp&biw=1600&bih=788&q=";
-	private final static String URL_2 =
-			"&oq=fein" +
-			"&gs_l=img.1.0.0l10.2801.3321.0.4639.4.4.0.0.0.0.83.324.4.4.0....0...1ac.1.25.img..0.4.323.odfTW0ebuAg";
+	private final static String URL = "http://www.bing.com/images/search?q=";
 
 
 	@Override
 	public String createUrl(String searchWord) {
-		return URL_1 + searchWord.replaceAll(" ", "+") + URL_2;
+		return URL + searchWord.replaceAll(" ", "+");
 	}
 }
