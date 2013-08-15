@@ -19,8 +19,8 @@ h1 {
 
 .webshopContainer {
     width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    position: absolute;
+    left: 180px;
 }
 
 /************************************************** Suchleiste ****************************/
@@ -145,7 +145,7 @@ border-top-width: 0px;
 border-color: #F4EAD1;
 clear: both;
 position: absolute;
-left: 895px;
+left: 605px;
 }
 
 /************************************************** Detailview - Details ****************************/
@@ -190,8 +190,8 @@ margin-top: 3px;
 }
 
 .basketButton {
-width: 225px;
-margin: 5px;
+width: 200px;
+margin: 10px;
 }
 
 /************************************************** Ratingview ****************************/
@@ -206,7 +206,7 @@ border-top-width: 1px;
 border-style: solid;
 border-color: #F4EAD1;
 top: 350px;
-left: 460px;
+left: 180px;
 height: 188px;
 padding: 4px;
 }
@@ -217,7 +217,7 @@ margin-left: -20px;
 
 .rateLabel {
 position: absolute;
-left: 20px;
+left: 120px;
 top: 55px;
 }
 
