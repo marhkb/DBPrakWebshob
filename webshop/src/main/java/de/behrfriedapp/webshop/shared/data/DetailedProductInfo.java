@@ -17,8 +17,6 @@
 
 package de.behrfriedapp.webshop.shared.data;
 
-import com.google.gwt.user.client.ui.Image;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -35,9 +33,9 @@ public class DetailedProductInfo extends ShortProductInfo implements Serializabl
     public DetailedProductInfo() {
     }
 
-    public DetailedProductInfo(String name, double price, int id, String manufactor, int stock,
+    public DetailedProductInfo(String name, double price, int id, String imageData, String manufactor, int stock,
 							   List<ShortProductInfo> similiarProducts) {
-        super(name, price, id);
+        super(name, price, id, imageData);
         this.manufactor = manufactor;
         this.stock = stock;
         this.similiarProducts = similiarProducts;

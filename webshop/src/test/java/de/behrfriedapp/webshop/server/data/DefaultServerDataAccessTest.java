@@ -16,10 +16,12 @@
 
 package de.behrfriedapp.webshop.server.data;
 
+import de.behrfriedapp.webshop.server.web.ImageEnrichmentFacade;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
 import de.behrfriedapp.webshop.shared.data.WProductGroupInfo;
 import junit.framework.Assert;
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,10 +34,13 @@ import java.util.List;
 public class DefaultServerDataAccessTest {
 
 	private DefaultServerDataAccess serverDataAccess;
+	private ImageEnrichmentFacade imageEnrichmentFacade;
 
 	@Before
 	public void setUp() throws Exception {
-		this.serverDataAccess = new DefaultServerDataAccess();
+		this.imageEnrichmentFacade = EasyMock.createMock(ImageEnrichmentFacade.class);
+		this.serverDataAccess = new DefaultServerDataAccess(this.imageEnrichmentFacade);
+
 	}
 
 	@After
@@ -94,8 +99,9 @@ public class DefaultServerDataAccessTest {
 	@Test
 	public void testGetDetailedProductInfo() throws Exception {
 		final DetailedProductInfo result =
-				this.serverDataAccess.getDetailedProductInfo(new ShortProductInfo("BBB Best Apple Jelly", 1.48, 1));
-
+				this.serverDataAccess.getDetailedProductInfo(
+						new ShortProductInfo("BBB Best Apple Jelly", 1.48, 1,  null)
+				);
 		Assert.assertNotNull(result);
 		Assert.assertEquals("BBB Best Apple Jelly", result.getName());
 		Assert.assertEquals(1.48, result.getPrice());

@@ -39,7 +39,7 @@ public class ProductRow extends HorizontalPanel {
 
     public ProductRow(String imageURL, String hyperlink, double price) {
         this.imgPanel = new HorizontalPanel();
-        this.productImage = new Image("/img/muffin.jpg");
+        this.productImage = new Image(imageURL);
         this.productImage.setWidth("80px");
         this.productImage.setHeight("80px");
         this.imgPanel.add(this.productImage);

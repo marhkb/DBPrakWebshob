@@ -19,7 +19,6 @@ package de.behrfriedapp.webshop.client.view;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -88,7 +87,7 @@ public class WebshopContainer extends VerticalPanel {
                                 int i = 0;
                                 for (ShortProductInfo productInfo : result) {
                                     final ShortProductInfo pInfo = productInfo;
-                                    ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
+                                    ProductRow tmpRow = new ProductRow(pInfo.getImageData(), pInfo.getName(), pInfo.getPrice());
                                     if(i%2==0) {
                                         tmpRow.setStyleName("coloredRow");
                                     } else {
@@ -134,7 +133,8 @@ public class WebshopContainer extends VerticalPanel {
                                 int i = 0;
                                 for (ShortProductInfo productInfo : result) {
                                     final ShortProductInfo pInfo = productInfo;
-                                    ProductRow tmpRow = new ProductRow(pInfo.getName(), pInfo.getName(), pInfo.getPrice());
+                                    ProductRow tmpRow = new ProductRow(pInfo.getImageData(), pInfo.getName(),
+																	   pInfo.getPrice());
                                     if (i % 2 == 0) {
                                         tmpRow.setStyleName("coloredRow");
                                     } else {

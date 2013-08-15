@@ -20,6 +20,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import de.behrfriedapp.webshop.server.data.DefaultServerDataAccess;
 import de.behrfriedapp.webshop.server.data.ServerDataAccess;
+import de.behrfriedapp.webshop.server.web.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +44,10 @@ public class WsModule extends AbstractModule {
 	protected void configure() {
 		this.logger.info("Configuring dependencies");
 		this.bind(ServerDataAccess.class).to(DefaultServerDataAccess.class).in(Singleton.class);
+		this.bind(GImageSearchUrlCreator.class).to(DeGImageSearchUrlCreator.class).in(Singleton.class);
+		this.bind(HttpAccess.class).to(DefaultHttpAccess.class).in(Singleton.class);
+		this.bind(GImageSearchUrlExtractor.class).to(FirstEntryGImageSearchUrlExtractor.class).in(Singleton.class);
+		this.bind(ImageUrlDownloader.class).to(DefaultImageUrlDownloader.class).in(Singleton.class);
 		this.logger.info("Configuring dependencies => Done");
 	}
 

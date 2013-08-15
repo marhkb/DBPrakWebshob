@@ -14,10 +14,13 @@ import java.net.URL;
  */
 public class DefaultImageUrlDownloader implements ImageUrlDownloader {
 
+	/**
+	 * {@link org.slf4j.Logger} for logging messages
+	 */
 	private final Logger logger = LoggerFactory.getLogger(DefaultImageUrlDownloader.class);
 
 	@Override
-	public byte[] downloadImage(String imageUrl) throws MalformedURLException {
+	public byte[] downloadImageAsByteArr(String imageUrl) throws MalformedURLException {
 		final URL url = new URL(imageUrl);
 		InputStream is = null;
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -45,5 +48,10 @@ public class DefaultImageUrlDownloader implements ImageUrlDownloader {
 			this.logger.error(e.getMessage(), e);
 		}
 		return result;
+	}
+
+	@Override
+	public String downloadImageAsString(String imageUrl) throws MalformedURLException {
+		return new String(this.downloadImageAsByteArr(imageUrl));
 	}
 }

@@ -21,5 +21,5 @@ package de.behrfriedapp.webshop.server.web;
  */
 public interface GImageSearchUrlExtractor {
 
-	String extractUrl(final String url);
+	String extractUrl(final String src);
 }

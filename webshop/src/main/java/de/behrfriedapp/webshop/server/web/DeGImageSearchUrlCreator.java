@@ -19,7 +19,7 @@ package de.behrfriedapp.webshop.server.web;
 /**
  * @author marcus
  */
-public class GermanGImageSearchUrlCreator implements GImageSearchUrlCreator {
+public class DeGImageSearchUrlCreator implements GImageSearchUrlCreator {
 
 	private final static String URL_1 =
 			"https://www.google.com/search?safe=off&qscrl=1&site=imghp" +
@@ -31,6 +31,6 @@ public class GermanGImageSearchUrlCreator implements GImageSearchUrlCreator {
 
 	@Override
 	public String createUrl(String searchWord) {
-		return URL_1 + searchWord + URL_2;
+		return URL_1 + searchWord.replaceAll(" ", "+") + URL_2;
 	}
 }
