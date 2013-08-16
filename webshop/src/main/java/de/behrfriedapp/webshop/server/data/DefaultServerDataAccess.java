@@ -25,8 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author marcus
@@ -245,17 +244,46 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 
 		final List<ShortProductInfo> result = new ArrayList<ShortProductInfo>();
 		final ResultSet rset = preparedStatement.executeQuery();
+		final List<Thread> threads = new ArrayList<Thread>();
 		while(rset.next()) {
-			result.add(
-					new ShortProductInfo(
-							rset.getString(3),
-							rset.getDouble(6),
-							rset.getInt(1),
-							this.imageEnrichmentFacade.getImageData(rset.getString(3))
+			final Thread t = new Thread() {
+				@Override
+				public void run() {
+					try {
+						this.addProduct();
+					} catch(SQLException e) {
+						logger.error(e.getMessage(), e);
+					}
+				}
 
-					)
-			);
+				private void addProduct() throws SQLException {
+					result.add(
+							new ShortProductInfo(
+									rset.getString(3),
+									rset.getDouble(6),
+									rset.getInt(1),
+									imageEnrichmentFacade.getImageData(rset.getString(3))
+
+							)
+					);
+				}
+			};
+			threads.add(t);
+			t.start();
 		}
+		for(final Thread t : threads) {
+			try {
+				t.join();
+			} catch(InterruptedException e) {
+				this.logger.error(e.getMessage(), e);
+			}
+		}
+		Collections.sort(result, new Comparator<ShortProductInfo>() {
+			@Override
+			public int compare(ShortProductInfo o1, ShortProductInfo o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
 		preparedStatement.close();
 		return result;
 	}
