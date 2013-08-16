@@ -20,6 +20,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import de.behrfriedapp.webshop.server.data.DefaultServerDataAccess;
 import de.behrfriedapp.webshop.server.data.ServerDataAccess;
+import de.behrfriedapp.webshop.server.service.DefFileContentWriter;
+import de.behrfriedapp.webshop.server.service.FileContentWriter;
 import de.behrfriedapp.webshop.server.web.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +49,8 @@ public class WsModule extends AbstractModule {
 		this.bind(GImageSearchUrlCreator.class).to(DeGImageSearchUrlCreator.class).in(Singleton.class);
 		this.bind(HttpAccess.class).to(DefaultHttpAccess.class).in(Singleton.class);
 		this.bind(GImageSearchUrlExtractor.class).to(FirstEntryGImageSearchUrlExtractor.class).in(Singleton.class);
-		this.bind(ImageUrlDownloader.class).to(DefaultImageUrlDownloader.class).in(Singleton.class);
+		this.bind(ImageUrlDownloader.class).to(MemoryImageUrlDownloader.class).in(Singleton.class);
+		this.bind(FileContentWriter.class).to(DefFileContentWriter.class).in(Singleton.class);
 		this.logger.info("Configuring dependencies => Done");
 	}
 

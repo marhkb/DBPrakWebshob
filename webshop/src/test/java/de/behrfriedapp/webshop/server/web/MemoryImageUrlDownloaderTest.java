@@ -7,13 +7,13 @@ import org.junit.Test;
 /**
  * @author marcus
  */
-public class DefaultImageUrlDownloaderTest {
+public class MemoryImageUrlDownloaderTest {
 
 	private ImageUrlDownloader imageUrlDownloader;
 
 	@Before
 	public void setUp() {
-		this.imageUrlDownloader = new DefaultImageUrlDownloader();
+		this.imageUrlDownloader = new MemoryImageUrlDownloader();
 	}
 
 	@Test

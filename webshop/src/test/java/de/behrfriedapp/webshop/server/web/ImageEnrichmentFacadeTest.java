@@ -17,7 +17,7 @@ public class ImageEnrichmentFacadeTest {
 				new DeGImageSearchUrlCreator(),
 				new DefaultHttpAccess(),
 				new FirstEntryGImageSearchUrlExtractor(),
-				new DefaultImageUrlDownloader()
+				new MemoryImageUrlDownloader()
 		);
 	}
 

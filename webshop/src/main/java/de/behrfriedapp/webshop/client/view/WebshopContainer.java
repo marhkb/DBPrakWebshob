@@ -240,16 +240,16 @@ public class WebshopContainer extends VerticalPanel {
                 }
             });
         } else {
-            WebshopContainer.this.mainService.getAllProducts(new AsyncCallback<List<ShortProductInfo>>() {
+            WebshopContainer.this.mainService.getAllProducts(new AsyncCallback<List<String>>() {
                 public void onFailure(Throwable caught) {
                     Window.alert(caught.toString());
                 }
 
-                public void onSuccess(List<ShortProductInfo> result) {
+                public void onSuccess(List<String> result) {
                     MultiWordSuggestOracle oracle = productSearchBar.getOracle();
                     oracle.clear();
-                    for (ShortProductInfo info : result) {
-                        oracle.add(info.getName());
+                    for (final String product : result) {
+                        oracle.add(product);
                     }
                 }
             });

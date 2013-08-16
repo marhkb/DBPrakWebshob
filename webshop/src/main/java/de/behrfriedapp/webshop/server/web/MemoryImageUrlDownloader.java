@@ -13,12 +13,12 @@ import java.net.URL;
 /**
  * @author marcus
  */
-public class DefaultImageUrlDownloader implements ImageUrlDownloader {
+public class MemoryImageUrlDownloader implements ImageUrlDownloader {
 
 	/**
 	 * {@link org.slf4j.Logger} for logging messages
 	 */
-	private final Logger logger = LoggerFactory.getLogger(DefaultImageUrlDownloader.class);
+	private final Logger logger = LoggerFactory.getLogger(MemoryImageUrlDownloader.class);
 
 	@Override
 	public byte[] downloadImageAsByteArr(String imageUrl) throws MalformedURLException {
@@ -39,9 +39,11 @@ public class DefaultImageUrlDownloader implements ImageUrlDownloader {
 			conn.connect();
 			is = conn.getInputStream();
 			int length;
+			this.logger.debug("Downloading image from: " + imageUrl);
 			while((length = is.read()) != -1) {
 				os.write(length);
 			}
+			this.logger.debug("Downloading image => Done!");
 		} catch(IOException e) {
 			this.logger.error(e.getMessage(), e);
 		} finally {

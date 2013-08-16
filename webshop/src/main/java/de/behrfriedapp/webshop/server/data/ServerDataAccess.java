@@ -35,7 +35,7 @@ public interface ServerDataAccess {
 
     List<ShortProductInfo> getAllGroupProducts(String searchedCategory);
 
-	List<ShortProductInfo> getAllProducts();
+	List<String> getAllProducts();
 
     List<ShortProductInfo> getAllProducts(String searchedProduct);
 

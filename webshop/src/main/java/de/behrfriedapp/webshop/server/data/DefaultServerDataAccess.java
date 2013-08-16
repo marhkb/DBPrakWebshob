@@ -17,6 +17,8 @@
 package de.behrfriedapp.webshop.server.data;
 
 import com.google.inject.Inject;
+import de.behrfriedapp.webshop.server.service.FileContentWriteException;
+import de.behrfriedapp.webshop.server.service.FileContentWriter;
 import de.behrfriedapp.webshop.server.web.ImageEnrichmentFacade;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
@@ -24,6 +26,7 @@ import de.behrfriedapp.webshop.shared.data.WProductGroupInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,9 @@ import java.util.List;
  */
 public class DefaultServerDataAccess implements ServerDataAccess {
 
+	private final static boolean DEBUG = true;
+
+	private final static String IMG_DIR = "img/";
 	private final static String CONNECTION_URL = "jdbc:oracle:thin:@//134.106.56.57:1521/pw2.offis.uni-oldenburg.de";
 	private final static String USER = "uebung01";
 	private final static String PASSW = "geheim";
@@ -40,10 +46,13 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	private Connection conn;
 
 	private final ImageEnrichmentFacade imageEnrichmentFacade;
+	private final FileContentWriter fileContentWriter;
 
 	@Inject
-	public DefaultServerDataAccess(final ImageEnrichmentFacade imageEnrichmentFacade) {
+	public DefaultServerDataAccess(final ImageEnrichmentFacade imageEnrichmentFacade,
+								   final FileContentWriter fileContentWriter) {
 		this.imageEnrichmentFacade = imageEnrichmentFacade;
+		this.fileContentWriter = fileContentWriter;
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			this.conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSW);
@@ -98,13 +107,20 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		return result;
 	}
 
-	public List<ShortProductInfo> getAllProducts() {
-		List<ShortProductInfo> result = null;
+	public List<String> getAllProducts() {
+		List<String> result = new ArrayList<String>();
+		if(DEBUG) {
+			return result;
+		}
 		try {
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT * FROM PRODUKT"
 			);
-			result = this.getProducts(stmt);
+			final ResultSet rset = stmt.executeQuery();
+			while(rset.next()) {
+				result.add(rset.getString(3));
+			}
+			stmt.close();
 		} catch(Exception e) {
 			this.logger.error(e.getMessage(), e);
 		}
@@ -118,7 +134,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 					"SELECT * FROM PRODUKT WHERE ROWNUM<=?"
 			);
 			stmt.setInt(1, limit);
-			result = this.getProducts(stmt);
+			result = this.getShortProductInfos(stmt);
 		} catch(Exception e) {
 			this.logger.error(e.getMessage(), e);
 		}
@@ -132,7 +148,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 					"SELECT * FROM PRODUKT WHERE W_GRUPPE=?"
 			);
 			stmt.setInt(1, wGroup.getGroupId());
-			result = this.getProducts(stmt);
+			result = this.getShortProductInfos(stmt);
 		} catch(Exception e) {
 			this.logger.error(e.getMessage(), e);
 		}
@@ -147,7 +163,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 					"WHERE REGEXP_LIKE (BEZEICHNUNG, ?, 'i')"
 			);
 			stmt.setString(1, searchedProduct);
-			result = this.getProducts(stmt);
+			result = this.getShortProductInfos(stmt);
 		} catch(Exception e) {
 			this.logger.error(e.getMessage(), e);
 		}
@@ -166,7 +182,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			);
 			stmt.setString(1, searchedCategory);
 			stmt.setString(2, searchedProduct);
-			result = this.getProducts(stmt);
+			result = this.getShortProductInfos(stmt);
 		} catch(Exception e) {
 			this.logger.error(e.getMessage(), e);
 		}
@@ -183,7 +199,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 					"AND W_GRUPPE.BEZEICHNUNG=? "
 			);
 			stmt.setString(1, searchedCategory);
-			result = this.getProducts(stmt);
+			result = this.getShortProductInfos(stmt);
 		} catch(Exception e) {
 			this.logger.error(e.getMessage(), e);
 		}
@@ -199,25 +215,35 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			);
 			stmt.setInt(1, wGroup.getGroupId());
 			stmt.setInt(2, limit);
-			result = this.getProducts(stmt);
+			result = this.getShortProductInfos(stmt);
 		} catch(Exception e) {
 			this.logger.error(e.getMessage(), e);
 		}
 		return result;
 	}
 
-	private List<ShortProductInfo> getProducts(final PreparedStatement preparedStatement) throws
+	private List<ShortProductInfo> getShortProductInfos(final PreparedStatement preparedStatement) throws
 			SQLException {
 
 		final List<ShortProductInfo> result = new ArrayList<ShortProductInfo>();
 		final ResultSet rset = preparedStatement.executeQuery();
 		while(rset.next()) {
+			if(new File(IMG_DIR + rset.getInt(1)).exists()) {
+
+			}
+			final String imageData = this.imageEnrichmentFacade.getImageData(rset.getString(3));
+			try {
+				this.fileContentWriter.write(imageData, IMG_DIR + rset.getInt(1) + ".jpg");
+			} catch(FileContentWriteException e) {
+				this.logger.error(e.getMessage(), e);
+			}
 			result.add(
 					new ShortProductInfo(
 							rset.getString(3),
 							rset.getDouble(6),
 							rset.getInt(1),
-							this.imageEnrichmentFacade.getImageData(rset.getString(3))
+							IMG_DIR + rset.getInt(1) + ".jpg"
+
 					)
 			);
 		}
