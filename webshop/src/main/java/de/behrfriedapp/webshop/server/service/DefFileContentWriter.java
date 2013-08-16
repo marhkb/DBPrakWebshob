@@ -45,6 +45,14 @@ public class DefFileContentWriter implements FileContentWriter {
 
 		this.logger.debug("Write content\n" + content + "\nto '" + filePath + "'");
 
+		this.write(content.getBytes(), filePath);
+	}
+
+	@Override
+	public void write(byte[] content, String filePath) throws FileContentWriteException {
+
+		this.logger.debug("Write content\n" + content + "\nto '" + filePath + "'");
+
 		FileOutputStream fileOutputStream = null;
 		DataOutputStream dataOutputStream = null;
 		try {
@@ -57,7 +65,7 @@ public class DefFileContentWriter implements FileContentWriter {
 
 			fileOutputStream = new FileOutputStream(filePath);
 			dataOutputStream = new DataOutputStream(fileOutputStream);
-			dataOutputStream.write(content.getBytes());
+			dataOutputStream.write(content);
 		} catch(final IOException e) {
 			this.logger.error(e.getMessage(), e);
 		} finally {

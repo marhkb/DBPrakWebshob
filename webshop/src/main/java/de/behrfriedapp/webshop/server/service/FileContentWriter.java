@@ -39,6 +39,19 @@ public interface FileContentWriter {
 	void write(String content, String filePath) throws FileContentWriteException;
 
 	/**
+	 * Writes the passed content to the passed file path. If the path does not
+	 * exist it will be created.
+	 *
+	 * @param content
+	 *            the content to write to the file
+	 * @param filePath
+	 *            the path to file to write
+	 * @throws FileContentWriteException
+	 *             if something unexpected happened
+	 */
+	void write(byte[] content, String filePath) throws FileContentWriteException;
+
+	/**
 	 * Creates a directory at the passed path. If there is already a directory
 	 * it will be overwritten.
 	 *

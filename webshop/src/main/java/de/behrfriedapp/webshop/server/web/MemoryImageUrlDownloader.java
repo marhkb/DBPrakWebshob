@@ -1,5 +1,7 @@
 package de.behrfriedapp.webshop.server.web;
 
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +21,7 @@ public class MemoryImageUrlDownloader implements ImageUrlDownloader {
 	 * {@link org.slf4j.Logger} for logging messages
 	 */
 	private final Logger logger = LoggerFactory.getLogger(MemoryImageUrlDownloader.class);
+
 
 	@Override
 	public byte[] downloadImageAsByteArr(String imageUrl) throws MalformedURLException {
@@ -66,6 +69,9 @@ public class MemoryImageUrlDownloader implements ImageUrlDownloader {
 
 	@Override
 	public String downloadImageAsString(String imageUrl) throws MalformedURLException {
-		return new String(this.downloadImageAsByteArr(imageUrl));
+		final String[] strs = imageUrl.split("\\.");
+		return "data:image/" + strs[strs.length - 1] + " ;base64," + Base64.encode(
+				this.downloadImageAsByteArr(imageUrl)
+		);
 	}
 }

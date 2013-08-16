@@ -17,7 +17,6 @@
 package de.behrfriedapp.webshop.server.data;
 
 import com.google.inject.Inject;
-import de.behrfriedapp.webshop.server.service.FileContentWriteException;
 import de.behrfriedapp.webshop.server.service.FileContentWriter;
 import de.behrfriedapp.webshop.server.web.ImageEnrichmentFacade;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
@@ -36,17 +35,15 @@ import java.util.List;
  */
 public class DefaultServerDataAccess implements ServerDataAccess {
 
-	private final static boolean DEBUG = true;
-
+	private final static boolean DEBUG = false;
 	private final static String IMG_DIR = "img/";
 	private final static String CONNECTION_URL = "jdbc:oracle:thin:@//134.106.56.57:1521/pw2.offis.uni-oldenburg.de";
 	private final static String USER = "uebung01";
 	private final static String PASSW = "geheim";
 	private final Logger logger = LoggerFactory.getLogger(DefaultServerDataAccess.class);
-	private Connection conn;
-
 	private final ImageEnrichmentFacade imageEnrichmentFacade;
 	private final FileContentWriter fileContentWriter;
+	private Connection conn;
 
 	@Inject
 	public DefaultServerDataAccess(final ImageEnrichmentFacade imageEnrichmentFacade,
@@ -231,18 +228,20 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			if(new File(IMG_DIR + rset.getInt(1)).exists()) {
 
 			}
-			final String imageData = this.imageEnrichmentFacade.getImageData(rset.getString(3));
-			try {
-				this.fileContentWriter.write(imageData, IMG_DIR + rset.getInt(1) + ".jpg");
-			} catch(FileContentWriteException e) {
-				this.logger.error(e.getMessage(), e);
-			}
+//			final byte[] imageData = this.imageEnrichmentFacade.getImageData(rset.getString(3));
+//			if(imageData != null) {
+//				try {
+//					this.fileContentWriter.write(imageData, IMG_DIR + rset.getInt(1) + ".jpg");
+//				} catch(FileContentWriteException e) {
+//					this.logger.error(e.getMessage(), e);
+//				}
+//			}
 			result.add(
 					new ShortProductInfo(
 							rset.getString(3),
 							rset.getDouble(6),
 							rset.getInt(1),
-							IMG_DIR + rset.getInt(1) + ".jpg"
+							this.imageEnrichmentFacade.getImageData(rset.getString(3))
 
 					)
 			);
