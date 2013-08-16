@@ -17,7 +17,6 @@
 package de.behrfriedapp.webshop.server.data;
 
 import com.google.inject.Inject;
-import de.behrfriedapp.webshop.server.service.FileContentWriter;
 import de.behrfriedapp.webshop.server.web.ImageEnrichmentFacade;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
@@ -25,7 +24,6 @@ import de.behrfriedapp.webshop.shared.data.WProductGroupInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,28 +40,43 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	private final static String PASSW = "geheim";
 	private final Logger logger = LoggerFactory.getLogger(DefaultServerDataAccess.class);
 	private final ImageEnrichmentFacade imageEnrichmentFacade;
-	private final FileContentWriter fileContentWriter;
 	private Connection conn;
 
 	@Inject
-	public DefaultServerDataAccess(final ImageEnrichmentFacade imageEnrichmentFacade,
-								   final FileContentWriter fileContentWriter) {
+	public DefaultServerDataAccess(final ImageEnrichmentFacade imageEnrichmentFacade) {
 		this.imageEnrichmentFacade = imageEnrichmentFacade;
-		this.fileContentWriter = fileContentWriter;
+
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
+		} catch(ClassNotFoundException e) {
+			this.logger.error(e.getMessage(), e);
+		}
+		this.connect();
+	}
+
+	private void connect() {
+		try {
 			this.conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSW);
 			this.conn.setAutoCommit(false);
 		} catch(SQLException e) {
 			logger.error(e.getMessage(), e);
-		} catch(ClassNotFoundException e) {
-			logger.error(e.getMessage(), e);
+		}
+	}
+
+	private void attemptReconnect() throws SQLException {
+		if(this.conn == null || this.conn.isClosed()) {
+			synchronized(this) {
+				if(this.conn == null || this.conn.isClosed()) {
+					this.connect();
+				}
+			}
 		}
 	}
 
 	public List<WProductGroupInfo> getAllProductGroups() {
 		List<WProductGroupInfo> result = null;
 		try {
+			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT W_GRUPPE.ID, W_GRUPPE.BEZEICHNUNG, W_KATEGORIE.ID, W_KATEGORIE.BEZEICHNUNG " +
 					"FROM W_GRUPPE, W_KATEGORIE " +
@@ -79,6 +92,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	public List<WProductGroupInfo> getAllProductGroups(int limit) {
 		List<WProductGroupInfo> result = null;
 		try {
+			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT W_GRUPPE.ID, W_GRUPPE.BEZEICHNUNG, W_KATEGORIE.ID, W_KATEGORIE.BEZEICHNUNG " +
 					"FROM W_KATEGORIE " +
@@ -110,12 +124,13 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			return result;
 		}
 		try {
+			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT * FROM PRODUKT"
+					"SELECT DISTINCT BEZEICHNUNG FROM PRODUKT"
 			);
 			final ResultSet rset = stmt.executeQuery();
 			while(rset.next()) {
-				result.add(rset.getString(3));
+				result.add(rset.getString(1));
 			}
 			stmt.close();
 		} catch(Exception e) {
@@ -127,6 +142,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	public List<ShortProductInfo> getAllProducts(int limit) {
 		List<ShortProductInfo> result = null;
 		try {
+			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT * FROM PRODUKT WHERE ROWNUM<=?"
 			);
@@ -141,8 +157,9 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	public List<ShortProductInfo> getAllProducts(WProductGroupInfo wGroup) {
 		List<ShortProductInfo> result = null;
 		try {
+			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT * FROM PRODUKT WHERE W_GRUPPE=?"
+					"SELECT DISTINCT * FROM PRODUKT WHERE W_GRUPPE=?"
 			);
 			stmt.setInt(1, wGroup.getGroupId());
 			result = this.getShortProductInfos(stmt);
@@ -155,8 +172,9 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	public List<ShortProductInfo> getAllProducts(String searchedProduct) {
 		List<ShortProductInfo> result = null;
 		try {
+			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT * FROM PRODUKT " +
+					"SELECT DISTINCT * FROM PRODUKT " +
 					"WHERE REGEXP_LIKE (BEZEICHNUNG, ?, 'i')"
 			);
 			stmt.setString(1, searchedProduct);
@@ -170,6 +188,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	public List<ShortProductInfo> getAllGroupProducts(String searchedCategory, String searchedProduct) {
 		List<ShortProductInfo> result = null;
 		try {
+			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT * FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
 					"WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
@@ -189,6 +208,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	public List<ShortProductInfo> getAllGroupProducts(String searchedCategory) {
 		List<ShortProductInfo> result = null;
 		try {
+			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT * FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
 					"WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
@@ -206,6 +226,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	public List<ShortProductInfo> getAllProducts(WProductGroupInfo wGroup, int limit) {
 		List<ShortProductInfo> result = null;
 		try {
+			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT * FROM PRODUKT " +
 					"WHERE W_GRUPPE=? AND ROWNUM<=?"
@@ -225,17 +246,6 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		final List<ShortProductInfo> result = new ArrayList<ShortProductInfo>();
 		final ResultSet rset = preparedStatement.executeQuery();
 		while(rset.next()) {
-			if(new File(IMG_DIR + rset.getInt(1)).exists()) {
-
-			}
-//			final byte[] imageData = this.imageEnrichmentFacade.getImageData(rset.getString(3));
-//			if(imageData != null) {
-//				try {
-//					this.fileContentWriter.write(imageData, IMG_DIR + rset.getInt(1) + ".jpg");
-//				} catch(FileContentWriteException e) {
-//					this.logger.error(e.getMessage(), e);
-//				}
-//			}
 			result.add(
 					new ShortProductInfo(
 							rset.getString(3),
@@ -253,6 +263,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 	public DetailedProductInfo getDetailedProductInfo(ShortProductInfo shortProductInfo) {
 		DetailedProductInfo result = null;
 		try {
+			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT HERSTELLER.NAME, PRODUKTIMBESTAND.ANZAHL " +
 					"FROM PRODUKT, HERSTELLER, PRODUKTIMBESTAND " +

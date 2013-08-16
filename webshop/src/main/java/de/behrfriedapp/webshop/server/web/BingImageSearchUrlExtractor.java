@@ -19,26 +19,28 @@ package de.behrfriedapp.webshop.server.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * @author marcus
  */
-public class FirstEntryGImageSearchUrlExtractor implements GImageSearchUrlExtractor {
+public class BingImageSearchUrlExtractor implements ImageSearchUrlExtractor {
 
 	private final static String PATTERN_TO_COMPILE = "imgurl:&quot;http://[\\S]+?\\.(jpg|jpeg|png|bmp|gif)";
 	/**
 	 * {@link org.slf4j.Logger} for logging messages
 	 */
-	private final Logger logger = LoggerFactory.getLogger(FirstEntryGImageSearchUrlExtractor.class);
+	private final Logger logger = LoggerFactory.getLogger(BingImageSearchUrlExtractor.class);
 	/**
 	 * the regex to validate compiled lazily
 	 */
 	private Pattern pattern;
 
 	@Override
-	public String extractUrl(String src) {
+	public List<String> extractUrls(String src) {
 		if(src == null) {
 			throw new IllegalArgumentException("src == null");
 		}
@@ -46,10 +48,13 @@ public class FirstEntryGImageSearchUrlExtractor implements GImageSearchUrlExtrac
 			this.logger.debug("Compiling pattern: " + PATTERN_TO_COMPILE);
 			this.pattern = Pattern.compile(PATTERN_TO_COMPILE);
 		}
+
+		final List<String> result = new ArrayList<String>();
+
 		final Matcher matcher = pattern.matcher(src);
-		if(matcher.find()) {
-			return matcher.group().substring(13);
+		while(matcher.find()) {
+			result.add(matcher.group().substring(13));
 		}
-		return null;
+		return result;
 	}
 }

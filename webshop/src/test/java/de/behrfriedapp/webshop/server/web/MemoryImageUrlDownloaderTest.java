@@ -9,16 +9,16 @@ import org.junit.Test;
  */
 public class MemoryImageUrlDownloaderTest {
 
-	private ImageUrlDownloader imageUrlDownloader;
+	private ImageDownloader imageDownloader;
 
 	@Before
 	public void setUp() {
-		this.imageUrlDownloader = new MemoryImageUrlDownloader();
+		this.imageDownloader = new MemoryImageDownloader();
 	}
 
 	@Test
 	public void testDownloadImage() throws Exception {
-		byte[] image = this.imageUrlDownloader.downloadImageAsByteArr(
+		byte[] image = this.imageDownloader.downloadImageAsByteArr(
 				"http://www.gonola.com/images/Grits.jpg"
 		);
 		Assert.assertNotNull(image);

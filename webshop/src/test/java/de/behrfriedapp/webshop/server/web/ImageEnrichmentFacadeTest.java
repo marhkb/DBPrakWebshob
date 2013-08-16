@@ -14,10 +14,10 @@ public class ImageEnrichmentFacadeTest {
 	@Before
 	public void setUp() throws Exception {
 		this.imageEnrichmentFacade = new ImageEnrichmentFacade(
-				new DeGImageSearchUrlCreator(),
+				new BingImageSearchUrlCreator(),
 				new DefaultHttpAccess(),
-				new FirstEntryGImageSearchUrlExtractor(),
-				new MemoryImageUrlDownloader()
+				new BingImageSearchUrlExtractor(),
+				new MemoryImageDownloader()
 		);
 	}
 

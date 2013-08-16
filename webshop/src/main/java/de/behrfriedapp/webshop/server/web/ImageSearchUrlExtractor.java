@@ -16,16 +16,12 @@
 
 package de.behrfriedapp.webshop.server.web;
 
+import java.util.List;
+
 /**
  * @author marcus
  */
-public class DeGImageSearchUrlCreator implements GImageSearchUrlCreator {
+public interface ImageSearchUrlExtractor {
 
-	private final static String URL = "http://www.bing.com/images/search?q=";
-
-
-	@Override
-	public String createUrl(String searchWord) {
-		return URL + searchWord.replaceAll(" ", "+");
-	}
+	List<String> extractUrls(final String src);
 }

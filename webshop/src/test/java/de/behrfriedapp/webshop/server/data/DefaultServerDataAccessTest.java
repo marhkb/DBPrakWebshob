@@ -66,7 +66,7 @@ public class DefaultServerDataAccessTest {
 
 	@Test
 	public void testGetAllProducts() throws Exception {
-		final List<ShortProductInfo> result = this.serverDataAccess.getAllProducts();
+		final List<String> result = this.serverDataAccess.getAllProducts();
 
 		Assert.assertNotNull(result);
 		Assert.assertFalse(result.size() == 0);

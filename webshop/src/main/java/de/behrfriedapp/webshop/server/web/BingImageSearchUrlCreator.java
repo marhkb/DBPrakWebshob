@@ -19,7 +19,13 @@ package de.behrfriedapp.webshop.server.web;
 /**
  * @author marcus
  */
-public interface GImageSearchUrlExtractor {
+public class BingImageSearchUrlCreator implements ImageSearchUrlCreator {
 
-	String extractUrl(final String src);
+	private final static String URL = "http://www.bing.com/images/search?q=";
+
+
+	@Override
+	public String createUrl(String searchWord) {
+		return URL + searchWord.replaceAll(" ", "+");
+	}
 }

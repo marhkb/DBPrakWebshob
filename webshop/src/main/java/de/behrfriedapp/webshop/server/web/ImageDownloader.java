@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 /**
  * @author marcus
  */
-public interface ImageUrlDownloader {
+public interface ImageDownloader {
 
 	byte[] downloadImageAsByteArr(String imageUrl) throws MalformedURLException;
 

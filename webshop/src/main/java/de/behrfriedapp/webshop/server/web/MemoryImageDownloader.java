@@ -1,6 +1,5 @@
 package de.behrfriedapp.webshop.server.web;
 
-
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +14,12 @@ import java.net.URL;
 /**
  * @author marcus
  */
-public class MemoryImageUrlDownloader implements ImageUrlDownloader {
+public class MemoryImageDownloader implements ImageDownloader {
 
 	/**
 	 * {@link org.slf4j.Logger} for logging messages
 	 */
-	private final Logger logger = LoggerFactory.getLogger(MemoryImageUrlDownloader.class);
+	private final Logger logger = LoggerFactory.getLogger(MemoryImageDownloader.class);
 
 
 	@Override
@@ -28,6 +27,7 @@ public class MemoryImageUrlDownloader implements ImageUrlDownloader {
 		final URL url = new URL(imageUrl);
 		InputStream is = null;
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		byte[] result = null;
 		try {
 			final HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setDoOutput(true);
@@ -47,6 +47,7 @@ public class MemoryImageUrlDownloader implements ImageUrlDownloader {
 				os.write(length);
 			}
 			this.logger.debug("Downloading image => Done!");
+			result = os.toByteArray();
 		} catch(IOException e) {
 			this.logger.error(e.getMessage(), e);
 		} finally {
@@ -58,7 +59,7 @@ public class MemoryImageUrlDownloader implements ImageUrlDownloader {
 				}
 			}
 		}
-		final byte[] result = os.toByteArray();
+
 		try {
 			os.close();
 		} catch(IOException e) {
@@ -70,8 +71,12 @@ public class MemoryImageUrlDownloader implements ImageUrlDownloader {
 	@Override
 	public String downloadImageAsString(String imageUrl) throws MalformedURLException {
 		final String[] strs = imageUrl.split("\\.");
+		byte[] bArr = this.downloadImageAsByteArr(imageUrl);
+		if(bArr == null) {
+			return null;
+		}
 		return "data:image/" + strs[strs.length - 1] + " ;base64," + Base64.encode(
-				this.downloadImageAsByteArr(imageUrl)
+				bArr
 		);
 	}
 }

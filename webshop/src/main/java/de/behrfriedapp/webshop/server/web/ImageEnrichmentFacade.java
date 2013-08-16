@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,22 +19,20 @@ public class ImageEnrichmentFacade {
 	 * {@link org.slf4j.Logger} for logging messages
 	 */
 	private final Logger logger = LoggerFactory.getLogger(ImageEnrichmentFacade.class);
-
-	private final GImageSearchUrlCreator gImageSearchUrlCreator;
+	private final ImageSearchUrlCreator imageSearchUrlCreator;
 	private final HttpAccess httpAccess;
-	private final GImageSearchUrlExtractor gImageSearchUrlExtractor;
-	private final ImageUrlDownloader imageUrlDownloader;
-
+	private final ImageSearchUrlExtractor imageSearchUrlExtractor;
+	private final ImageDownloader imageDownloader;
 	private final Map<String, String> pictureMap = new HashMap<String, String>();
 
 	@Inject
-	public ImageEnrichmentFacade(final GImageSearchUrlCreator gImageSearchUrlCreator, final HttpAccess httpAccess,
-								 final GImageSearchUrlExtractor gImageSearchUrlExtractor,
-								 final ImageUrlDownloader imageUrlDownloader) {
-		this.gImageSearchUrlCreator = gImageSearchUrlCreator;
+	public ImageEnrichmentFacade(final ImageSearchUrlCreator imageSearchUrlCreator, final HttpAccess httpAccess,
+								 final ImageSearchUrlExtractor imageSearchUrlExtractor,
+								 final ImageDownloader imageDownloader) {
+		this.imageSearchUrlCreator = imageSearchUrlCreator;
 		this.httpAccess = httpAccess;
-		this.gImageSearchUrlExtractor = gImageSearchUrlExtractor;
-		this.imageUrlDownloader = imageUrlDownloader;
+		this.imageSearchUrlExtractor = imageSearchUrlExtractor;
+		this.imageDownloader = imageDownloader;
 	}
 
 	public String getImageData(String productName) {
@@ -41,16 +41,21 @@ public class ImageEnrichmentFacade {
 			return imageData;
 		}
 		try {
-			imageData = this.imageUrlDownloader.downloadImageAsString(
-					this.gImageSearchUrlExtractor.extractUrl(
-							this.httpAccess.getResult(
-									this.gImageSearchUrlCreator.createUrl(productName)
-							)
+			final List<String> urls = this.imageSearchUrlExtractor.extractUrls(
+					this.httpAccess.getResult(
+							this.imageSearchUrlCreator.createUrl(productName)
 					)
 			);
+			final Iterator<String> urlsIt = urls.iterator();
+			while(imageData == null && urlsIt.hasNext()) {
+				imageData = this.imageDownloader.downloadImageAsString(
+						urlsIt.next()
+				);
+			}
 		} catch(MalformedURLException e) {
 			this.logger.error(e.getMessage(), e);
 		}
+		this.pictureMap.put(productName, imageData);
 		return imageData;
 	}
 }
