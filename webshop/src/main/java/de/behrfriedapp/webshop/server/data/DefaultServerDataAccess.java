@@ -79,7 +79,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT W_GRUPPE.ID, W_GRUPPE.BEZEICHNUNG, W_KATEGORIE.ID, W_KATEGORIE.BEZEICHNUNG " +
 					"FROM W_GRUPPE, W_KATEGORIE " +
-					"WHERE W_GRUPPE.ID=W_KATEGORIE.FK_GRUPPE_ID"
+					"WHERE W_GRUPPE.ID=W_KATEGORIE.FK_GRUPPE_ID AND ROWNUM<=50"
 			);
 			result = this.getProductGroups(stmt);
 		} catch(Exception e) {
@@ -125,7 +125,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT DISTINCT BEZEICHNUNG FROM PRODUKT"
+					"SELECT DISTINCT BEZEICHNUNG FROM PRODUKT AND ROWNUM<=50"
 			);
 			final ResultSet rset = stmt.executeQuery();
 			while(rset.next()) {
@@ -158,7 +158,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT DISTINCT * FROM PRODUKT WHERE W_GRUPPE=?"
+					"SELECT DISTINCT * FROM PRODUKT WHERE W_GRUPPE=? AND ROWNUM<=50"
 			);
 			stmt.setInt(1, wGroup.getGroupId());
 			result = this.getShortProductInfos(stmt);
@@ -174,7 +174,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT DISTINCT * FROM PRODUKT " +
-					"WHERE REGEXP_LIKE (BEZEICHNUNG, ?, 'i')"
+					"WHERE REGEXP_LIKE (BEZEICHNUNG, ?, 'i') AND ROWNUM<=50"
 			);
 			stmt.setString(1, searchedProduct);
 			result = this.getShortProductInfos(stmt);
@@ -193,7 +193,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 					"WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
 					"AND W_KATEGORIE.FK_GRUPPE_ID=W_GRUPPE.ID " +
 					"AND W_GRUPPE.BEZEICHNUNG=? " +
-					"AND REGEXP_LIKE (PRODUKT.BEZEICHNUNG, ?, 'i')"
+					"AND REGEXP_LIKE (PRODUKT.BEZEICHNUNG, ?, 'i') AND ROWNUM<=50"
 			);
 			stmt.setString(1, searchedCategory);
 			stmt.setString(2, searchedProduct);
@@ -212,7 +212,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 					"SELECT * FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
 					"WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
 					"AND W_KATEGORIE.FK_GRUPPE_ID=W_GRUPPE.ID " +
-					"AND W_GRUPPE.BEZEICHNUNG=? "
+					"AND W_GRUPPE.BEZEICHNUNG=?  AND ROWNUM<=50"
 			);
 			stmt.setString(1, searchedCategory);
 			result = this.getShortProductInfos(stmt);
@@ -295,7 +295,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT HERSTELLER.NAME, PRODUKTIMBESTAND.ANZAHL " +
 					"FROM PRODUKT, HERSTELLER, PRODUKTIMBESTAND " +
-					"WHERE PRODUKT.P_ID=? AND PRODUKT.HERSTELLER=HERSTELLER.ID AND PRODUKTIMBESTAND.PRODUKT=?"
+					"WHERE PRODUKT.P_ID=? AND PRODUKT.HERSTELLER=HERSTELLER.ID AND PRODUKTIMBESTAND.PRODUKT=? AND ROWNUM<=50"
 			);
 			stmt.setInt(1, shortProductInfo.getId());
 			stmt.setInt(2, shortProductInfo.getId());
