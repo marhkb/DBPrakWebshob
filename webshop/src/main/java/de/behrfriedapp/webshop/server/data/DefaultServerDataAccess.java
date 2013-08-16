@@ -25,7 +25,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author marcus
@@ -158,7 +161,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT DISTINCT * FROM PRODUKT WHERE W_GRUPPE=? AND ROWNUM<=50"
+					"SELECT DISTINCT * FROM PRODUKT WHERE W_GRUPPE=?"
 			);
 			stmt.setInt(1, wGroup.getGroupId());
 			result = this.getShortProductInfos(stmt);
@@ -174,7 +177,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT DISTINCT * FROM PRODUKT " +
-					"WHERE REGEXP_LIKE (BEZEICHNUNG, ?, 'i') AND ROWNUM<=50"
+					"WHERE REGEXP_LIKE (BEZEICHNUNG, ?, 'i')"
 			);
 			stmt.setString(1, searchedProduct);
 			result = this.getShortProductInfos(stmt);
@@ -193,7 +196,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 					"WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
 					"AND W_KATEGORIE.FK_GRUPPE_ID=W_GRUPPE.ID " +
 					"AND W_GRUPPE.BEZEICHNUNG=? " +
-					"AND REGEXP_LIKE (PRODUKT.BEZEICHNUNG, ?, 'i') AND ROWNUM<=50"
+					"AND REGEXP_LIKE (PRODUKT.BEZEICHNUNG, ?, 'i')"
 			);
 			stmt.setString(1, searchedCategory);
 			stmt.setString(2, searchedProduct);
@@ -212,7 +215,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 					"SELECT * FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
 					"WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
 					"AND W_KATEGORIE.FK_GRUPPE_ID=W_GRUPPE.ID " +
-					"AND W_GRUPPE.BEZEICHNUNG=?"
+					"AND W_GRUPPE.BEZEICHNUNG=? "
 			);
 			stmt.setString(1, searchedCategory);
 			result = this.getShortProductInfos(stmt);
@@ -244,32 +247,43 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 
 		final List<ShortProductInfo> result = new ArrayList<ShortProductInfo>();
 		final ResultSet rset = preparedStatement.executeQuery();
-		final List<Thread> threads = new ArrayList<Thread>();
+		final List<Object[]> buffer = new ArrayList<Object[]>();
 		while(rset.next()) {
-			final Thread t = new Thread() {
+			final Object[] data = new Object[3];
+			data[0] = rset.getString(3);
+			data[1] = rset.getDouble(6);
+			data[2] = rset.getInt(1);
+			buffer.add(data);
+		}
+		final List<Thread> threads = new ArrayList<Thread>();
+		for(final Object[] data : buffer) {
+			final Thread thread = new Thread() {
 				@Override
 				public void run() {
-					try {
-						this.addProduct();
-					} catch(SQLException e) {
-						logger.error(e.getMessage(), e);
-					}
-				}
-
-				private void addProduct() throws SQLException {
 					result.add(
 							new ShortProductInfo(
-									rset.getString(3),
-									rset.getDouble(6),
-									rset.getInt(1),
-									imageEnrichmentFacade.getImageData(rset.getString(3))
+									(String)data[0],
+									(Double)data[1],
+									(Integer)data[2],
+									imageEnrichmentFacade.getImageData((String)data[0])
 
 							)
 					);
 				}
 			};
-			threads.add(t);
-			t.start();
+			threads.add(thread);
+			thread.start();
+
+			if(threads.size() == 16) {
+				for(final Thread t : threads) {
+					try {
+						t.join();
+					} catch(InterruptedException e) {
+						this.logger.error(e.getMessage(), e);
+					}
+				}
+				threads.clear();
+			}
 		}
 		for(final Thread t : threads) {
 			try {

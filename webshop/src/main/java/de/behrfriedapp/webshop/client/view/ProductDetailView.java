@@ -22,7 +22,6 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
-import de.behrfriedapp.webshop.client.MainService;
 import de.behrfriedapp.webshop.client.MainServiceAsync;
 import de.behrfriedapp.webshop.client.Messages;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
@@ -126,6 +125,7 @@ public class ProductDetailView extends FlowPanel {
         this.imagePanel.setStyleName("dImagePanel");
         this.productInfoPanel.setStyleName("dProductInfoPanel");
         this.ratingView = new RatingView(detailedProductInfo);
+		this.imagePanel.add(new Image(detailedProductInfo.getImageData()));
         this.add(this.imagePanel);
         this.add(this.productInfoPanel);
         this.add(this.productSuggestionContainer);
