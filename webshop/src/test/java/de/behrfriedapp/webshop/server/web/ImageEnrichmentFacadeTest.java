@@ -24,7 +24,6 @@ public class ImageEnrichmentFacadeTest {
 	@Test
 	public void testGetImageData() throws Exception {
 		ImageDownloader.ImageData result = this.imageEnrichmentFacade.getImageData("Bier Durst");
-
 		Assert.assertNotNull(result);
 	}
 }

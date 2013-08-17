@@ -5,10 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author marcus
@@ -24,7 +22,6 @@ public class ImageEnrichmentFacade {
 	private final HttpAccess httpAccess;
 	private final ImageSearchUrlExtractor imageSearchUrlExtractor;
 	private final ImageDownloader imageDownloader;
-	private final Map<String, ImageDownloader.ImageData> pictureMap = new HashMap<String, ImageDownloader.ImageData>();
 
 	@Inject
 	public ImageEnrichmentFacade(final ImageSearchUrlCreator imageSearchUrlCreator, final HttpAccess httpAccess,
@@ -37,10 +34,7 @@ public class ImageEnrichmentFacade {
 	}
 
 	public ImageDownloader.ImageData getImageData(String productName) {
-		ImageDownloader.ImageData imageData = this.pictureMap.get(productName);
-		if(imageData != null) {
-			return imageData;
-		}
+		ImageDownloader.ImageData imageData = null;
 		try {
 			final List<String> urls = this.imageSearchUrlExtractor.extractUrls(
 					this.httpAccess.getResult(
@@ -56,7 +50,6 @@ public class ImageEnrichmentFacade {
 		} catch(MalformedURLException e) {
 			this.logger.error(e.getMessage(), e);
 		}
-		this.pictureMap.put(productName, imageData);
 		return imageData;
 	}
 }
