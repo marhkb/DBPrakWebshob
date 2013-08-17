@@ -320,7 +320,6 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		}
 
 		for(final Object[] data : buffer) {
-			this.logger.info("BLALALA");
 			final PreparedStatement stmt = this.conn.prepareStatement(
 					"UPDATE PRODUKT " +
 					"SET BILD=?, BILD_FORMAT=? " +
@@ -331,8 +330,6 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			final byte[] value = Base64.decode(imageData.getData());
 			ByteArrayInputStream bais1 = new ByteArrayInputStream(value);
 			stmt.setBinaryStream(1, bais1, value.length);
-
-			//stmt.setBlob(1, new SerialBlob(Base64.decode(imageData.getData())));
 
 			stmt.setString(2, imageData.getExt());
 			stmt.setInt(3, (Integer)data[2]);

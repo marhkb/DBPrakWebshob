@@ -39,7 +39,6 @@ public class MemoryImageDownloader implements ImageDownloader {
 			);
 			conn.setConnectTimeout(5000);
 			conn.setRequestProperty("Referer", "http://" + url.getHost());
-			this.logger.info(url.getHost());
 			conn.connect();
 			is = conn.getInputStream();
 			int length;
