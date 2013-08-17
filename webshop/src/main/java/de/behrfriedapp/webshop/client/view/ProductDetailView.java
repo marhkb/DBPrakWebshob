@@ -35,6 +35,9 @@ import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
  * To change this template use File | Settings | File Templates.
  */
 public class ProductDetailView extends FlowPanel {
+
+	private final static String RATING_IMG_WIDTH = "16px";
+
     VerticalPanel productInfoPanel, imagePanel;
     ProductSuggestionContainer productSuggestionContainer;
     Label searchedProductLabel, producerLabel, priceStringLabel, priceLabel, shippingLabel, inStockLabel, ratingLabel;
@@ -74,7 +77,23 @@ public class ProductDetailView extends FlowPanel {
         this.ratePanel.setStyleName("detRatePanel");
         this.ratingLabel = new Label(" (XX Bewertungen)");
         this.ratingLabel.setStyleName("ratingLabel");
-        this.ratePanel.add(new Label("(*)(*)(*)(*)(*)"));
+
+		Image ratingImg = new Image("img/rated.png");
+		ratingImg.setWidth(RATING_IMG_WIDTH);
+        this.ratePanel.add(ratingImg);
+		ratingImg = new Image("img/rated.png");
+		ratingImg.setWidth(RATING_IMG_WIDTH);
+		this.ratePanel.add(ratingImg);
+		ratingImg = new Image("img/rated.png");
+		ratingImg.setWidth(RATING_IMG_WIDTH);
+		this.ratePanel.add(ratingImg);
+		ratingImg = new Image("img/rated.png");
+		ratingImg.setWidth(RATING_IMG_WIDTH);
+		this.ratePanel.add(ratingImg);
+		ratingImg = new Image("img/rated.png");
+		ratingImg.setWidth(RATING_IMG_WIDTH);
+		this.ratePanel.add(ratingImg);
+
         this.ratePanel.add(this.ratingLabel);
 
         this.dummyBuyButton = new Button("In den Warenkorb legen");
@@ -125,7 +144,7 @@ public class ProductDetailView extends FlowPanel {
         this.setStyleName("productDetailView");
         this.imagePanel.setStyleName("dImagePanel");
         this.productInfoPanel.setStyleName("dProductInfoPanel");
-        this.ratingView = new RatingView(detailedProductInfo);
+        this.ratingView = new RatingView(detailedProductInfo, this.mainService);
 		this.imagePanel.add(new Image(detailedProductInfo.getImageData()));
         this.add(this.imagePanel);
         this.add(this.productInfoPanel);
