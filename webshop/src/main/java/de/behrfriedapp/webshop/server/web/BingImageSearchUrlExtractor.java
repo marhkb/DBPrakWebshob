@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  */
 public class BingImageSearchUrlExtractor implements ImageSearchUrlExtractor {
 
-	private final static String PATTERN_TO_COMPILE = "imgurl:&quot;http://[\\S]+?\\.(jpg|jpeg|png|bmp|gif)";
+	private final static String PATTERN_TO_COMPILE = "imgurl:&quot;http://[\\S]+?\\.(jpg|jpeg|png|bmp|gif)&quot;";
 	/**
 	 * {@link org.slf4j.Logger} for logging messages
 	 */
@@ -53,7 +53,8 @@ public class BingImageSearchUrlExtractor implements ImageSearchUrlExtractor {
 
 		final Matcher matcher = pattern.matcher(src);
 		while(matcher.find()) {
-			result.add(matcher.group().substring(13));
+			final String match = matcher.group();
+			result.add(match.substring(13, match.length() - 6));
 		}
 		return result;
 	}

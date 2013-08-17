@@ -98,10 +98,7 @@ public class DefaultServerDataAccessTest {
 
 	@Test
 	public void testGetDetailedProductInfo() throws Exception {
-		final DetailedProductInfo result =
-				this.serverDataAccess.getDetailedProductInfo(
-						new ShortProductInfo("BBB Best Apple Jelly", 1.48, 1,  null)
-				);
+		final DetailedProductInfo result = this.serverDataAccess.getDetailedProductInfo(1);
 		Assert.assertNotNull(result);
 		Assert.assertEquals("BBB Best Apple Jelly", result.getName());
 		Assert.assertEquals(1.48, result.getPrice());
