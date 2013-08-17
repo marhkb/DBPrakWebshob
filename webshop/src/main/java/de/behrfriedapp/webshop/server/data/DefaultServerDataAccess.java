@@ -17,6 +17,8 @@
 package de.behrfriedapp.webshop.server.data;
 
 import com.google.inject.Inject;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import de.behrfriedapp.webshop.server.web.ImageDownloader;
 import de.behrfriedapp.webshop.server.web.ImageEnrichmentFacade;
 import de.behrfriedapp.webshop.shared.data.DetailedProductInfo;
 import de.behrfriedapp.webshop.shared.data.ShortProductInfo;
@@ -24,6 +26,7 @@ import de.behrfriedapp.webshop.shared.data.WProductGroupInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -146,7 +149,9 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT * FROM PRODUKT WHERE ROWNUM<=?"
+					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT " +
+					"FROM PRODUKT " +
+					"WHERE ROWNUM<=?"
 			);
 			stmt.setInt(1, limit);
 			result = this.getShortProductInfos(stmt);
@@ -176,7 +181,8 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT DISTINCT * FROM PRODUKT " +
+					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT " +
+					"FROM PRODUKT " +
 					"WHERE REGEXP_LIKE (BEZEICHNUNG, ?, 'i')"
 			);
 			stmt.setString(1, searchedProduct);
@@ -192,7 +198,8 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT * FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
+					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT " +
+					"FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
 					"WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
 					"AND W_KATEGORIE.FK_GRUPPE_ID=W_GRUPPE.ID " +
 					"AND W_GRUPPE.BEZEICHNUNG=? " +
@@ -212,7 +219,8 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT * FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
+					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT " +
+					"FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
 					"WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
 					"AND W_KATEGORIE.FK_GRUPPE_ID=W_GRUPPE.ID " +
 					"AND W_GRUPPE.BEZEICHNUNG=? "
@@ -229,8 +237,9 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		List<ShortProductInfo> result = null;
 		try {
 			this.attemptReconnect();
-			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT * FROM PRODUKT " +
+			final PreparedStatement stmt = this.conn.prepareStatement(
+					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT " +
+					"FROM PRODUKT " +
 					"WHERE W_GRUPPE=? AND ROWNUM<=?"
 			);
 			stmt.setInt(1, wGroup.getGroupId());
@@ -249,23 +258,40 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		final ResultSet rset = preparedStatement.executeQuery();
 		final List<Object[]> buffer = new ArrayList<Object[]>();
 		while(rset.next()) {
-			final Object[] data = new Object[3];
-			data[0] = rset.getString(3);
-			data[1] = rset.getDouble(6);
+			final Object[] data = new Object[4];
+			data[0] = rset.getString(2);
+			data[1] = rset.getDouble(3);
 			data[2] = rset.getInt(1);
-			buffer.add(data);
+			final Blob blob = rset.getBlob(4);
+			if(blob != null) {
+				result.add(
+						new ShortProductInfo(
+								(String)data[0],
+								(Double)data[1],
+								(Integer)data[2],
+								ImageDownloader.ImageData.toGwtImageData(
+										Base64.encode(
+												blob.getBytes(1, (int)blob.length())
+										), rset.getString(5)
+								)
+						)
+				);
+			} else {
+				buffer.add(data);
+			}
 		}
 		final List<Thread> threads = new ArrayList<Thread>();
 		for(final Object[] data : buffer) {
 			final Thread thread = new Thread() {
 				@Override
 				public void run() {
+					data[3] = imageEnrichmentFacade.getImageData((String)data[0]);
 					result.add(
 							new ShortProductInfo(
 									(String)data[0],
 									(Double)data[1],
 									(Integer)data[2],
-									imageEnrichmentFacade.getImageData((String)data[0])
+									((ImageDownloader.ImageData)data[3]).toString()
 
 							)
 					);
@@ -292,12 +318,37 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 				this.logger.error(e.getMessage(), e);
 			}
 		}
-		Collections.sort(result, new Comparator<ShortProductInfo>() {
+
+		for(final Object[] data : buffer) {
+			this.logger.info("BLALALA");
+			final PreparedStatement stmt = this.conn.prepareStatement(
+					"UPDATE PRODUKT " +
+					"SET BILD=?, BILD_FORMAT=? " +
+					"WHERE P_ID=?"
+			);
+			final ImageDownloader.ImageData imageData = (ImageDownloader.ImageData)data[3];
+
+			final byte[] value = Base64.decode(imageData.getData());
+			ByteArrayInputStream bais1 = new ByteArrayInputStream(value);
+			stmt.setBinaryStream(1, bais1, value.length);
+
+			//stmt.setBlob(1, new SerialBlob(Base64.decode(imageData.getData())));
+
+			stmt.setString(2, imageData.getExt());
+			stmt.setInt(3, (Integer)data[2]);
+			stmt.executeUpdate();
+			stmt.close();
+		}
+		this.conn.commit();
+
+		Collections.sort(
+				result, new Comparator<ShortProductInfo>() {
 			@Override
 			public int compare(ShortProductInfo o1, ShortProductInfo o2) {
 				return o1.getName().compareTo(o2.getName());
 			}
-		});
+		}
+		);
 		preparedStatement.close();
 		return result;
 	}

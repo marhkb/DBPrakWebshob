@@ -70,14 +70,12 @@ public class MemoryImageDownloader implements ImageDownloader {
 	}
 
 	@Override
-	public String downloadImageAsString(String imageUrl) throws MalformedURLException {
+	public ImageData downloadImageAsString(String imageUrl) throws MalformedURLException {
 		final String[] strs = imageUrl.split("\\.");
 		byte[] bArr = this.downloadImageAsByteArr(imageUrl);
 		if(bArr == null) {
 			return null;
 		}
-		return "data:image/" + strs[strs.length - 1] + " ;base64," + Base64.encode(
-				bArr
-		);
+		return new ImageData(Base64.encode(bArr), strs[strs.length - 1]);
 	}
 }

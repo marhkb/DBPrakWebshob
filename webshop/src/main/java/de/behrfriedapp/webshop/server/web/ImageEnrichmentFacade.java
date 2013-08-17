@@ -15,6 +15,7 @@ import java.util.Map;
  */
 public class ImageEnrichmentFacade {
 
+
 	/**
 	 * {@link org.slf4j.Logger} for logging messages
 	 */
@@ -23,7 +24,7 @@ public class ImageEnrichmentFacade {
 	private final HttpAccess httpAccess;
 	private final ImageSearchUrlExtractor imageSearchUrlExtractor;
 	private final ImageDownloader imageDownloader;
-	private final Map<String, String> pictureMap = new HashMap<String, String>();
+	private final Map<String, ImageDownloader.ImageData> pictureMap = new HashMap<String, ImageDownloader.ImageData>();
 
 	@Inject
 	public ImageEnrichmentFacade(final ImageSearchUrlCreator imageSearchUrlCreator, final HttpAccess httpAccess,
@@ -35,8 +36,8 @@ public class ImageEnrichmentFacade {
 		this.imageDownloader = imageDownloader;
 	}
 
-	public String getImageData(String productName) {
-		String imageData = this.pictureMap.get(productName);
+	public ImageDownloader.ImageData getImageData(String productName) {
+		ImageDownloader.ImageData imageData = this.pictureMap.get(productName);
 		if(imageData != null) {
 			return imageData;
 		}
