@@ -16,7 +16,6 @@
 
 package de.behrfriedapp.webshop.client.view;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -39,7 +38,6 @@ public class ProductRow extends HorizontalPanel {
     public ProductRow() {}
 
     public ProductRow(String imageData, String hyperlink, double price) {
-		GWT.log(imageData);
 		this.imgPanel = new HorizontalPanel();
         this.productImage = new Image(imageData);
         this.productImage.setWidth("80px");
