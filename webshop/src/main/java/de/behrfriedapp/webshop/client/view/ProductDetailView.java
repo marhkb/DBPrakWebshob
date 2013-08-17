@@ -100,7 +100,8 @@ public class ProductDetailView extends FlowPanel {
                 tmpLink.addClickHandler(new ClickHandler() {
                     @Override
                     public void onClick(ClickEvent event) {
-                        ProductDetailView.this.mainService.getDetailedProductInfo(productInfo, new AsyncCallback<DetailedProductInfo>() {
+                        ProductDetailView.this.mainService.getDetailedProductInfo(productInfo.getId(),
+																				  new AsyncCallback<DetailedProductInfo>() {
                             @Override
                             public void onFailure(Throwable caught) {
                                 //To change body of implemented methods use File | Settings | File Templates.

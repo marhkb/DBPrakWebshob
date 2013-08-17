@@ -98,7 +98,8 @@ public class WebshopContainer extends VerticalPanel {
                                     tmpRow.getProductLink().addClickHandler(new ClickHandler() {
                                         @Override
                                         public void onClick(ClickEvent event) {
-                                            WebshopContainer.this.mainService.getDetailedProductInfo(pInfo, new AsyncCallback<DetailedProductInfo>() {
+                                            WebshopContainer.this.mainService.getDetailedProductInfo(pInfo.getId(),
+																									 new AsyncCallback<DetailedProductInfo>() {
                                                 @Override
                                                 public void onFailure(Throwable caught) {
                                                     //To change body of implemented methods use File | Settings | File Templates.
@@ -145,7 +146,8 @@ public class WebshopContainer extends VerticalPanel {
                                     tmpRow.getProductLink().addClickHandler(new ClickHandler() {
                                         @Override
                                         public void onClick(ClickEvent event) {
-                                            WebshopContainer.this.mainService.getDetailedProductInfo(pInfo, new AsyncCallback<DetailedProductInfo>() {
+                                            WebshopContainer.this.mainService.getDetailedProductInfo(pInfo.getId(),
+																									 new AsyncCallback<DetailedProductInfo>() {
                                                 @Override
                                                 public void onFailure(Throwable caught) {
                                                     //To change body of implemented methods use File | Settings | File Templates.

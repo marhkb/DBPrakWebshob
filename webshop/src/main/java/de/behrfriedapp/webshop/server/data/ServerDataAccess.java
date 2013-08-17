@@ -45,5 +45,5 @@ public interface ServerDataAccess {
 
 	List<ShortProductInfo> getAllProducts(WProductGroupInfo wGroup, int limit);
 
-	DetailedProductInfo getDetailedProductInfo(ShortProductInfo shortProductInfo);
+	DetailedProductInfo getDetailedProductInfo(int p_id);
 }
