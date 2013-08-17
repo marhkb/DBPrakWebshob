@@ -47,6 +47,7 @@ public class ProductDetailView extends FlowPanel {
     Messages messages;
     HorizontalPanel pricePanel, ratePanel;
     RatingView ratingView;
+    Image productImage;
 
     public ProductDetailView(DetailedProductInfo detailedProductInfo, Messages messages, MainServiceAsync mainService, VerticalPanel panel) {
         this.imagePanel = new VerticalPanel();
@@ -145,7 +146,8 @@ public class ProductDetailView extends FlowPanel {
         this.imagePanel.setStyleName("dImagePanel");
         this.productInfoPanel.setStyleName("dProductInfoPanel");
         this.ratingView = new RatingView(detailedProductInfo, this.mainService);
-		this.imagePanel.add(new Image(detailedProductInfo.getImageData()));
+        this.productImage.setWidth("150px");
+		this.imagePanel.add(this.productImage);
         this.add(this.imagePanel);
         this.add(this.productInfoPanel);
         this.add(this.productSuggestionContainer);
