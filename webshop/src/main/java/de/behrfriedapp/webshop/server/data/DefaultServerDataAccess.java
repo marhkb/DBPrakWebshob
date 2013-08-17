@@ -350,26 +350,33 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		return result;
 	}
 
-	public DetailedProductInfo getDetailedProductInfo(ShortProductInfo shortProductInfo) {
+	public DetailedProductInfo getDetailedProductInfo(int pId) {
 		DetailedProductInfo result = null;
 		try {
 			this.attemptReconnect();
-			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT HERSTELLER.NAME, PRODUKTIMBESTAND.ANZAHL " +
+			final PreparedStatement stmt = this.conn.prepareStatement(
+					"SELECT PRODUKT.BEZEICHNUNG, PRODUKT.PREIS, PRODUKT.P_ID, PRODUKT.BILD, " +
+					"PRODUKT.BILD_FORMAT, HERSTELLER.NAME, PRODUKTIMBESTAND.ANZAHL " +
 					"FROM PRODUKT, HERSTELLER, PRODUKTIMBESTAND " +
 					"WHERE PRODUKT.P_ID=? AND PRODUKT.HERSTELLER=HERSTELLER.ID AND PRODUKTIMBESTAND.PRODUKT=?"
 			);
-			stmt.setInt(1, shortProductInfo.getId());
-			stmt.setInt(2, shortProductInfo.getId());
+			stmt.setInt(1, pId);
+			stmt.setInt(2, pId);
 			final ResultSet rset = stmt.executeQuery();
 			rset.next();
+
+			final Blob blob = rset.getBlob(4);
 			result = new DetailedProductInfo(
-					shortProductInfo.getName(),
-					shortProductInfo.getPrice(),
-					shortProductInfo.getId(),
-					shortProductInfo.getImageData(),
 					rset.getString(1),
-					rset.getInt(2),
+					rset.getDouble(2),
+					rset.getInt(3),
+					ImageDownloader.ImageData.toGwtImageData(
+							Base64.encode(
+									blob.getBytes(1, (int)blob.length())
+							), rset.getString(5)
+					),
+					rset.getString(6),
+					rset.getInt(7),
 					null
 			);
 			stmt.close();

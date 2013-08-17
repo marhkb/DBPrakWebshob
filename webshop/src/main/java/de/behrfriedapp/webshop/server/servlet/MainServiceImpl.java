@@ -77,7 +77,7 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		return this.serverDataAccess.getAllProducts(wCategory, limit);
 	}
 
-	public DetailedProductInfo getDetailedProductInfo(ShortProductInfo shortProductInfo) {
-		return this.serverDataAccess.getDetailedProductInfo(shortProductInfo);
+	public DetailedProductInfo getDetailedProductInfo(int pId) {
+		return this.serverDataAccess.getDetailedProductInfo(pId);
 	}
 }
