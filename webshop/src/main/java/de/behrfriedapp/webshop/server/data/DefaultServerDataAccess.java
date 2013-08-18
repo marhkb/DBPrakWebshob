@@ -166,7 +166,8 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT DISTINCT * FROM PRODUKT WHERE W_GRUPPE=?"
+					"SELECT DISTINCT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT, BEWERTUNG " +
+					"FROM PRODUKT WHERE W_GRUPPE=?"
 			);
 			stmt.setInt(1, wGroup.getGroupId());
 			result = this.getShortProductInfos(stmt);
@@ -181,7 +182,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT " +
+					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT, BEWERTUNG " +
 					"FROM PRODUKT " +
 					"WHERE REGEXP_LIKE (BEZEICHNUNG, ?, 'i')"
 			);
@@ -198,7 +199,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT " +
+					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT, BEWERTUNG " +
 					"FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
 					"WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
 					"AND W_KATEGORIE.FK_GRUPPE_ID=W_GRUPPE.ID " +
@@ -219,7 +220,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT " +
+					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT, BEWERTUNG " +
 					"FROM PRODUKT, W_KATEGORIE, W_GRUPPE " +
 					"WHERE W_KATEGORIE.ID=PRODUKT.W_KATEGORIE " +
 					"AND W_KATEGORIE.FK_GRUPPE_ID=W_GRUPPE.ID " +
@@ -238,7 +239,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		try {
 			this.attemptReconnect();
 			final PreparedStatement stmt = this.conn.prepareStatement(
-					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT " +
+					"SELECT P_ID, BEZEICHNUNG, PREIS, BILD, BILD_FORMAT, BEWERTUNG " +
 					"FROM PRODUKT " +
 					"WHERE W_GRUPPE=? AND ROWNUM<=?"
 			);
@@ -258,10 +259,11 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 		final ResultSet rset = preparedStatement.executeQuery();
 		final List<Object[]> buffer = new ArrayList<Object[]>();
 		while(rset.next()) {
-			final Object[] data = new Object[4];
+			final Object[] data = new Object[5];
 			data[0] = rset.getString(2);
 			data[1] = rset.getDouble(3);
 			data[2] = rset.getInt(1);
+			data[4] = rset.getDouble(6);
 			final Blob blob = rset.getBlob(4);
 			if(blob != null) {
 				result.add(
@@ -273,7 +275,8 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 										Base64.encode(
 												blob.getBytes(1, (int)blob.length())
 										), rset.getString(5)
-								)
+								),
+								(Double)data[4]
 						)
 				);
 			} else {
@@ -291,8 +294,8 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 									(String)data[0],
 									(Double)data[1],
 									(Integer)data[2],
-									((ImageDownloader.ImageData)data[3]).toString()
-
+									((ImageDownloader.ImageData)data[3]).toString(),
+									(Double)data[4]
 							)
 					);
 				}
@@ -356,7 +359,7 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			this.attemptReconnect();
 			final PreparedStatement stmt = this.conn.prepareStatement(
 					"SELECT PRODUKT.BEZEICHNUNG, PRODUKT.PREIS, PRODUKT.P_ID, PRODUKT.BILD, " +
-					"PRODUKT.BILD_FORMAT, HERSTELLER.NAME, PRODUKTIMBESTAND.ANZAHL " +
+					"PRODUKT.BILD_FORMAT, PRODUKT.BEWERTUNG, HERSTELLER.NAME, PRODUKTIMBESTAND.ANZAHL " +
 					"FROM PRODUKT, HERSTELLER, PRODUKTIMBESTAND " +
 					"WHERE PRODUKT.P_ID=? AND PRODUKT.HERSTELLER=HERSTELLER.ID AND PRODUKTIMBESTAND.PRODUKT=?"
 			);
@@ -375,8 +378,9 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 									blob.getBytes(1, (int)blob.length())
 							), rset.getString(5)
 					),
-					rset.getString(6),
-					rset.getInt(7),
+					rset.getDouble(6),
+					rset.getString(7),
+					rset.getInt(8),
 					null
 			);
 			stmt.close();
@@ -384,5 +388,38 @@ public class DefaultServerDataAccess implements ServerDataAccess {
 			this.logger.error(e.getMessage(), e);
 		}
 		return result;
+	}
+
+	@Override
+	public void rateProduct(int kId, int pId, int rating, String text) {
+		try {
+			this.attemptReconnect();
+			final PreparedStatement stmt = this.conn.prepareStatement(
+					"MERGE " +
+					"    INTO PRODUKTBEWERTUNG tgt " +
+					"    USING DUAL " +
+					"    ON (tgt.FK_KUNDE_ID = ? AND tgt.FK_PRODUKT_ID = ?) " +
+					"    WHEN MATCHED THEN " +
+					"      UPDATE SET tgt.BEWERTUNG = ?, tgt.BESCHREIBUNG = ? " +
+					"    WHEN NOT MATCHED THEN " +
+					"      INSERT VALUES ( ?, ?, ?, ?)"
+			);
+			stmt.setInt(1, kId);
+			stmt.setInt(2, pId);
+			stmt.setInt(3, rating);
+			stmt.setString(4, text);
+
+			stmt.setInt(5, kId);
+			stmt.setInt(6, pId);
+			stmt.setInt(7, rating);
+			stmt.setString(8, text);
+
+			stmt.execute();
+			stmt.close();
+
+			this.conn.commit();
+		} catch(SQLException e) {
+			this.logger.error(e.getMessage(), e);
+		}
 	}
 }

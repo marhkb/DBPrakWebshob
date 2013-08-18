@@ -46,4 +46,6 @@ public interface ServerDataAccess {
 	List<ShortProductInfo> getAllProducts(WProductGroupInfo wGroup, int limit);
 
 	DetailedProductInfo getDetailedProductInfo(int p_id);
+
+	void rateProduct(int kId, int pId, int rating, String text);
 }

@@ -80,4 +80,9 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 	public DetailedProductInfo getDetailedProductInfo(int pId) {
 		return this.serverDataAccess.getDetailedProductInfo(pId);
 	}
+
+	@Override
+	public void rateProduct(int kId, int pId, int rating, String text) {
+		this.serverDataAccess.rateProduct(kId, pId, rating, text);
+	}
 }

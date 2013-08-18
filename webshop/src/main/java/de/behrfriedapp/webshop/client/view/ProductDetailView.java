@@ -146,6 +146,7 @@ public class ProductDetailView extends FlowPanel {
         this.imagePanel.setStyleName("dImagePanel");
         this.productInfoPanel.setStyleName("dProductInfoPanel");
         this.ratingView = new RatingView(detailedProductInfo, this.mainService);
+		this.productImage = new Image(detailedProductInfo.getImageData());
         this.productImage.setWidth("150px");
 		this.imagePanel.add(this.productImage);
         this.add(this.imagePanel);

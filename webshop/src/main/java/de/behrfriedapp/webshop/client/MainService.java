@@ -49,4 +49,6 @@ public interface MainService extends RemoteService {
     List<ShortProductInfo> getAllGroupProducts(String searchedCategory, String searchedProduct);
 
     List<ShortProductInfo> getAllGroupProducts(String searchedCategory);
+
+	void rateProduct(int kId, int pId, int rating, String text);
 }
