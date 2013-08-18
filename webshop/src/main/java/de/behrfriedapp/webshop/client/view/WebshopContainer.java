@@ -87,7 +87,7 @@ public class WebshopContainer extends VerticalPanel {
                                 int i = 0;
                                 for (ShortProductInfo productInfo : result) {
                                     final ShortProductInfo pInfo = productInfo;
-                                    ProductRow tmpRow = new ProductRow(pInfo.getImageData(), pInfo.getName(), pInfo.getPrice());
+                                    ProductRow tmpRow = new ProductRow(pInfo);
                                     if(i%2==0) {
                                         tmpRow.setStyleName("coloredRow");
                                     } else {
@@ -134,8 +134,7 @@ public class WebshopContainer extends VerticalPanel {
                                 int i = 0;
                                 for (ShortProductInfo productInfo : result) {
                                     final ShortProductInfo pInfo = productInfo;
-                                    ProductRow tmpRow = new ProductRow(pInfo.getImageData(), pInfo.getName(),
-																	   pInfo.getPrice());
+                                    ProductRow tmpRow = new ProductRow(pInfo);
                                     if (i % 2 == 0) {
                                         tmpRow.setStyleName("coloredRow");
                                     } else {

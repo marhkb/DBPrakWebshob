@@ -28,16 +28,18 @@ public class ShortProductInfo implements Serializable {
 	private double price;
 	private String imageData;
 	private Double rating;
+	private int numberOfRatings;
 
 	public ShortProductInfo() {
 	}
 
-    public ShortProductInfo(String name, double price, int id, String imageData, Double rating) {
+    public ShortProductInfo(String name, double price, int id, String imageData, Double rating, int numberOfRatings) {
         this.name = name;
         this.price = price;
         this.id = id;
 		this.imageData = imageData;
 		this.rating = rating;
+		this.numberOfRatings = numberOfRatings;
     }
 
 	public int getId() {
@@ -78,5 +80,13 @@ public class ShortProductInfo implements Serializable {
 
 	public void setRating(Double rating) {
 		this.rating = rating;
+	}
+
+	public int getNumberOfRatings() {
+		return numberOfRatings;
+	}
+
+	public void setNumberOfRatings(int numberOfRatings) {
+		this.numberOfRatings = numberOfRatings;
 	}
 }

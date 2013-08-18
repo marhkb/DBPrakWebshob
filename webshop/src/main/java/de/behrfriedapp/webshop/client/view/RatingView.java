@@ -2,6 +2,8 @@ package de.behrfriedapp.webshop.client.view;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
@@ -23,7 +25,7 @@ public class RatingView extends HorizontalPanel {
 	VerticalPanel ratingPanel;
 	Label rateThisProductLabel, customerNumberLabel, starRatingLabel, ratingDescriptionLabel;
 	Button rateProductButton;
-	TextBox customerNumberTextBox;
+	IntegerBox customerNumberTextBox;
 	TextArea ratingTextArea;
 	boolean firstClick;
 	private int currentRating = 0;
@@ -50,7 +52,7 @@ public class RatingView extends HorizontalPanel {
 
 		this.ratingPanel = new VerticalPanel();
 		this.ratingPanel.setStyleName("ratingPanel");
-		this.customerNumberTextBox = new TextBox();
+		this.customerNumberTextBox = new IntegerBox();
 		this.customerNumberTextBox.setStyleName("customerNumberTextBox");
 		this.ratingTextArea = new TextArea();
 		this.ratingTextArea.setStyleName("ratingTextArea");
@@ -71,7 +73,7 @@ public class RatingView extends HorizontalPanel {
 							ratingImgs[i].setUrl("img/unrated.png");
 						}
 						currentRating = 1;
-						rateProductButton.setEnabled(true);
+						setRateProductButtonEnabled();
 					}
 				}
 		);
@@ -90,7 +92,7 @@ public class RatingView extends HorizontalPanel {
 							ratingImgs[i].setUrl("img/unrated.png");
 						}
 						currentRating = 2;
-						rateProductButton.setEnabled(true);
+						setRateProductButtonEnabled();
 					}
 				}
 		);
@@ -109,7 +111,7 @@ public class RatingView extends HorizontalPanel {
 							ratingImgs[i].setUrl("img/unrated.png");
 						}
 						currentRating = 3;
-						rateProductButton.setEnabled(true);
+						setRateProductButtonEnabled();
 					}
 				}
 		);
@@ -128,7 +130,7 @@ public class RatingView extends HorizontalPanel {
 							ratingImgs[i].setUrl("img/unrated.png");
 						}
 						currentRating = 4;
-						rateProductButton.setEnabled(true);
+						setRateProductButtonEnabled();
 					}
 				}
 		);
@@ -144,11 +146,20 @@ public class RatingView extends HorizontalPanel {
 							ratingImgs[i].setUrl("img/rated.png");
 						}
 						currentRating = 5;
-						rateProductButton.setEnabled(true);
+						setRateProductButtonEnabled();
 					}
 				}
 		);
 		starsPanel.add(ratingImgs[4]);
+
+		this.customerNumberTextBox.addValueChangeHandler(
+				new ValueChangeHandler<Integer>() {
+					@Override
+					public void onValueChange(ValueChangeEvent<Integer> event) {
+						setRateProductButtonEnabled();
+					}
+				}
+		);
 
 		this.ratingPanel.add(this.customerNumberTextBox);
 		this.ratingPanel.add(starsPanel);
@@ -164,7 +175,7 @@ public class RatingView extends HorizontalPanel {
 					@Override
 					public void onClick(ClickEvent event) {
 						mainService.rateProduct(
-								Integer.parseInt(customerNumberTextBox.getValue()), detailedProductInfo.getId(),
+								customerNumberTextBox.getValue(), detailedProductInfo.getId(),
 								currentRating,
 								ratingTextArea.getValue(),
 								new AsyncCallback<Void>() {
@@ -182,5 +193,10 @@ public class RatingView extends HorizontalPanel {
 					}
 				}
 		);
+	}
+
+	private void setRateProductButtonEnabled() {
+		final Integer kNumber = this.customerNumberTextBox.getValue();
+		this.rateProductButton.setEnabled(kNumber != null && this.currentRating != 0);
 	}
 }

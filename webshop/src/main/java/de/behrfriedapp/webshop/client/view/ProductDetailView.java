@@ -76,26 +76,24 @@ public class ProductDetailView extends FlowPanel {
         //TODO RATING!
         this.ratePanel = new HorizontalPanel();
         this.ratePanel.setStyleName("detRatePanel");
-        this.ratingLabel = new Label(" (XX Bewertungen)");
-        this.ratingLabel.setStyleName("ratingLabel");
 
-		Image ratingImg = new Image("img/rated.png");
-		ratingImg.setWidth(RATING_IMG_WIDTH);
-        this.ratePanel.add(ratingImg);
-		ratingImg = new Image("img/rated.png");
-		ratingImg.setWidth(RATING_IMG_WIDTH);
-		this.ratePanel.add(ratingImg);
-		ratingImg = new Image("img/rated.png");
-		ratingImg.setWidth(RATING_IMG_WIDTH);
-		this.ratePanel.add(ratingImg);
-		ratingImg = new Image("img/rated.png");
-		ratingImg.setWidth(RATING_IMG_WIDTH);
-		this.ratePanel.add(ratingImg);
-		ratingImg = new Image("img/rated.png");
-		ratingImg.setWidth(RATING_IMG_WIDTH);
-		this.ratePanel.add(ratingImg);
-
-        this.ratePanel.add(this.ratingLabel);
+		if(detailedProductInfo.getRating() != 0) {
+			for(int i = 0; i < detailedProductInfo.getRating(); i++) {
+				final Image ratingImg = new Image("img/rated.png");
+				ratingImg.setWidth(RATING_IMG_WIDTH);
+				ratePanel.add(ratingImg);
+			}
+			for(int i = (int)detailedProductInfo.getRating().doubleValue(); i < 5; i++) {
+				final Image ratingImg = new Image("img/unrated.png");
+				ratingImg.setWidth(RATING_IMG_WIDTH);
+				ratePanel.add(ratingImg);
+			}
+			this.ratingLabel = new Label("( " + detailedProductInfo.getNumberOfRatings() + " Bewertungen)");
+			this.ratingLabel.setStyleName("ratingLabel");
+			this.ratePanel.add(this.ratingLabel);
+		} else {
+			ratePanel.add(new Label("noch keine Bewertung"));
+		}
 
         this.dummyBuyButton = new Button("In den Warenkorb legen");
         this.dummyBuyButton.setStyleName("basketButton");
