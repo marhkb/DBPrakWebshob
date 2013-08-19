@@ -223,16 +223,22 @@ top: 55px;
 
 .customerNumberTextBox{
 position: absolute;
-left: 120px;
-top: 30px;
+left: 3px;
+top: -28px;
 }
 
+.ratingPanel {
+
+position: absolute;
+left: 115px;
+top: 60px;
+}
 
 .ratingTextArea{
 resize: none;
 position: absolute;
-left: 120px;
-top: 80px;
+left: 3px;
+top: 20px;
 width: 285px;
 height: 85px;
 }

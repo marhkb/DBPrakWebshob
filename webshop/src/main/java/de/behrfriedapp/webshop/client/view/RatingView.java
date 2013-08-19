@@ -61,6 +61,7 @@ public class RatingView extends HorizontalPanel {
 		this.rateProductButton.setStyleName("rateProductButton");
 
 		final HorizontalPanel starsPanel = new HorizontalPanel();
+        starsPanel.setStyleName("starsPanel");
 		final Image[] ratingImgs = new Image[5];
 		ratingImgs[0] = new Image("img/unrated.png");
 		ratingImgs[0].setWidth(RATING_IMG_WIDTH);
